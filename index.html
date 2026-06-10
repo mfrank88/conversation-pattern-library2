@@ -6,51 +6,58 @@
 <title>Grace — Conversation Pattern Library</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=Source+Serif+4:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet" />
 <style>/* Conversation Pattern Library — base styles */
 
 :root {
-  /* Brand colors */
-  --brand-ascension: #1B4297;
-  --brand-medium: #1E69D2;
-  --brand-violet: #B40F87;
-  --brand-green: #009498;
-  --brand-tan: #E8D9B8;
-  --brand-orange: #E87722;
-  --brand-gold: #D4A017;
+  /* Helix brand colors — Color Base 500s (helix.ascension.org) */
+  --brand-ascension: #0F3C97;  /* Brand Blue 700 */
+  --brand-medium: #1E69D2;     /* Brand Blue 500 · Primary/Main */
+  --brand-violet: #B40F87;     /* Brand Violet 500 */
+  --brand-green: #00A28A;      /* Brand Green 500 */
+  --brand-tan: #FFF0CC;        /* Brand Gold 100 */
+  --brand-orange: #B74900;     /* Warning/Main (700) */
+  --brand-gold: #FFB400;       /* Brand Gold 700 */
 
-  /* Light theme surfaces */
-  --bg: #FBFAF7;
-  --bg-elev: #FFFFFF;
-  --bg-muted: #F3F0E9;
-  --bg-inset: #EFEBE1;
-  --border: #E5DFD1;
-  --border-strong: #C9C0AB;
-  --text: #1A1A1F;
-  --text-muted: #5A5A63;
-  --text-subtle: #8A8A90;
+  /* Helix semantic tokens */
+  --success: #0C5C34;          /* Success/Main */
+  --success-bg: #E9FBE7;       /* Success/Main Background */
+  --error: #A1002F;            /* Error/Main */
+  --error-bg: #FEEBE5;         /* Error/Main Background */
+  --focus: #B40F87;            /* Focus/Main */
 
-  /* Accent (default = medium blue) */
+  /* Light theme surfaces — Helix Light Mode tokens */
+  --bg: #FAFAFA;                       /* Background/Main */
+  --bg-elev: #FFFFFF;                  /* Background/Component */
+  --bg-muted: #F5F5F5;                 /* Info/Main Background */
+  --bg-inset: #EEEEEE;                 /* Info/Auxiliary Background */
+  --border: rgba(0, 0, 0, 0.12);       /* Other/Divider */
+  --border-strong: rgba(0, 0, 0, 0.38);
+  --text: rgba(0, 0, 0, 0.87);         /* Content/Primary */
+  --text-muted: rgba(0, 0, 0, 0.6);    /* Content/Secondary */
+  --text-subtle: #757575;              /* Gray 600 */
+
+  /* Accent (default = Primary / Brand Blue) */
   --accent: var(--brand-medium);
-  --accent-ink: #0E3A78;
-  --accent-soft: #E3EEFB;
+  --accent-ink: #092A79;               /* Primary/Auxiliary */
+  --accent-soft: #E8F5FE;              /* Primary/Main Background */
 
-  /* Type */
-  --font-sans: 'Source Sans 3', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-mono: 'JetBrains Mono', 'SF Mono', Menlo, monospace;
-  --font-display: 'Source Serif 4', 'Source Serif Pro', Georgia, serif;
+  /* Type — Helix web font stack */
+  --font-sans: Whitney, Roboto, Arial, sans-serif;
+  --font-mono: 'Roboto Mono', 'SF Mono', Menlo, monospace;
+  --font-display: Whitney, Roboto, Arial, sans-serif;
 
   /* Density (swapped via [data-density]) */
   --space-unit: 8px;
   --row-pad-y: 14px;
   --card-pad: 24px;
-  --font-body: 15.5px;
-  --font-small: 13px;
-  --line-body: 1.55;
+  --font-body: 16px;    /* Helix bodySm 16/24 */
+  --font-small: 14px;   /* Helix bodyXs 14/16 */
+  --line-body: 1.5;
 
-  /* Card (swapped via [data-card]) */
-  --card-radius: 8px;
-  --card-shadow: 0 1px 2px rgba(20, 20, 30, 0.04);
+  /* Card (swapped via [data-card]) — Helix card shape: rounded-lg 20px */
+  --card-radius: 20px;
+  --card-shadow: 0 1px 2px rgba(15, 60, 151, 0.05);
   --card-border: 1px solid var(--border);
   --card-bg: var(--bg-elev);
 }
@@ -59,16 +66,16 @@
 [data-density="compact"] {
   --row-pad-y: 10px;
   --card-pad: 16px;
-  --font-body: 14.5px;
+  --font-body: 14px;   /* bodyXs */
   --font-small: 12.5px;
   --line-body: 1.45;
 }
 [data-density="spacious"] {
   --row-pad-y: 20px;
   --card-pad: 32px;
-  --font-body: 16.5px;
-  --font-small: 13.5px;
-  --line-body: 1.65;
+  --font-body: 18px;   /* bodyBase 18/24 */
+  --font-small: 14px;
+  --line-body: 1.5;
 }
 
 /* Card style variants */
@@ -83,16 +90,17 @@
   --card-bg: var(--bg-elev);
 }
 [data-card="shadowed"] {
-  --card-shadow: 0 1px 3px rgba(20, 20, 30, 0.06), 0 8px 24px -12px rgba(20, 20, 30, 0.08);
+  /* Helix raised card · shadow-md (blue-tinted triple shadow) */
+  --card-shadow: 0 5px 6px rgba(15, 60, 151, 0.10), 0 3px 16px rgba(15, 60, 151, 0.06), 0 9px 12px rgba(15, 60, 151, 0.07);
   --card-border: 1px solid transparent;
   --card-bg: var(--bg-elev);
 }
 
 /* Accent variants */
-[data-accent="ascensionBlue"] { --accent: #1B4297; --accent-ink: #0F2F70; --accent-soft: #E0E7F3; }
-[data-accent="mediumBlue"]   { --accent: #1E69D2; --accent-ink: #0E3A78; --accent-soft: #E3EEFB; }
-[data-accent="violet"]       { --accent: #B40F87; --accent-ink: #7B0B5C; --accent-soft: #F8E3F1; }
-[data-accent="green"]        { --accent: #009498; --accent-ink: #006568; --accent-soft: #DEF2F2; }
+[data-accent="ascensionBlue"] { --accent: #0F3C97; --accent-ink: #051D64; --accent-soft: #E8F5FE; }
+[data-accent="mediumBlue"]   { --accent: #1E69D2; --accent-ink: #092A79; --accent-soft: #E8F5FE; }
+[data-accent="violet"]       { --accent: #9A0A81; --accent-ink: #660468; --accent-soft: #FDE6EE; }
+[data-accent="green"]        { --accent: #00806D; --accent-ink: #005E50; --accent-soft: #E6FFFB; }
 
 /* Dark theme */
 [data-theme="dark"] {
@@ -107,9 +115,9 @@
   --text-subtle: #6B7384;
   --accent-soft: rgba(30, 105, 210, 0.15);
 }
-[data-theme="dark"][data-accent="violet"] { --accent-soft: rgba(180, 15, 135, 0.18); }
-[data-theme="dark"][data-accent="green"] { --accent-soft: rgba(0, 148, 152, 0.18); }
-[data-theme="dark"][data-accent="ascensionBlue"] { --accent-soft: rgba(27, 66, 151, 0.22); }
+[data-theme="dark"][data-accent="violet"] { --accent-soft: rgba(154, 10, 129, 0.2); }
+[data-theme="dark"][data-accent="green"] { --accent-soft: rgba(0, 162, 138, 0.18); }
+[data-theme="dark"][data-accent="ascensionBlue"] { --accent-soft: rgba(15, 60, 151, 0.25); }
 [data-theme="dark"][data-card="flat"] { --card-bg: var(--bg-muted); }
 [data-theme="dark"][data-card="shadowed"] { --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.5), 0 10px 30px -15px rgba(0, 0, 0, 0.7); }
 
@@ -319,31 +327,46 @@ main {
   width: 100%;
 }
 
-/* Buttons */
+/* Buttons — Helix button spec: full-round pill, Semibold tracked uppercase label */
 .btn {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
-  padding: 7px 13px;
-  border-radius: 6px;
-  border: 1px solid var(--border);
-  background: var(--bg-elev);
-  color: var(--text);
+  justify-content: center;
+  gap: 8px;
+  padding: 7px 18px;
+  border-radius: 999px;                 /* full round corner */
+  border: 1.5px solid var(--accent);    /* Secondary (Outlined) */
+  background: transparent;
+  color: var(--accent);
   font-family: inherit;
-  font-size: 13.5px;
-  font-weight: 500;
+  font-size: 13px;                      /* Helix `button` token, scaled for tool chrome */
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
   cursor: pointer;
   transition: all 0.12s;
 }
-.btn:hover { background: var(--bg-muted); }
+.btn:hover {
+  color: var(--accent-ink);
+  border-color: var(--accent-ink);
+  background: color-mix(in srgb, var(--accent) 4%, transparent);  /* State Overlays / Hovered */
+  box-shadow: 0 1px 3px rgba(15, 60, 151, 0.18);                  /* shadow-sm */
+}
+.btn:disabled {
+  border-color: rgba(0, 0, 0, 0.12);    /* Background/Disabled */
+  color: rgba(0, 0, 0, 0.38);           /* Content/Disabled */
+  background: transparent;
+  box-shadow: none;
+  cursor: default;
+}
 .btn.primary {
   background: var(--accent);
   color: white;
   border-color: var(--accent);
 }
 .btn.primary:hover { background: var(--accent-ink); border-color: var(--accent-ink); }
-.btn.ghost { border-color: transparent; background: transparent; }
-.btn.ghost:hover { background: var(--bg-muted); }
+.btn.ghost { border-color: transparent; background: transparent; }    /* Tertiary (Text) */
+.btn.ghost:hover { background: color-mix(in srgb, var(--accent) 8%, transparent); border-color: transparent; box-shadow: none; }
 
 /* Page header */
 .page-head {
@@ -360,14 +383,14 @@ main {
 h1.page-title {
   font-family: var(--font-display);
   font-weight: 500;
-  font-size: 40px;
-  line-height: 1.1;
-  letter-spacing: -0.015em;
+  font-size: 42px;   /* Helix titleXl 42/48 · Medium */
+  line-height: 48px;
+  letter-spacing: -1px;
   margin: 0 0 10px;
   color: var(--text);
 }
 .page-desc {
-  font-size: 17px;
+  font-size: 18px;   /* Helix bodyBase 18/24 */
   color: var(--text-muted);
   max-width: 680px;
   margin: 0;
@@ -482,10 +505,10 @@ h1.page-title {
 
 .card-title {
   font-family: var(--font-display);
-  font-size: 22px;
-  font-weight: 500;
-  letter-spacing: -0.01em;
-  line-height: 1.2;
+  font-size: 20px;   /* Helix titleXs 20/24 · Semibold */
+  font-weight: 600;
+  letter-spacing: 0.15px;
+  line-height: 24px;
   margin: 0;
 }
 .card-summary {
@@ -619,13 +642,13 @@ h1.page-title {
 .detail-title {
   font-family: var(--font-display);
   font-weight: 500;
-  font-size: 44px;
-  line-height: 1.05;
-  letter-spacing: -0.02em;
+  font-size: 42px;   /* Helix titleXl 42/48 · Medium */
+  line-height: 48px;
+  letter-spacing: -1px;
   margin: 0 0 14px;
 }
 .detail-summary {
-  font-size: 19px;
+  font-size: 18px;   /* Helix bodyBase */
   line-height: 1.5;
   color: var(--text-muted);
   max-width: 680px;
@@ -647,9 +670,10 @@ h1.page-title {
 }
 .section-title {
   font-family: var(--font-display);
-  font-size: 22px;
-  font-weight: 500;
-  letter-spacing: -0.01em;
+  font-size: 24px;   /* Helix titleSm 24/32 · Semibold */
+  font-weight: 600;
+  line-height: 32px;
+  letter-spacing: 0.25px;
   margin: 0 0 14px;
   display: flex;
   align-items: baseline;
@@ -687,7 +711,7 @@ h1.page-title {
   font-variant-numeric: tabular-nums;
   font-weight: 500;
 }
-.metric-delta.up { color: var(--brand-green); }
+.metric-delta.up { color: var(--success); }
 .metric-delta.down { color: var(--brand-orange); }
 .metric-delta.flat { color: var(--text-subtle); }
 
@@ -703,8 +727,8 @@ h1.page-title {
   border: 1px solid var(--border);
   background: var(--card-bg);
 }
-.note-card.good { border-left: 3px solid var(--brand-green); }
-.note-card.bad { border-left: 3px solid var(--brand-violet); }
+.note-card.good { border-left: 3px solid var(--success); }
+.note-card.bad { border-left: 3px solid var(--error); }
 .note-card h4 { margin: 0 0 6px; font-size: 14px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-subtle); font-weight: 600; }
 .note-card p { margin: 0; color: var(--text); line-height: 1.5; font-size: 14.5px; }
 
@@ -878,12 +902,12 @@ h1.page-title {
 .flow-svg { display: block; min-width: 100%; }
 .flow-node rect { fill: var(--bg-elev); stroke: var(--border-strong); stroke-width: 1.5; transition: all 0.2s; }
 .flow-node.entry rect { fill: var(--accent-soft); stroke: var(--accent); }
-.flow-node.exit-ok rect { fill: #DEF2F2; stroke: var(--brand-green); }
-.flow-node.exit-fail rect { fill: #F8E3F1; stroke: var(--brand-violet); }
+.flow-node.exit-ok rect { fill: var(--success-bg); stroke: var(--success); }
+.flow-node.exit-fail rect { fill: var(--error-bg); stroke: var(--error); }
 .flow-node.decision rect { fill: var(--bg-muted); }
 .flow-node.action rect { stroke-dasharray: 4 3; }
-[data-theme="dark"] .flow-node.exit-ok rect { fill: rgba(0,148,152,0.15); }
-[data-theme="dark"] .flow-node.exit-fail rect { fill: rgba(180,15,135,0.15); }
+[data-theme="dark"] .flow-node.exit-ok rect { fill: rgba(25,128,56,0.18); }
+[data-theme="dark"] .flow-node.exit-fail rect { fill: rgba(224,0,25,0.15); }
 .flow-node text { font-family: var(--font-sans); font-size: 12px; fill: var(--text); font-weight: 500; }
 .flow-edge { stroke: var(--border-strong); stroke-width: 1.5; fill: none; }
 .flow-edge-arrow { fill: var(--border-strong); }
@@ -1028,14 +1052,14 @@ h1.page-title {
 .toggle.on::after { transform: translateX(14px); }
 
 /* Accent bars on cards by pattern */
-.pattern-card[data-pa="ascensionBlue"] { --card-accent: #1B4297; --card-accent-soft: #E0E7F3; }
-.pattern-card[data-pa="mediumBlue"]   { --card-accent: #1E69D2; --card-accent-soft: #E3EEFB; }
-.pattern-card[data-pa="violet"]       { --card-accent: #B40F87; --card-accent-soft: #F8E3F1; }
-.pattern-card[data-pa="green"]        { --card-accent: #009498; --card-accent-soft: #DEF2F2; }
-[data-theme="dark"] .pattern-card[data-pa="ascensionBlue"] { --card-accent-soft: rgba(27,66,151,0.22); }
+.pattern-card[data-pa="ascensionBlue"] { --card-accent: #0F3C97; --card-accent-soft: #E8F5FE; }
+.pattern-card[data-pa="mediumBlue"]   { --card-accent: #1E69D2; --card-accent-soft: #E8F5FE; }
+.pattern-card[data-pa="violet"]       { --card-accent: #9A0A81; --card-accent-soft: #FDE6EE; }
+.pattern-card[data-pa="green"]        { --card-accent: #00806D; --card-accent-soft: #E6FFFB; }
+[data-theme="dark"] .pattern-card[data-pa="ascensionBlue"] { --card-accent-soft: rgba(15,60,151,0.25); }
 [data-theme="dark"] .pattern-card[data-pa="mediumBlue"] { --card-accent-soft: rgba(30,105,210,0.18); }
-[data-theme="dark"] .pattern-card[data-pa="violet"] { --card-accent-soft: rgba(180,15,135,0.18); }
-[data-theme="dark"] .pattern-card[data-pa="green"] { --card-accent-soft: rgba(0,148,152,0.18); }
+[data-theme="dark"] .pattern-card[data-pa="violet"] { --card-accent-soft: rgba(154,10,129,0.2); }
+[data-theme="dark"] .pattern-card[data-pa="green"] { --card-accent-soft: rgba(0,162,138,0.18); }
 
 /* Empty state */
 .empty {
@@ -1059,7 +1083,8 @@ h1.page-title {
 
 /* Focus rings */
 button:focus-visible, a:focus-visible, input:focus-visible {
-  outline: 2px solid var(--accent);
+  /* Helix Focus/Main — dashed, offset outline */
+  outline: 2px dashed var(--focus);
   outline-offset: 2px;
   border-radius: 4px;
 }
@@ -1084,405 +1109,2988 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 
-<script>// Design tokens for the Conversation Pattern Library
-// Brand colors from Ascension / Grace palette.
-
-// Tint scale: given a hex, generate 50-900 by mixing with white (lighter) / black (darker)
-function hexToRgb(hex) {
-  const h = hex.replace('#', '');
-  return [parseInt(h.slice(0, 2), 16), parseInt(h.slice(2, 4), 16), parseInt(h.slice(4, 6), 16)];
-}
-function rgbToHex([r, g, b]) {
-  const to = (n) => Math.max(0, Math.min(255, Math.round(n))).toString(16).padStart(2, '0');
-  return `#${to(r)}${to(g)}${to(b)}`;
-}
-function mix(hex, target, amt) {
-  const a = hexToRgb(hex);
-  const b = hexToRgb(target);
-  return rgbToHex([a[0] + (b[0] - a[0]) * amt, a[1] + (b[1] - a[1]) * amt, a[2] + (b[2] - a[2]) * amt]);
-}
-function scale(hex) {
-  return {
-    50: mix(hex, '#ffffff', 0.93),
-    100: mix(hex, '#ffffff', 0.85),
-    200: mix(hex, '#ffffff', 0.70),
-    300: mix(hex, '#ffffff', 0.50),
-    400: mix(hex, '#ffffff', 0.25),
-    500: hex,
-    600: mix(hex, '#000000', 0.15),
-    700: mix(hex, '#000000', 0.30),
-    800: mix(hex, '#000000', 0.45),
-    900: mix(hex, '#000000', 0.60),
-  };
-}
-
-window.Tokens = {
-  brand: {
-    ascensionBlue: '#1B4297',
-    mediumBlue: '#1E69D2',
-    violet: '#B40F87',
-    green: '#009498',
-    softTan: '#E8D9B8',
-    orange: '#E87722',
-    gold: '#D4A017',
-  },
-  scales: {
-    ascensionBlue: scale('#1B4297'),
-    mediumBlue: scale('#1E69D2'),
-    violet: scale('#B40F87'),
-    green: scale('#009498'),
-    softTan: scale('#E8D9B8'),
-    orange: scale('#E87722'),
-    gold: scale('#D4A017'),
-  },
-};
-</script>
-<script>// Pattern library data. Five patterns with rich metadata.
+<script>// Pattern library data — Grace 2.0 Flow Library (corrected draft, June 2026).
 window.Patterns = [
   {
-    id: 'verification',
-    title: 'Appointment Verification',
-    category: 'Identity & Access',
-    status: 'Production',
-    owner: 'C. Mendez · Conversation Design',
-    version: '2.4.1',
-    updated: '2026-04-08',
-    avgDuration: '~2 min',
-    channel: ['Voice', 'SMS'],
-    flowType: 'First Contact Flow',
-    icon: 'phone',
-    accent: 'mediumBlue',
-    tags: ['Identity Verification', 'HIPAA', 'SMS Delivery', 'Inbound'],
-    summary: 'Foundational flow for confirming appointment details using DOB + phone number verification to locate patient records.',
-    whenToUse: 'Use at the start of any inbound call where the patient references an upcoming appointment. Required before sharing any PHI.',
-    whenNotToUse: 'Do not use for brand-new patients with no record on file — route to scheduling instead. Do not use when caller ID already matches a verified session within the last 15 minutes.',
-    metrics: [
-      { label: 'Verification success rate', value: '94.2%', delta: '+1.8pp', trend: 'up' },
-      { label: 'Avg turns to verify', value: '3.1', delta: '-0.4', trend: 'up' },
-      { label: 'Handoff rate', value: '5.8%', delta: '-1.1pp', trend: 'up' },
-      { label: 'Containment', value: '88%', delta: '+2.0pp', trend: 'up' },
+    "id": "verify",
+    "title": "Verify Appointment",
+    "category": "Lookup & Confirm",
+    "status": "Draft",
+    "owner": "Conversation Design",
+    "version": "2.0",
+    "updated": "2026-06-10",
+    "avgDuration": "~2 min",
+    "channel": [
+      "Voice",
+      "SMS"
     ],
-    transcript: [
-      { speaker: 'grace', text: "Hi, this is Grace calling from Ascension. I'm reaching out about an upcoming appointment. Before we continue, I need to verify some information. Can you please confirm your date of birth?" },
-      { speaker: 'patient', text: "Uh, sure. March 14th, 1978." },
-      { speaker: 'grace', text: "Thank you. And can you verify the last four digits of the phone number on file?" },
-      { speaker: 'patient', text: "4-2-9-8." },
-      { speaker: 'grace', text: "Perfect, I have you verified. I see you have an appointment with Dr. Patel on Tuesday, April 22nd at 2:30 PM. Would you like me to text you the address and parking info?", note: 'Confidence threshold met (0.97). Proceeding to confirmation branch.' },
-      { speaker: 'patient', text: "Yes please." },
-      { speaker: 'grace', text: "Great — sending that now. Is there anything else I can help with?" },
+    "flowType": "Read-Only Flow",
+    "icon": "phone",
+    "accent": "mediumBlue",
+    "tags": [
+      "Read-Only",
+      "Shared Auth",
+      "SMS Details"
     ],
-    states: [
-      { id: 'greet', label: 'Greeting', kind: 'entry' },
-      { id: 'dob', label: 'Collect DOB', kind: 'collect' },
-      { id: 'phone', label: 'Collect Phone', kind: 'collect' },
-      { id: 'match', label: 'Record Match', kind: 'decision' },
-      { id: 'confirm', label: 'Confirm Appt', kind: 'output' },
-      { id: 'sms', label: 'Send SMS', kind: 'action' },
-      { id: 'handoff', label: 'Human Handoff', kind: 'exit-fail' },
-      { id: 'end', label: 'End Call', kind: 'exit-ok' },
+    "summary": "Helps a caller check upcoming booked appointment details and request a text with those details. Read-only: no booking, locking or modification — SMS is the only outbound action.",
+    "whenToUse": "Caller wants to confirm details of an upcoming booked appointment. Behavior branches on appointment count: zero, one, or two-plus — with a step-through loop at four or more.",
+    "whenNotToUse": "No booking, locking or modification of any kind. If no upcoming appointment exists and the caller wants to book, route to Schedule. Proxy / on-behalf-of callers transfer to a Care Navigator in V1.",
+    "metrics": [
+      {
+        "label": "Auth attempts (max)",
+        "value": "3",
+        "note": "then Care Navigator"
+      },
+      {
+        "label": "Outbound actions",
+        "value": "SMS only",
+        "note": "read-only flow"
+      },
+      {
+        "label": "SMS retries",
+        "value": "1",
+        "note": "then verbal fallback"
+      },
+      {
+        "label": "Readback branches",
+        "value": "0 / 1 / 2+",
+        "note": "step-through at 4+"
+      }
     ],
-    transitions: [
-      ['greet', 'dob'],
-      ['dob', 'phone'],
-      ['phone', 'match'],
-      ['match', 'confirm'],
-      ['match', 'handoff'],
-      ['confirm', 'sms'],
-      ['sms', 'end'],
+    "transcript": [
+      {
+        "speaker": "grace",
+        "text": "This is Grace, an AI-powered assistant. Ready to check on that appointment, or were you calling about something else?",
+        "note": "STEP 1A — Genesys passed a verify sub-intent, so Grace opens with intent confirmation."
+      },
+      {
+        "speaker": "patient",
+        "text": "Yes — I just want to double-check the time."
+      },
+      {
+        "speaker": "grace",
+        "text": "To pull up your record, what's your name and date of birth?",
+        "note": "STEP 2 — name and DOB collected in one turn. Speech or keypad: 6-digit MMDDYY or 8-digit MMDDYYYY."
+      },
+      {
+        "speaker": "patient",
+        "text": "Maria Alvarez, March 14th, 1978."
+      },
+      {
+        "speaker": "grace",
+        "text": "One moment while the appointments come up.",
+        "note": "STEP 3 — Dash returns upcoming booked appointments. Branch on count: 0, 1 or 2+."
+      },
+      {
+        "speaker": "grace",
+        "text": "There is one upcoming appointment: an annual physical with Dr. Patel at St. Thomas Midtown on Tuesday, June 23rd at 2:30 PM.",
+        "note": "STEP 4B — single-appointment readback."
+      },
+      {
+        "speaker": "grace",
+        "text": "Would you like a text with your appointment details?"
+      },
+      {
+        "speaker": "patient",
+        "text": "Yes, please."
+      },
+      {
+        "speaker": "grace",
+        "text": "Should it go to the number ending in 4298?",
+        "note": "STEP 5A — confirm the number on file before sending."
+      },
+      {
+        "speaker": "patient",
+        "text": "Yes, that's right."
+      },
+      {
+        "speaker": "grace",
+        "text": "Okay, you're all set. Is there anything else needed today?",
+        "note": "STEP 6 — two-message SMS set sent (facility map link + provider profile link for every caller). One retry on failure, then verbal fallback."
+      },
+      {
+        "speaker": "patient",
+        "text": "No, that's everything."
+      },
+      {
+        "speaker": "grace",
+        "text": "Thank you for choosing Ascension, Maria. To help improve this experience, please share your thoughts in a brief survey. Connecting you now.",
+        "note": "CLOSE-SURVEY END — every task completed cleanly: no handoff, no out-of-scope intent."
+      }
     ],
-    edgeCases: [
-      { title: 'DOB mismatch after 2 attempts', behavior: 'Escalate to human — do not reveal any appointment details.' },
-      { title: 'Patient offers alternate phone', behavior: 'Accept only if it matches the secondary number on file. Otherwise deflect.' },
-      { title: 'Caller is a family member / proxy', behavior: 'Check proxy flag in EHR. If not set, route to scheduling team for HIPAA release.' },
-      { title: 'Multiple appointments on file', behavior: 'Enumerate by provider + date, ask patient which they are calling about.' },
+    "states": [
+      {
+        "id": "open",
+        "label": "Open + Intent",
+        "kind": "entry"
+      },
+      {
+        "id": "auth",
+        "label": "Authenticate ×3",
+        "kind": "collect"
+      },
+      {
+        "id": "pull",
+        "label": "Pull Appts · Dash",
+        "kind": "action"
+      },
+      {
+        "id": "count",
+        "label": "0 / 1 / 2+ ?",
+        "kind": "decision"
+      },
+      {
+        "id": "select",
+        "label": "Read & Select",
+        "kind": "decision"
+      },
+      {
+        "id": "details",
+        "label": "Share Details",
+        "kind": "output"
+      },
+      {
+        "id": "offer",
+        "label": "Offer SMS",
+        "kind": "decision"
+      },
+      {
+        "id": "sms",
+        "label": "SMS ·1 retry",
+        "kind": "action"
+      },
+      {
+        "id": "close",
+        "label": "Closing Check",
+        "kind": "output"
+      },
+      {
+        "id": "end",
+        "label": "Close ± Survey",
+        "kind": "exit-ok"
+      },
+      {
+        "id": "tosched",
+        "label": "→ Schedule",
+        "kind": "exit-ok"
+      },
+      {
+        "id": "nav",
+        "label": "Care Navigator",
+        "kind": "exit-fail"
+      }
     ],
-    compliance: [
-      'HIPAA §164.502 — minimum necessary disclosure. Do not read diagnosis or visit reason.',
-      'TCPA — SMS only to numbers on file with consent flag set.',
-      'Call recording disclosure must precede verification (handled by IVR prelude).',
+    "transitions": [
+      [
+        "open",
+        "auth"
+      ],
+      [
+        "auth",
+        "pull"
+      ],
+      [
+        "auth",
+        "nav"
+      ],
+      [
+        "pull",
+        "count"
+      ],
+      [
+        "count",
+        "tosched"
+      ],
+      [
+        "count",
+        "details"
+      ],
+      [
+        "count",
+        "select"
+      ],
+      [
+        "select",
+        "details"
+      ],
+      [
+        "select",
+        "nav"
+      ],
+      [
+        "details",
+        "offer"
+      ],
+      [
+        "offer",
+        "sms"
+      ],
+      [
+        "offer",
+        "close"
+      ],
+      [
+        "sms",
+        "close"
+      ],
+      [
+        "close",
+        "end"
+      ]
     ],
-    related: ['cancellation', 'rescheduling', 'escalation'],
-    changelog: [
-      { version: '2.4.1', date: '2026-04-08', note: 'Tightened DOB retry from 3 to 2 attempts per updated security policy.' },
-      { version: '2.4.0', date: '2026-03-12', note: 'Added proxy caller detection branch.' },
-      { version: '2.3.2', date: '2026-02-01', note: 'Reduced avg turns by moving phone confirmation before name lookup.' },
-      { version: '2.3.0', date: '2025-12-04', note: 'SMS delivery added as post-verification action.' },
+    "edgeCases": [
+      {
+        "title": "Zero upcoming appointments",
+        "behavior": "\"There aren't any upcoming appointments on file. Want to schedule one?\" Yes routes to Schedule; no goes to the closing check."
+      },
+      {
+        "title": "Four or more appointments",
+        "behavior": "Step through dates one at a time — details on this one, the next, or all. At the end of the list: \"That was the last one. Want details on a specific one or all of them?\""
+      },
+      {
+        "title": "Caller is a proxy / on behalf of",
+        "behavior": "Transfer to a Care Navigator in V1: \"Calls for another patient need a Care Navigator. Connecting you now.\" Until the On Behalf Of flow ships."
+      },
+      {
+        "title": "Authentication fails three times",
+        "behavior": "Third attempt re-collects date of birth only (captured name is held). After three failed attempts, Care Navigator — no fourth attempt under any condition."
+      },
+      {
+        "title": "SMS send fails",
+        "behavior": "Retry once — only the failed message of a two-message set. If the retry fails, recap verbally only the appointment details whose SMS failed."
+      },
+      {
+        "title": "Multiple appointments + SMS",
+        "behavior": "One independent two-message set per appointment, chronological order matching voice readback. Never numbered across sets as (1/4)–(4/4)."
+      }
     ],
+    "compliance": [
+      "No first-person pronouns — Grace identifies itself by name in the opening line only. No \"I understand,\" \"I'm sorry,\" \"I hope,\" feeling claims or medical advice.",
+      "Read-only scope: no booking, locking or modification. SMS is the only outbound action.",
+      "SMS includes both the provider profile link and the facility map link for every caller. Consent and opt-out are handled by Ascension's SMS program.",
+      "Survey fires only when every task in the session completed cleanly — no human handoff, no out-of-scope intent."
+    ],
+    "related": [
+      "schedule",
+      "cancel",
+      "reschedule"
+    ],
+    "changelog": [
+      {
+        "version": "2.0",
+        "date": "2026-06-10",
+        "note": "Authentication standard updated: three failed attempts total, then Care Navigator transfer."
+      },
+      {
+        "version": "2.0",
+        "date": "2026-06-10",
+        "note": "SMS retry and verbal fallback added to the main flow body."
+      },
+      {
+        "version": "2.0",
+        "date": "2026-06-10",
+        "note": "SMS confirmation now includes both provider profile link and facility map link for every caller."
+      }
+    ]
   },
   {
-    id: 'cancellation',
-    title: 'Appointment Cancellation',
-    category: 'Task Completion',
-    status: 'Production',
-    owner: 'C. Mendez · Conversation Design',
-    version: '1.8.0',
-    updated: '2026-03-28',
-    avgDuration: '~1.5 min',
-    channel: ['Voice', 'SMS'],
-    flowType: 'Task Completion',
-    icon: 'trash',
-    accent: 'violet',
-    tags: ['Multi-Appointment', 'Deflection', 'Confirmation Required'],
-    summary: 'Handles cancellation requests with safeguards for multiple appointments, late-cancellation windows, and rescheduling offers.',
-    whenToUse: 'Inbound request to cancel. Always offer reschedule first when within cancellation window.',
-    whenNotToUse: 'Never auto-cancel procedures flagged as pre-op or requiring clinical review — always route to the care team.',
-    metrics: [
-      { label: 'Task completion rate', value: '91.5%', delta: '+0.6pp', trend: 'up' },
-      { label: 'Reschedule deflection', value: '34%', delta: '+4.2pp', trend: 'up' },
-      { label: 'Avg turns', value: '4.4', delta: '+0.1', trend: 'flat' },
-      { label: 'Handoff rate', value: '8.5%', delta: '-0.3pp', trend: 'up' },
+    "id": "cancel",
+    "title": "Cancel Appointment",
+    "category": "Task Completion",
+    "status": "Draft",
+    "owner": "Conversation Design",
+    "version": "2.0",
+    "updated": "2026-06-10",
+    "avgDuration": "~2 min",
+    "channel": [
+      "Voice",
+      "SMS"
     ],
-    transcript: [
-      { speaker: 'patient', text: "I need to cancel my appointment." },
-      { speaker: 'grace', text: "I can help with that. I see two upcoming appointments — one with Dr. Patel on April 22nd and another with Dr. Liu on May 6th. Which would you like to cancel?" },
-      { speaker: 'patient', text: "The one with Dr. Patel." },
-      { speaker: 'grace', text: "Before I cancel, would you like to reschedule instead? I can find a new time that works for you.", note: 'Deflection attempt — 34% accept here.' },
-      { speaker: 'patient', text: "No, just cancel it." },
-      { speaker: 'grace', text: "Understood. To confirm — you'd like to cancel your April 22nd appointment at 2:30 PM with Dr. Patel. Is that correct?" },
-      { speaker: 'patient', text: "Yes." },
-      { speaker: 'grace', text: "Done. You'll receive a confirmation text shortly. Is there anything else?" },
+    "flowType": "Task Completion",
+    "icon": "trash",
+    "accent": "violet",
+    "tags": [
+      "Reschedule First",
+      "Reason Capture",
+      "90-Day Window",
+      "SMS Confirmation"
     ],
-    states: [
-      { id: 'intent', label: 'Cancel Intent', kind: 'entry' },
-      { id: 'which', label: 'Which Appt?', kind: 'decision' },
-      { id: 'deflect', label: 'Offer Reschedule', kind: 'output' },
-      { id: 'confirm', label: 'Confirm Cancel', kind: 'collect' },
-      { id: 'execute', label: 'Execute Cancel', kind: 'action' },
-      { id: 'sms', label: 'Send SMS', kind: 'action' },
-      { id: 'end', label: 'End Call', kind: 'exit-ok' },
+    "summary": "Helps a caller cancel an upcoming appointment, offers reschedule first when the appointment is in scheduling scope, and confirms cancellation with a caution about related appointments.",
+    "whenToUse": "Caller asks to cancel an upcoming appointment within the 90-day lookup window. Offer reschedule before canceling — only when the selected appointment is in Phase 1 scheduling scope.",
+    "whenNotToUse": "Appointments that cannot be canceled here — already canceled, already checked in, or restricted — go to a Care Navigator. No email confirmation; SMS only.",
+    "metrics": [
+      {
+        "label": "Lookup window",
+        "value": "90 days",
+        "note": "capped at 10 appts"
+      },
+      {
+        "label": "Readback branches",
+        "value": "0–10+",
+        "note": "three at a time from 4 up"
+      },
+      {
+        "label": "Auth attempts (max)",
+        "value": "3",
+        "note": "then Care Navigator"
+      },
+      {
+        "label": "SMS retries",
+        "value": "1",
+        "note": "then verbal fallback"
+      }
     ],
-    transitions: [
-      ['intent', 'which'],
-      ['which', 'deflect'],
-      ['deflect', 'confirm'],
-      ['confirm', 'execute'],
-      ['execute', 'sms'],
-      ['sms', 'end'],
+    "transcript": [
+      {
+        "speaker": "grace",
+        "text": "This is Grace, an AI-powered assistant. Ready to help cancel an appointment, or was the call about something else?",
+        "note": "STEP 1A — cancel sub-intent passed from Genesys via SIP parameters."
+      },
+      {
+        "speaker": "patient",
+        "text": "Yes, I need to cancel."
+      },
+      {
+        "speaker": "grace",
+        "text": "To pull up your record, what's your name and date of birth?"
+      },
+      {
+        "speaker": "patient",
+        "text": "James Porter, July 2nd, 1965."
+      },
+      {
+        "speaker": "grace",
+        "text": "There's one appointment on file: Thursday, June 18th at 9:00 AM with Dr. Liu at St. Vincent's. Is that the one to cancel?",
+        "note": "STEP 4A — single-appointment readback. Window: 90 days, capped at 10."
+      },
+      {
+        "speaker": "patient",
+        "text": "That's the one."
+      },
+      {
+        "speaker": "grace",
+        "text": "Before canceling, would rescheduling work instead?",
+        "note": "DECISION D — reschedule is offered first, only when the appointment is in Phase 1 scheduling scope."
+      },
+      {
+        "speaker": "patient",
+        "text": "No, just cancel it."
+      },
+      {
+        "speaker": "grace",
+        "text": "What's your reason for canceling? This helps improve Ascension's services."
+      },
+      {
+        "speaker": "patient",
+        "text": "I'd rather not say."
+      },
+      {
+        "speaker": "grace",
+        "text": "Not a problem. Let's move on. One moment while that's canceled.",
+        "note": "STEP 7 → 8 — a declined reason is never pressed. Cancellation submitted via Dash."
+      },
+      {
+        "speaker": "grace",
+        "text": "The appointment on Thursday, June 18th at 9:00 AM with Dr. Liu is canceled. Related appointments like imaging, labs or specialist visits should be canceled or rescheduled separately.",
+        "note": "STEP 9 — required caution about related appointments."
+      },
+      {
+        "speaker": "grace",
+        "text": "A text confirmation can be sent. Send it now?"
+      },
+      {
+        "speaker": "patient",
+        "text": "Sure."
+      },
+      {
+        "speaker": "grace",
+        "text": "Send it to the number ending in 8841?"
+      },
+      {
+        "speaker": "patient",
+        "text": "Yes."
+      },
+      {
+        "speaker": "grace",
+        "text": "Is there anything else needed today?",
+        "note": "STEP 12 — one-message Cancel SMS sent → STEP 13 closing check."
+      },
+      {
+        "speaker": "patient",
+        "text": "Actually, yes — what time is my appointment next month?"
+      },
+      {
+        "speaker": "grace",
+        "text": "Okay, let's check on that appointment.",
+        "note": "DECISION J yes → STEP 13B — capture the next intent and route to the Verify flow. After it completes, return to this closing check."
+      }
     ],
-    edgeCases: [
-      { title: 'Within 24-hour cancellation window', behavior: 'Disclose late-cancel fee policy before executing. Require explicit re-confirm.' },
-      { title: 'Pre-op or imaging prep appointment', behavior: 'Do not self-serve — route to care team with context.' },
-      { title: 'Same-day cancel', behavior: 'Always offer reschedule; flag to provider if no-show pattern detected.' },
-      { title: 'Patient unsure which appointment', behavior: 'Read full list with provider + location + date; do not cancel until explicit selection.' },
+    "states": [
+      {
+        "id": "open",
+        "label": "Open + Intent",
+        "kind": "entry"
+      },
+      {
+        "id": "auth",
+        "label": "Authenticate ×3",
+        "kind": "collect"
+      },
+      {
+        "id": "pull",
+        "label": "Pull Appts · Dash",
+        "kind": "action"
+      },
+      {
+        "id": "count",
+        "label": "0 / 1 / 2–10+ ?",
+        "kind": "decision"
+      },
+      {
+        "id": "identify",
+        "label": "Select & Confirm",
+        "kind": "decision"
+      },
+      {
+        "id": "deflect",
+        "label": "Reschedule First?",
+        "kind": "decision"
+      },
+      {
+        "id": "reason",
+        "label": "Reason (optional)",
+        "kind": "collect"
+      },
+      {
+        "id": "submit",
+        "label": "Cancel · Dash",
+        "kind": "action"
+      },
+      {
+        "id": "confirm",
+        "label": "Confirm + Caution",
+        "kind": "output"
+      },
+      {
+        "id": "sms",
+        "label": "SMS ·optional",
+        "kind": "action"
+      },
+      {
+        "id": "close",
+        "label": "Closing Check",
+        "kind": "output"
+      },
+      {
+        "id": "end",
+        "label": "Close ± Survey",
+        "kind": "exit-ok"
+      },
+      {
+        "id": "tosched",
+        "label": "→ Schedule",
+        "kind": "exit-ok"
+      },
+      {
+        "id": "toresched",
+        "label": "→ Reschedule",
+        "kind": "exit-ok"
+      },
+      {
+        "id": "nav",
+        "label": "Care Navigator",
+        "kind": "exit-fail"
+      }
     ],
-    compliance: [
-      'Explicit confirmation required before any state-changing action.',
-      'Late-cancellation fee disclosure per facility policy (varies by location).',
-      'Audit log entry written with timestamp + caller ID + original appointment ID.',
+    "transitions": [
+      [
+        "open",
+        "auth"
+      ],
+      [
+        "auth",
+        "pull"
+      ],
+      [
+        "auth",
+        "nav"
+      ],
+      [
+        "pull",
+        "count"
+      ],
+      [
+        "count",
+        "tosched"
+      ],
+      [
+        "count",
+        "identify"
+      ],
+      [
+        "identify",
+        "deflect"
+      ],
+      [
+        "identify",
+        "nav"
+      ],
+      [
+        "deflect",
+        "toresched"
+      ],
+      [
+        "deflect",
+        "reason"
+      ],
+      [
+        "reason",
+        "submit"
+      ],
+      [
+        "submit",
+        "confirm"
+      ],
+      [
+        "submit",
+        "nav"
+      ],
+      [
+        "confirm",
+        "sms"
+      ],
+      [
+        "sms",
+        "close"
+      ],
+      [
+        "close",
+        "end"
+      ]
     ],
-    related: ['rescheduling', 'verification'],
-    changelog: [
-      { version: '1.8.0', date: '2026-03-28', note: 'Added deflection-to-reschedule step before confirmation.' },
-      { version: '1.7.1', date: '2026-02-15', note: 'Tightened pre-op detection; added radiology prep flag.' },
-      { version: '1.7.0', date: '2026-01-10', note: 'Multi-appointment disambiguation with full context read.' },
+    "edgeCases": [
+      {
+        "title": "More than ten upcoming appointments",
+        "behavior": "Read the first three; a doctor's name or date narrows the list — narrowing may trigger a re-pull from Dash. Still unclear after the full list: Care Navigator."
+      },
+      {
+        "title": "Caller declines to give a reason",
+        "behavior": "\"Not a problem. Let's move on.\" The reason is optional free text, mapped to a known reason code when wording matches — never pressed."
+      },
+      {
+        "title": "Appointment cannot be canceled here",
+        "behavior": "Already canceled, already checked in, or restricted: \"This appointment needs a Care Navigator to sort out. Please hold.\""
+      },
+      {
+        "title": "Selected appointment out of scheduling scope",
+        "behavior": "Skip the reschedule offer entirely (Phase 1 scope check) and proceed straight to reason capture."
+      },
+      {
+        "title": "Caller accepts the reschedule offer",
+        "behavior": "Route to Reschedule with the selected appointment context loaded — it reconfirms there (STEP 4R) and skips re-selection."
+      },
+      {
+        "title": "SMS fails twice",
+        "behavior": "Verbal fallback: \"The text isn't going through right now. The cancellation is confirmed: the appointment on [date] at [time] with [provider_full] is canceled.\""
+      }
     ],
+    "compliance": [
+      "Spoken caution required at confirmation: related appointments — imaging, labs, specialist visits — must be canceled or rescheduled separately.",
+      "Cancellation reason is captured verbally as free text; declining is always allowed.",
+      "SMS confirmation only, no email. One message; Ascension identified via ascension.org and the Ascension One app.",
+      "No first-person pronouns; lead with what Grace can do."
+    ],
+    "related": [
+      "reschedule",
+      "schedule",
+      "verify"
+    ],
+    "changelog": [
+      {
+        "version": "2.0",
+        "date": "2026-06-10",
+        "note": "Phase 1 scope check added before offering reschedule."
+      },
+      {
+        "version": "2.0",
+        "date": "2026-06-10",
+        "note": "Proxy caller V1 transfer rule added consistently."
+      },
+      {
+        "version": "2.0",
+        "date": "2026-06-10",
+        "note": "Shared non-survey closing standardized: \"Thank you for choosing Ascension, [first name].\""
+      }
+    ]
   },
   {
-    id: 'rescheduling',
-    title: 'Appointment Rescheduling',
-    category: 'Negotiation',
-    status: 'Production',
-    owner: 'A. Okonkwo · Conversation Design',
-    version: '3.1.0',
-    updated: '2026-04-02',
-    avgDuration: '~3–5 min',
-    channel: ['Voice'],
-    flowType: 'Multi-Turn Negotiation',
-    icon: 'refresh',
-    accent: 'ascensionBlue',
-    tags: ['3-Strike Rule', 'Scope Verification', 'Preference Learning', 'Digital Deflection'],
-    summary: "Complex negotiation using the '3-Strike Rule' to find available slots based on patient preferences while maintaining scope constraints.",
-    whenToUse: 'Any request to change an appointment time. Also entered from the cancellation-deflection branch.',
-    whenNotToUse: 'New patient scheduling (no prior appointment). Provider-initiated reschedules (handled by outbound flow).',
-    metrics: [
-      { label: 'Slot-found rate', value: '78.3%', delta: '+3.1pp', trend: 'up' },
-      { label: 'Avg turns', value: '7.8', delta: '-0.9', trend: 'up' },
-      { label: '3rd-strike handoff', value: '21.7%', delta: '-2.4pp', trend: 'up' },
-      { label: 'Digital-deflect success', value: '42%', delta: '+5.0pp', trend: 'up' },
+    "id": "schedule",
+    "title": "Schedule Appointment",
+    "category": "Booking",
+    "status": "Draft",
+    "owner": "Conversation Design",
+    "version": "2.0",
+    "updated": "2026-06-10",
+    "avgDuration": "~3–5 min",
+    "channel": [
+      "Voice",
+      "SMS"
     ],
-    transcript: [
-      { speaker: 'patient', text: "I need to move my appointment next week." },
-      { speaker: 'grace', text: "Sure. What day or time would work better for you?" },
-      { speaker: 'patient', text: "Something Thursday morning." },
-      { speaker: 'grace', text: "I have Thursday April 24th at 9:15 AM with Dr. Patel.", note: 'Strike 1.' },
-      { speaker: 'patient', text: "That's a little early. Anything later?" },
-      { speaker: 'grace', text: "How about Thursday at 11:30 AM?", note: 'Strike 2 — preference: later morning.' },
-      { speaker: 'patient', text: "I actually have a conflict Thursday. What about Friday afternoon?" },
-      { speaker: 'grace', text: "Friday April 25th at 2:00 PM works.", note: 'Strike 3 — last offer before deflection.' },
-      { speaker: 'patient', text: "Perfect." },
-      { speaker: 'grace', text: "Great. I'll move you to Friday April 25th at 2:00 PM with Dr. Patel. You'll get a confirmation text." },
+    "flowType": "Booking Flow",
+    "icon": "outbound",
+    "accent": "green",
+    "tags": [
+      "Dash Triage",
+      "Phase 1 · Primary Care",
+      "Slot Lock 15 min",
+      "Provider Ladder"
     ],
-    states: [
-      { id: 'intent', label: 'Reschedule Intent', kind: 'entry' },
-      { id: 'prefs', label: 'Collect Prefs', kind: 'collect' },
-      { id: 'offer1', label: 'Offer 1', kind: 'output' },
-      { id: 'offer2', label: 'Offer 2', kind: 'output' },
-      { id: 'offer3', label: 'Offer 3', kind: 'output' },
-      { id: 'deflect', label: 'Digital Deflect', kind: 'decision' },
-      { id: 'commit', label: 'Commit Slot', kind: 'action' },
-      { id: 'end', label: 'End Call', kind: 'exit-ok' },
+    "summary": "Helps a caller book a new appointment for themselves: triage when required, slot search with a provider-selection ladder, 15-minute slot lock and confirmation.",
+    "whenToUse": "New appointment for the authenticated caller. Phase 1: Primary Care only. Entry patterns: reason for visit, provider name, or specialty — the reason is always captured before any service-type discussion.",
+    "whenNotToUse": "Out-of-scope service lines route to a Care Navigator (Cardiovascular arrives in Phase 2). Proxy callers transfer in V1. Emergency triage outcomes go to EMERGENCY END — never continue scheduling.",
+    "metrics": [
+      {
+        "label": "Slot search window",
+        "value": "7 days",
+        "note": "48 hrs for acute reasons"
+      },
+      {
+        "label": "Slot lock hold",
+        "value": "15 min",
+        "note": "released if caller backs out"
+      },
+      {
+        "label": "Lock attempts (max)",
+        "value": "2",
+        "note": "then Care Navigator"
+      },
+      {
+        "label": "Preference rounds",
+        "value": "2",
+        "note": "then pivot offer"
+      }
     ],
-    transitions: [
-      ['intent', 'prefs'],
-      ['prefs', 'offer1'],
-      ['offer1', 'commit'],
-      ['offer1', 'offer2'],
-      ['offer2', 'commit'],
-      ['offer2', 'offer3'],
-      ['offer3', 'commit'],
-      ['offer3', 'deflect'],
-      ['commit', 'end'],
+    "transcript": [
+      {
+        "speaker": "grace",
+        "text": "This is Grace, an AI-powered assistant ready to help with scheduling, rescheduling, canceling and verifying appointments. What do you need to do today?",
+        "note": "STEP 1B — no sub-intent captured by Genesys, so Grace uses the cold open."
+      },
+      {
+        "speaker": "patient",
+        "text": "I need to make a new appointment."
+      },
+      {
+        "speaker": "grace",
+        "text": "To pull up your record, what's your name and date of birth?"
+      },
+      {
+        "speaker": "patient",
+        "text": "Dana Whitfield, February 28th, 1990."
+      },
+      {
+        "speaker": "grace",
+        "text": "Thank you, Dana. What's the reason for your visit, the name of the doctor or the type of specialist?",
+        "note": "Personalization beat + STEP 4 — reason is captured before any service-type discussion. Last 10 appointments pulled for provider and specialty patterns."
+      },
+      {
+        "speaker": "patient",
+        "text": "I've had a sore throat for a couple of days."
+      },
+      {
+        "speaker": "grace",
+        "text": "Oh, you have a sore throat. Let's find an opening for you.",
+        "note": "Content-acknowledgment beat — acknowledges what was said without claiming a feeling. has_triage checked on the resolved reason; self-eligible here."
+      },
+      {
+        "speaker": "grace",
+        "text": "The next opening is tomorrow, Thursday, June 11th at 9:15 AM with Dr. Patel at St. Thomas Midtown. Want that one?",
+        "note": "STEP 8 — next available. Telehealth-eligible flag applied silently; office visit is the default."
+      },
+      {
+        "speaker": "patient",
+        "text": "That's a little early. Anything in the afternoon?"
+      },
+      {
+        "speaker": "grace",
+        "text": "There's Thursday at 1:30 PM, 2:45 PM or 4:00 PM. Which works?",
+        "note": "STEP 11 — slots presented three at a time."
+      },
+      {
+        "speaker": "patient",
+        "text": "2:45 works."
+      },
+      {
+        "speaker": "grace",
+        "text": "One moment while the appointment is finalized.",
+        "note": "STEP 12 — slot locked via Dash. Lock holds 15 minutes; maximum two lock attempts per session."
+      },
+      {
+        "speaker": "grace",
+        "text": "The appointment with Dr. Patel is set for Thursday, June 11th at 2:45 PM at St. Thomas Midtown."
+      },
+      {
+        "speaker": "grace",
+        "text": "A confirmation can be sent by text with a map to the facility and a link to Anjali Patel, MD's profile. Send it now?",
+        "note": "STEP 14 — every caller gets both the facility map link and the provider profile link. First-visit branching removed."
+      },
+      {
+        "speaker": "patient",
+        "text": "Yes."
+      },
+      {
+        "speaker": "grace",
+        "text": "Sending to the number ending in 2210. Sound right?"
+      },
+      {
+        "speaker": "patient",
+        "text": "Yep."
+      },
+      {
+        "speaker": "grace",
+        "text": "Okay, you're all set. Is there anything else needed today?"
+      },
+      {
+        "speaker": "patient",
+        "text": "No, that's it."
+      },
+      {
+        "speaker": "grace",
+        "text": "Thank you for choosing Ascension, Dana. To help improve this experience, please share your thoughts in a brief survey. Connecting you now.",
+        "note": "CLOSE-SURVEY END."
+      }
     ],
-    edgeCases: [
-      { title: '3-strike exhausted', behavior: 'Offer SMS link to self-service scheduler; if declined, route to human scheduler with captured preferences.' },
-      { title: 'Out-of-scope request (new provider, new specialty)', behavior: 'Acknowledge limit; hand off to scheduling team with warm transfer.' },
-      { title: 'Patient offers vague constraint ("sometime next week")', behavior: 'Probe one level deeper (morning/afternoon) before consuming a strike.' },
-      { title: 'Slot appears available but has facility hold', behavior: 'Do not offer; log and skip to next candidate.' },
+    "states": [
+      {
+        "id": "open",
+        "label": "Open + Intent",
+        "kind": "entry"
+      },
+      {
+        "id": "auth",
+        "label": "Authenticate ×3",
+        "kind": "collect"
+      },
+      {
+        "id": "intent",
+        "label": "Reason / Dr / Spec.",
+        "kind": "collect"
+      },
+      {
+        "id": "scope",
+        "label": "Phase 1 Scope?",
+        "kind": "decision"
+      },
+      {
+        "id": "triage",
+        "label": "Dash Triage",
+        "kind": "decision"
+      },
+      {
+        "id": "next",
+        "label": "Next Available",
+        "kind": "output"
+      },
+      {
+        "id": "prefs",
+        "label": "Prefs ·2 rounds",
+        "kind": "collect"
+      },
+      {
+        "id": "slots",
+        "label": "Offer Slots ×3",
+        "kind": "output"
+      },
+      {
+        "id": "pivot",
+        "label": "Pivot Offer",
+        "kind": "decision"
+      },
+      {
+        "id": "lock",
+        "label": "Lock & Book ·15m",
+        "kind": "action"
+      },
+      {
+        "id": "sms",
+        "label": "SMS ·optional",
+        "kind": "action"
+      },
+      {
+        "id": "close",
+        "label": "Closing Check",
+        "kind": "output"
+      },
+      {
+        "id": "end",
+        "label": "Close ± Survey",
+        "kind": "exit-ok"
+      },
+      {
+        "id": "emerg",
+        "label": "Emergency End",
+        "kind": "exit-fail"
+      },
+      {
+        "id": "nav",
+        "label": "Care Navigator",
+        "kind": "exit-fail"
+      }
     ],
-    compliance: [
-      'No PHI disclosure before verification (enters from Verification flow only).',
-      'Scope constraint: same provider + same visit type unless explicitly overridden.',
-      'Outcome written to audit log with old + new slot IDs.',
+    "transitions": [
+      [
+        "open",
+        "auth"
+      ],
+      [
+        "auth",
+        "intent"
+      ],
+      [
+        "auth",
+        "nav"
+      ],
+      [
+        "intent",
+        "scope"
+      ],
+      [
+        "scope",
+        "triage"
+      ],
+      [
+        "scope",
+        "nav"
+      ],
+      [
+        "triage",
+        "next"
+      ],
+      [
+        "triage",
+        "emerg"
+      ],
+      [
+        "next",
+        "lock"
+      ],
+      [
+        "next",
+        "prefs"
+      ],
+      [
+        "prefs",
+        "slots"
+      ],
+      [
+        "slots",
+        "lock"
+      ],
+      [
+        "slots",
+        "pivot"
+      ],
+      [
+        "pivot",
+        "lock"
+      ],
+      [
+        "pivot",
+        "nav"
+      ],
+      [
+        "lock",
+        "sms"
+      ],
+      [
+        "lock",
+        "nav"
+      ],
+      [
+        "sms",
+        "close"
+      ],
+      [
+        "close",
+        "end"
+      ]
     ],
-    related: ['verification', 'cancellation', 'escalation'],
-    changelog: [
-      { version: '3.1.0', date: '2026-04-02', note: 'Digital deflection now triggers at strike 3 rather than strike 4.' },
-      { version: '3.0.0', date: '2026-02-20', note: 'Full rewrite using preference-learning model; reduced avg turns by 1.2.' },
-      { version: '2.8.1', date: '2026-01-05', note: 'Added facility-hold check before offering slot.' },
+    "edgeCases": [
+      {
+        "title": "Dash triage returns emergency",
+        "behavior": "Deliver the emergency message and go to EMERGENCY END. Offer emergency care as an option, not a directive; confirm the caller is safe to continue. Final wording pending compliance review."
+      },
+      {
+        "title": "Caller volunteers context",
+        "behavior": "Brief content-acknowledgment beat without claiming a feeling — \"A family trip. Let's find a time that works around it.\" Forbidden: \"I'm sorry,\" \"I hope,\" \"I understand,\" \"Feel better.\""
+      },
+      {
+        "title": "Slot taken before lock",
+        "behavior": "Offer exactly one alternative slot. A second consecutive lock failure goes to a Care Navigator — never a third alternative. Maximum two lock attempts per session."
+      },
+      {
+        "title": "No slots with preferred provider",
+        "behavior": "Provider ladder: preferred provider → practice the patient called → MyCare Team-linked alternate → ministry-wide. If still nothing after broadening, NO-INVENTORY END."
+      },
+      {
+        "title": "Two failed preference rounds",
+        "behavior": "Pivot offer: suggest a different provider or facility based on history and proximity. If declined, Care Navigator."
+      },
+      {
+        "title": "Telehealth",
+        "behavior": "Filtered silently via the eligible-for-telehealth flag. Mention only if the caller brings it up or the provider only offers telehealth — otherwise default to office visit."
+      }
     ],
+    "compliance": [
+      "Reason for the visit is captured first, before any service-type discussion.",
+      "Internal guardrail: never speak Dash slot-elimination reason text to callers. Log it for analysis; use neutral dialogue.",
+      "Emergency wording pending compliance approval — offer emergency care as an option, then confirm the caller is safe to continue.",
+      "Phase 1 launch is Primary Care only; Phase 2 adds Cardiovascular once Phase 1 metrics support expansion."
+    ],
+    "related": [
+      "reschedule",
+      "verify",
+      "cancel"
+    ],
+    "changelog": [
+      {
+        "version": "2.0",
+        "date": "2026-06-10",
+        "note": "First-visit SMS branching removed — STEP 14 collapsed to one SMS offer with both links for every caller."
+      },
+      {
+        "version": "2.0",
+        "date": "2026-06-10",
+        "note": "Elimination-reason guardrail added: log internally, never speak to callers."
+      },
+      {
+        "version": "2.0",
+        "date": "2026-06-10",
+        "note": "SMS retry and verbal fallback added to the main flow body."
+      }
+    ]
   },
   {
-    id: 'escalation',
-    title: 'Emergency Escalation to Human',
-    category: 'Safety',
-    status: 'Production',
-    owner: 'R. Hayes · Clinical Safety',
-    version: '1.2.0',
-    updated: '2026-04-15',
-    avgDuration: '<30 sec',
-    channel: ['Voice'],
-    flowType: 'Safety Interrupt',
-    icon: 'alert',
-    accent: 'violet',
-    tags: ['Clinical Safety', 'Immediate Handoff', 'Zero-Latency', '911-Aware'],
-    summary: 'Detects emergent language or clinical distress and interrupts any active flow to immediately connect the patient to a human or direct them to 911.',
-    whenToUse: 'Runs as a global listener across every Grace conversation. Fires on trigger phrases, sentiment collapse, or explicit emergency keywords.',
-    whenNotToUse: 'Never gated behind verification. Never delayed by an in-progress collection step.',
-    metrics: [
-      { label: 'Trigger precision', value: '98.1%', delta: '+0.3pp', trend: 'up' },
-      { label: 'Trigger recall', value: '99.6%', delta: '+0.1pp', trend: 'up' },
-      { label: 'Time-to-human', value: '11 sec', delta: '-3 sec', trend: 'up' },
-      { label: 'False-positive rate', value: '1.9%', delta: '-0.3pp', trend: 'up' },
+    "id": "reschedule",
+    "title": "Reschedule Appointment",
+    "category": "Booking",
+    "status": "Draft",
+    "owner": "Conversation Design",
+    "version": "2.0",
+    "updated": "2026-06-10",
+    "avgDuration": "~3–4 min",
+    "channel": [
+      "Voice",
+      "SMS"
     ],
-    transcript: [
-      { speaker: 'patient', text: "…actually I'm having chest pain right now and it's getting worse." },
-      { speaker: 'grace', text: "I hear you. Your safety is my first priority. If this is a medical emergency, please hang up and dial 911 immediately.", note: 'Escalation trigger fired. Any pending flow state is suspended.' },
-      { speaker: 'grace', text: "I'm also connecting you with a nurse right now — please stay on the line.", note: 'Warm transfer initiated in parallel. Target: on-call triage nurse.' },
-      { speaker: 'patient', text: "Okay, okay." },
-      { speaker: 'grace', text: "Transferring you now. You'll hear a brief ring.", note: 'Hand off with full conversation context packaged.' },
+    "flowType": "Booking Flow",
+    "icon": "refresh",
+    "accent": "ascensionBlue",
+    "tags": [
+      "Entry From Cancel",
+      "Care Navigator",
+      "Atomic Reschedule",
+      "Same-Provider Default"
     ],
-    states: [
-      { id: 'listen', label: 'Global Listener', kind: 'entry' },
-      { id: 'detect', label: 'Trigger Detected', kind: 'decision' },
-      { id: 'safety', label: 'Safety Message', kind: 'output' },
-      { id: '911', label: '911 Prompt', kind: 'output' },
-      { id: 'transfer', label: 'Warm Transfer', kind: 'action' },
-      { id: 'handoff', label: 'Human Nurse', kind: 'exit-ok' },
+    "summary": "Helps a caller move an existing appointment, including entry from Cancel with selected appointment context. Date and time are the primary levers; provider, reason, location and telehealth flag carry over by default.",
+    "whenToUse": "Caller wants to move an upcoming appointment within the 90-day window, or arrives from Cancel's reschedule-first offer with the appointment already selected (STEP 4R).",
+    "whenNotToUse": "Appointments failing the Dash reschedulability check go to a Care Navigator. If the reschedule API fails, the original appointment always stays in place — never leave the caller without a booking.",
+    "metrics": [
+      {
+        "label": "Lookup window",
+        "value": "90 days",
+        "note": "capped at 10 appts"
+      },
+      {
+        "label": "Slot lock hold",
+        "value": "15 min",
+        "note": "released if caller backs out"
+      },
+      {
+        "label": "Preference rounds",
+        "value": "2",
+        "note": "then care team pivot"
+      },
+      {
+        "label": "On API failure",
+        "value": "Original kept",
+        "note": "single atomic Dash call"
+      }
     ],
-    transitions: [
-      ['listen', 'detect'],
-      ['detect', 'safety'],
-      ['safety', '911'],
-      ['911', 'transfer'],
-      ['transfer', 'handoff'],
+    "transcript": [
+      {
+        "speaker": "grace",
+        "text": "This is Grace, an AI-powered assistant. Ready to help reschedule that appointment, or was the call about something else?",
+        "note": "STEP 1A — reschedule sub-intent captured. (Entry from Cancel skips ahead to STEP 4R with the appointment already selected.)"
+      },
+      {
+        "speaker": "patient",
+        "text": "Yes."
+      },
+      {
+        "speaker": "grace",
+        "text": "To pull up your record, what's your name and date of birth?"
+      },
+      {
+        "speaker": "patient",
+        "text": "Rob Chen, October 9th."
+      },
+      {
+        "speaker": "grace",
+        "text": "That didn't match a record. The name was Rob Chen and the date was October 9th. Want to try again?",
+        "note": "STEP 2B — first retry reads back captured values. Three attempts total; the third re-collects DOB only."
+      },
+      {
+        "speaker": "patient",
+        "text": "Robert Chen, October 9th, 1982."
+      },
+      {
+        "speaker": "grace",
+        "text": "There's one appointment coming up: Monday, June 15th at 8:30 AM with Dr. Okafor at St. Mary's. Reschedule that one?",
+        "note": "STEP 4O — single appointment. Dash reschedulability flag checked after selection."
+      },
+      {
+        "speaker": "patient",
+        "text": "Yes — mornings don't work anymore."
+      },
+      {
+        "speaker": "grace",
+        "text": "What day or time would work better?",
+        "note": "STEP 7 — date and time are the primary levers. Same provider, reason, location and telehealth flag carry over by default."
+      },
+      {
+        "speaker": "patient",
+        "text": "Any afternoon next week."
+      },
+      {
+        "speaker": "grace",
+        "text": "There's Tuesday at 1:15 PM, 2:30 PM or 3:45 PM with Dr. Okafor. Which works?",
+        "note": "STEP 9 — three slots at a time, same provider."
+      },
+      {
+        "speaker": "patient",
+        "text": "2:30."
+      },
+      {
+        "speaker": "grace",
+        "text": "One moment while that's updated.",
+        "note": "STEP 11 — lock + single atomic reschedule call. If the API fails, the original appointment stays in place."
+      },
+      {
+        "speaker": "grace",
+        "text": "The appointment with Dr. Okafor is rescheduled for Tuesday, June 16th at 2:30 PM."
+      },
+      {
+        "speaker": "grace",
+        "text": "A confirmation can be sent by text with a map to the facility and a link to Amara Okafor, MD's profile. Send it now?"
+      },
+      {
+        "speaker": "patient",
+        "text": "No thanks."
+      },
+      {
+        "speaker": "grace",
+        "text": "Is there anything else needed today?"
+      },
+      {
+        "speaker": "patient",
+        "text": "Nope."
+      },
+      {
+        "speaker": "grace",
+        "text": "Thank you for choosing Ascension, Robert. To help improve this experience, please share your thoughts in a brief survey. Connecting you now.",
+        "note": "CLOSE-SURVEY END — the auth retry doesn't disqualify the survey; all tasks completed cleanly."
+      }
     ],
-    edgeCases: [
-      { title: 'Trigger fires mid-verification', behavior: 'Suspend verification entirely. Safety always supersedes identity checks.' },
-      { title: 'Ambiguous phrase ("my heart is broken")', behavior: 'Secondary classifier checks for physiological vs emotional context. Route emotional distress to behavioral health line.' },
-      { title: 'Patient declines transfer', behavior: 'Provide 911 prompt twice, then release call with safety script on file.' },
-      { title: 'After-hours — no nurse available', behavior: 'Immediate 911 guidance + on-call provider pager; never leave patient without a live path.' },
+    "states": [
+      {
+        "id": "open",
+        "label": "Open / From Cancel",
+        "kind": "entry"
+      },
+      {
+        "id": "auth",
+        "label": "Authenticate ×3",
+        "kind": "collect"
+      },
+      {
+        "id": "select",
+        "label": "Select Appt 0–10+",
+        "kind": "decision"
+      },
+      {
+        "id": "elig",
+        "label": "Reschedulable?",
+        "kind": "decision"
+      },
+      {
+        "id": "triage",
+        "label": "Triage if Needed",
+        "kind": "decision"
+      },
+      {
+        "id": "prefs",
+        "label": "Day / Time Prefs",
+        "kind": "collect"
+      },
+      {
+        "id": "slots",
+        "label": "Slots ×3 · Same Dr",
+        "kind": "output"
+      },
+      {
+        "id": "pivot",
+        "label": "Care Team Pivot",
+        "kind": "decision"
+      },
+      {
+        "id": "lock",
+        "label": "Lock & Resched.",
+        "kind": "action"
+      },
+      {
+        "id": "sms",
+        "label": "SMS ·optional",
+        "kind": "action"
+      },
+      {
+        "id": "close",
+        "label": "Closing Check",
+        "kind": "output"
+      },
+      {
+        "id": "end",
+        "label": "Close ± Survey",
+        "kind": "exit-ok"
+      },
+      {
+        "id": "noinv",
+        "label": "No Inventory",
+        "kind": "exit-fail"
+      },
+      {
+        "id": "emerg",
+        "label": "Emergency End",
+        "kind": "exit-fail"
+      },
+      {
+        "id": "nav",
+        "label": "Care Navigator",
+        "kind": "exit-fail"
+      }
     ],
-    compliance: [
-      'EMTALA — never block or delay care access for verification.',
-      'Full conversation transcript preserved and flagged in EHR.',
-      'Post-event QA review required within 24 hours.',
+    "transitions": [
+      [
+        "open",
+        "auth"
+      ],
+      [
+        "auth",
+        "select"
+      ],
+      [
+        "auth",
+        "nav"
+      ],
+      [
+        "select",
+        "elig"
+      ],
+      [
+        "select",
+        "nav"
+      ],
+      [
+        "elig",
+        "triage"
+      ],
+      [
+        "elig",
+        "nav"
+      ],
+      [
+        "triage",
+        "prefs"
+      ],
+      [
+        "triage",
+        "emerg"
+      ],
+      [
+        "prefs",
+        "slots"
+      ],
+      [
+        "slots",
+        "lock"
+      ],
+      [
+        "slots",
+        "pivot"
+      ],
+      [
+        "pivot",
+        "lock"
+      ],
+      [
+        "pivot",
+        "noinv"
+      ],
+      [
+        "lock",
+        "sms"
+      ],
+      [
+        "lock",
+        "nav"
+      ],
+      [
+        "sms",
+        "close"
+      ],
+      [
+        "close",
+        "end"
+      ]
     ],
-    related: ['verification'],
-    changelog: [
-      { version: '1.2.0', date: '2026-04-15', note: 'Added behavioral-health routing for emotional-distress phrases.' },
-      { version: '1.1.0', date: '2026-03-01', note: 'Reduced time-to-human to under 15 seconds via parallel transfer.' },
-      { version: '1.0.0', date: '2026-01-20', note: 'Initial release as a global listener across all flows.' },
+    "edgeCases": [
+      {
+        "title": "Entry from Cancel",
+        "behavior": "Reconfirm with context loaded: \"Okay. The appointment with Dr. [name] on [Day, Date] at [Time]. Reschedule that one?\" If no, branch on count from the cached list."
+      },
+      {
+        "title": "Not reschedulable here (Dash flag)",
+        "behavior": "\"This one needs a Care Navigator to reschedule.\" Transfer with reason context."
+      },
+      {
+        "title": "Triage required",
+        "behavior": "Softening line: \"Additional information is needed before that gets rescheduled.\" Mirrors Schedule triage; acute results carry the 48-hour booking rule into slot search."
+      },
+      {
+        "title": "Reschedule API fails",
+        "behavior": "\"This one needs a Care Navigator to finish up. The original appointment is still in place.\" Single atomic call — no orphaned state."
+      },
+      {
+        "title": "No care team alternate",
+        "behavior": "NO-INVENTORY END: offer a Care Navigator connection; if declined, go to the closing check."
+      },
+      {
+        "title": "Caller asks for a different doctor",
+        "behavior": "Care team pivot using Dash care-team links for the original provider — same facility, same reason."
+      }
     ],
+    "compliance": [
+      "Default to same provider, same reason, same location and same telehealth flag as the original booking.",
+      "Reschedule executes as a single atomic call via Dash — if the API fails, the original appointment stays in place.",
+      "Never speak Dash elimination-reason text to callers; log internally for analysis.",
+      "Release the slot lock if the caller backs out before submission."
+    ],
+    "related": [
+      "cancel",
+      "schedule",
+      "verify"
+    ],
+    "changelog": [
+      {
+        "version": "2.0",
+        "date": "2026-06-10",
+        "note": "Care team pivot added before escalation after two failed preference rounds."
+      },
+      {
+        "version": "2.0",
+        "date": "2026-06-10",
+        "note": "Reconfirm-from-Cancel entry path (STEP 4R) formalized with cached-list fallback."
+      },
+      {
+        "version": "2.0",
+        "date": "2026-06-10",
+        "note": "Authentication standard updated: three attempts total, then Care Navigator."
+      }
+    ]
+  }
+];
+</script>
+<script>// Full flow specs — Grace 2.0 Flow Library, transcribed step by step (part 1: verify + cancel).
+window.FlowSpecs = {
+ "verify": [
+  {
+   "t": "step",
+   "id": "STEP 1",
+   "title": "Start",
+   "body": "Call routed from Genesys to Grace. Captured intent, if any, is passed."
   },
   {
-    id: 'reschedule-outbound',
-    title: 'Provider-Initiated Reschedule',
-    category: 'Outbound',
-    status: 'Beta',
-    owner: 'A. Okonkwo · Conversation Design',
-    version: '0.6.2',
-    updated: '2026-04-11',
-    avgDuration: '~2.5 min',
-    channel: ['Voice', 'SMS'],
-    flowType: 'Outbound Notification',
-    icon: 'outbound',
-    accent: 'green',
-    tags: ['Outbound', 'Provider Cancel', 'Preference Capture', 'SMS-First'],
-    summary: 'When a provider cancels or moves clinic hours, Grace proactively reaches out to affected patients with alternate slots and captures preference.',
-    whenToUse: 'Provider blocks ≥4 hours of clinic with <72h notice; affected patients are enqueued for outbound.',
-    whenNotToUse: 'Single-patient reschedules initiated by the clinic scheduler — those stay in the scheduler queue.',
-    metrics: [
-      { label: 'Contact rate (SMS+Voice)', value: '82%', delta: '+6.1pp', trend: 'up' },
-      { label: 'Self-serve completion', value: '58%', delta: 'new', trend: 'flat' },
-      { label: 'Callback volume deflected', value: '63%', delta: '+8.0pp', trend: 'up' },
-      { label: 'Patient satisfaction (post-SMS)', value: '4.3/5', delta: '+0.2', trend: 'up' },
-    ],
-    transcript: [
-      { speaker: 'grace', text: "Hi, this is Grace calling from Ascension on behalf of Dr. Patel. Unfortunately Dr. Patel needs to move some appointments next week. Is now a good time to talk for 2 minutes?" },
-      { speaker: 'patient', text: "Sure." },
-      { speaker: 'grace', text: "Thank you. Before I share details I need to verify your date of birth." },
-      { speaker: 'patient', text: "March 14th, 1978." },
-      { speaker: 'grace', text: "Perfect. Your appointment is currently Tuesday the 22nd at 2:30 PM. I can offer Wednesday at 10 AM or Friday at 2 PM — do either of those work?" },
-      { speaker: 'patient', text: "Friday at 2 is good." },
-      { speaker: 'grace', text: "You're all set for Friday April 25th at 2 PM. Confirmation coming by text. Thanks for your flexibility." },
-    ],
-    states: [
-      { id: 'dial', label: 'Outbound Dial', kind: 'entry' },
-      { id: 'intro', label: 'Intro + Consent', kind: 'output' },
-      { id: 'verify', label: 'Verify Identity', kind: 'collect' },
-      { id: 'offer', label: 'Present Slots', kind: 'output' },
-      { id: 'pick', label: 'Patient Picks', kind: 'collect' },
-      { id: 'commit', label: 'Commit Slot', kind: 'action' },
-      { id: 'sms', label: 'SMS Fallback', kind: 'action' },
-      { id: 'end', label: 'End Call', kind: 'exit-ok' },
-    ],
-    transitions: [
-      ['dial', 'intro'],
-      ['intro', 'verify'],
-      ['verify', 'offer'],
-      ['offer', 'pick'],
-      ['pick', 'commit'],
-      ['commit', 'end'],
-      ['intro', 'sms'],
-      ['sms', 'end'],
-    ],
-    edgeCases: [
-      { title: 'Voicemail reached', behavior: 'Leave brief callback script + SMS with self-serve link. Do not disclose visit reason.' },
-      { title: 'Patient declines all offered slots', behavior: 'Capture preference window, send SMS link to browse full availability, flag for scheduler follow-up.' },
-      { title: 'Answering machine detected mid-intro', behavior: 'Truncate to safe message; do not read PHI.' },
-      { title: 'Patient asks why provider cancelled', behavior: 'Generic "unavailable" response. Never disclose provider-side reason.' },
-    ],
-    compliance: [
-      'TCPA — outbound only to numbers with express written consent.',
-      'Voicemail content limited to identity + callback number (no PHI).',
-      'Pacing: max 2 outbound attempts per 24h, quiet hours 9pm–8am local.',
-    ],
-    related: ['rescheduling', 'verification'],
-    changelog: [
-      { version: '0.6.2', date: '2026-04-11', note: 'SMS fallback now triggers after 2 unanswered voice attempts (was 3).' },
-      { version: '0.6.0', date: '2026-03-22', note: 'Beta launch at 3 pilot clinics.' },
-    ],
+   "t": "decision",
+   "id": "DECISION 0",
+   "title": "Did Genesys capture sub-intent?",
+   "branches": [
+    "If yes, go to STEP 1A.",
+    "If no, go to STEP 1B."
+   ]
   },
+  {
+   "t": "step",
+   "id": "STEP 1A",
+   "title": "Grace Open With Intent Confirmation",
+   "say": "This is Grace, an AI-powered assistant. Ready to check on that appointment, or were you calling about something else?"
+  },
+  {
+   "t": "decision",
+   "id": "DECISION 0A",
+   "title": "Caller confirms verify intent?",
+   "branches": [
+    "If yes, go to STEP 2.",
+    "If no and caller redirects to schedule, reschedule or cancel, route to that flow.",
+    "If no and intent is out of scope, go to DECISION L.",
+    "If caller says the call is for another patient, go to DECISION L."
+   ]
+  },
+  {
+   "t": "step",
+   "id": "STEP 1B",
+   "title": "Grace Cold Open",
+   "say": "This is Grace, an AI-powered assistant ready to help with scheduling, rescheduling, canceling and verifying appointments. What do you need to do today?"
+  },
+  {
+   "t": "step",
+   "id": "STEP 1C",
+   "title": "Capture Intent",
+   "body": "Caller states what they need."
+  },
+  {
+   "t": "decision",
+   "id": "DECISION 0B",
+   "title": "Is the intent verify?",
+   "branches": [
+    "If yes, go to STEP 2.",
+    "If schedule, reschedule or cancel, route to that flow.",
+    "If out of scope, go to DECISION L.",
+    "If caller says the call is for another patient, go to DECISION L."
+   ]
+  },
+  {
+   "t": "div"
+  },
+  {
+   "t": "step",
+   "id": "STEP 2",
+   "title": "Authentication",
+   "say": "To pull up your record, what's your name and date of birth?"
+  },
+  {
+   "t": "decision",
+   "id": "DECISION 1",
+   "title": "Matches a single patient record?",
+   "branches": [
+    "If yes (single match), go to STEP 3.",
+    "If no match, go to STEP 2B (readback retry).",
+    "If wrong format (DTMF entry doesn't parse as a valid date in either format), go to STEP 2B (format retry).",
+    "If multi-patient phone, go to DECISION L. Per V1 scope, multi-patient phones transfer."
+   ]
+  },
+  {
+   "t": "step",
+   "id": "STEP 2B",
+   "title": "First authentication retry (attempt 2)",
+   "body": "Grace reads back what was captured (no-match case) or re-explains the input options (wrong-format case) before re-asking. If the retry matches a single record, go to STEP 3. If it fails again (no match or invalid format), go to STEP 2C.",
+   "says": [
+    [
+     "No match",
+     "That didn't match a record. The name was [captured name] and the date was [captured date]. Want to try again?"
+    ],
+    [
+     "Wrong format",
+     "That date didn't come through. Try again. Say the date, or enter 6 digits like 022890, or 8 digits like 02281990."
+    ]
+   ]
+  },
+  {
+   "t": "step",
+   "id": "STEP 2C",
+   "title": "Second authentication retry (attempt 3)",
+   "say": "Your information isn't coming up. Let's try one more time. You can speak or enter your date of birth on the keypad.",
+   "body": "This attempt re-collects date of birth only. The captured name from the prior attempt is held. No readback. Both speech and DTMF remain accepted. If the attempt matches a single record, go to STEP 3. If it fails, go to DECISION L. No fourth attempt under any condition."
+  },
+  {
+   "t": "step",
+   "id": "STEP 3",
+   "title": "Pull Upcoming Appointments",
+   "say": "One moment while the appointments come up.",
+   "body": "Retrieve upcoming booked appointments via Dash."
+  },
+  {
+   "t": "decision",
+   "id": "DECISION A",
+   "title": "How many upcoming appointments?",
+   "branches": [
+    "Zero, go to STEP 4A.",
+    "One, go to STEP 4B.",
+    "Two or more, go to STEP 4C."
+   ]
+  },
+  {
+   "t": "div"
+  },
+  {
+   "t": "step",
+   "id": "STEP 4A",
+   "title": "No Upcoming Appointments",
+   "say": "There aren't any upcoming appointments on file. Want to schedule one?",
+   "branches": [
+    "If yes, route to Schedule flow.",
+    "If no, go to STEP 7."
+   ]
+  },
+  {
+   "t": "step",
+   "id": "STEP 4B",
+   "title": "Single Appointment",
+   "say": "There is one upcoming appointment: [visit type] with Dr. [provider name] at [Facility] on [Day, Date] at [Time].",
+   "body": "Go to STEP 5."
+  },
+  {
+   "t": "step",
+   "id": "STEP 4C",
+   "title": "Multiple Appointments",
+   "says": [
+    [
+     "N = 2",
+     "There are two upcoming appointments. The first is on [Date] and the second is on [Date]. Do you want details on a specific one or both?"
+    ],
+    [
+     "N = 3",
+     "There are three upcoming appointments. The first is on [Date], the second is on [Date] and the third is on [Date]. Do you want details on a specific one or all of them?"
+    ],
+    [
+     "N = 4 or more",
+     "There are [N] upcoming appointments. Let's go through them one at a time. The first is on [Date]. Do you want details on this appointment, the next appointment or all appointments?"
+    ]
+   ]
+  },
+  {
+   "t": "step",
+   "id": "STEP 4C-i",
+   "title": "Step-Through Loop",
+   "say": "The next one is on [Date]. Do you want details on this appointment, the next appointment or all appointments?",
+   "body": "Read the next date in the list, then go to DECISION B. End of list (caller said \"next appointment\" on the last date): \"That was the last one. Want details on a specific one or all of them?\" Go to DECISION B."
+  },
+  {
+   "t": "decision",
+   "id": "DECISION B",
+   "title": "Caller selects an appointment?",
+   "branches": [
+    "If yes, single appointment, share full details: \"That appointment is [visit type] with Dr. [provider name] at [Facility] on [Day, Date] at [Time].\" Go to STEP 5.",
+    "If yes, next appointment, go to STEP 4C-i.",
+    "If yes, all of them, share full details for each in sequence. Go to STEP 5.",
+    "If escalation signal, go to DECISION L.",
+    "If unclear, allow one retry. If still unclear, go to DECISION L."
+   ]
+  },
+  {
+   "t": "div"
+  },
+  {
+   "t": "step",
+   "id": "STEP 5",
+   "title": "Offer SMS With Appointment Details",
+   "say": "Would you like a text with your appointment details?"
+  },
+  {
+   "t": "decision",
+   "id": "DECISION C",
+   "title": "Caller accepts SMS?",
+   "branches": [
+    "If yes, go to STEP 5A.",
+    "If no, go to STEP 7."
+   ]
+  },
+  {
+   "t": "step",
+   "id": "STEP 5A",
+   "title": "Confirm Phone Number",
+   "say": "Should it go to the number ending in [last 4 digits]?"
+  },
+  {
+   "t": "decision",
+   "id": "DECISION D",
+   "title": "Caller confirms the number?",
+   "branches": [
+    "If yes, go to STEP 6.",
+    "If no and caller gives a different number, capture alternate number, then go to STEP 6.",
+    "If no and caller skips the text, go to STEP 7."
+   ]
+  },
+  {
+   "t": "div"
+  },
+  {
+   "t": "step",
+   "id": "STEP 6",
+   "title": "Send SMS",
+   "body": "Trigger SMS to confirmed number using the Verify SMS template. For multiple appointments, send one two-message set per appointment."
+  },
+  {
+   "t": "decision",
+   "id": "DECISION SMS-1",
+   "title": "Send successful?",
+   "branches": [
+    "If yes — \"Okay, you’re all set.\" — go to STEP 7.",
+    "If no, go to STEP 6B."
+   ]
+  },
+  {
+   "t": "step",
+   "id": "STEP 6B",
+   "title": "Retry SMS",
+   "body": "Retry once. For two-message sends, retry only the failed message."
+  },
+  {
+   "t": "decision",
+   "id": "DECISION SMS-2",
+   "title": "Send successful on retry?",
+   "branches": [
+    "If yes, go to STEP 7.",
+    "If no, go to STEP 6C."
+   ]
+  },
+  {
+   "t": "step",
+   "id": "STEP 6C",
+   "title": "Verbal Fallback",
+   "say": "The text isn't going through right now. The appointment is on [date] at [time] with [provider_full] at [facility_name].",
+   "body": "Recap verbally only the appointment details whose SMS failed. Go to STEP 7."
+  },
+  {
+   "t": "div"
+  },
+  {
+   "t": "step",
+   "id": "STEP 7",
+   "title": "Closing Check",
+   "say": "Is there anything else needed today?"
+  },
+  {
+   "t": "decision",
+   "id": "DECISION E",
+   "title": "Anything else?",
+   "branches": [
+    "If yes, go to STEP 7B.",
+    "If no, go to DECISION F."
+   ]
+  },
+  {
+   "t": "step",
+   "id": "STEP 7B",
+   "title": "Capture Next Intent",
+   "body": "Identify the next task and route to the matching flow. After that task is complete, loop back to STEP 7."
+  },
+  {
+   "t": "decision",
+   "id": "DECISION F",
+   "title": "Survey Eligibility Check",
+   "body": "Survey only fires when every task in the session completed cleanly with no human handoff and no out-of-scope intent.",
+   "branches": [
+    "If all requests are complete, go to CLOSE-SURVEY END.",
+    "Otherwise, go to CLOSE-NO-SURVEY END."
+   ]
+  },
+  {
+   "t": "decision",
+   "id": "DECISION L",
+   "title": "Transfer to Care Navigator",
+   "body": "Check if within open hours.",
+   "branches": [
+    "If yes, go to ESCALATE-LIVE END.",
+    "If no, go to ESCALATE-AFTERHOURS END."
+   ]
+  },
+  {
+   "t": "end",
+   "id": "END",
+   "title": "End states",
+   "branches": [
+    "CLOSE-SURVEY END: Deliver survey-eligible closing, then transfer to Genesys for survey.",
+    "CLOSE-NO-SURVEY END: Deliver non-survey closing, then end call. No survey.",
+    "ESCALATE-LIVE END: Say \"A Care Navigator can help with this. Connecting you now.\" Transfer with session context. No survey.",
+    "ESCALATE-AFTERHOURS END: Deliver after-hours message. End call. No transfer. No survey."
+   ]
+  }
+ ],
+ "cancel": [
+  {
+   "t": "step",
+   "id": "STEP 1",
+   "title": "Start",
+   "body": "Call routed from Genesys to Grace. Captured intent, if any, is passed via SIP parameters."
+  },
+  {
+   "t": "decision",
+   "id": "DECISION 0",
+   "title": "Did Genesys capture sub-intent?",
+   "branches": [
+    "If yes, go to STEP 1A.",
+    "If no, go to STEP 1B."
+   ]
+  },
+  {
+   "t": "step",
+   "id": "STEP 1A",
+   "title": "Grace Open With Intent Confirmation",
+   "say": "This is Grace, an AI-powered assistant. Ready to help cancel an appointment, or was the call about something else?"
+  },
+  {
+   "t": "decision",
+   "id": "DECISION 0A",
+   "title": "Caller confirms cancel intent?",
+   "branches": [
+    "If yes, go to STEP 2.",
+    "If no and caller redirects to schedule, reschedule or verify, route to that flow.",
+    "If no and intent is out of scope, go to DECISION L.",
+    "If caller says the call is for another patient, go to DECISION L."
+   ]
+  },
+  {
+   "t": "step",
+   "id": "STEP 1B",
+   "title": "Grace Cold Open",
+   "say": "This is Grace, an AI-powered assistant ready to help with scheduling, rescheduling, canceling and verifying appointments. What do you need to do today?"
+  },
+  {
+   "t": "step",
+   "id": "STEP 1C",
+   "title": "Capture Intent",
+   "body": "Caller states what they need."
+  },
+  {
+   "t": "decision",
+   "id": "DECISION 0B",
+   "title": "Is the intent cancel?",
+   "branches": [
+    "If yes, go to STEP 2.",
+    "If schedule, reschedule or verify, route to that flow.",
+    "If out of scope, go to DECISION L."
+   ]
+  },
+  {
+   "t": "div"
+  },
+  {
+   "t": "step",
+   "id": "STEP 2",
+   "title": "Authentication",
+   "say": "To pull up your record, what's your name and date of birth?"
+  },
+  {
+   "t": "decision",
+   "id": "DECISION 1",
+   "title": "Matches a single patient record?",
+   "branches": [
+    "If yes (single match), go to STEP 3.",
+    "If no match, go to STEP 2B (readback retry).",
+    "If wrong format (DTMF entry doesn't parse as a valid date in either format), go to STEP 2B (format retry).",
+    "If multi-patient phone, go to DECISION L. Per V1 scope, multi-patient phones transfer."
+   ]
+  },
+  {
+   "t": "step",
+   "id": "STEP 2B",
+   "title": "First authentication retry (attempt 2)",
+   "body": "Grace reads back what was captured (no-match case) or re-explains the input options (wrong-format case) before re-asking. If the retry matches a single record, go to STEP 3. If it fails again (no match or invalid format), go to STEP 2C.",
+   "says": [
+    [
+     "No match",
+     "That didn't match a record. The name was [captured name] and the date was [captured date]. Want to try again?"
+    ],
+    [
+     "Wrong format",
+     "That date didn't come through. Try again. Say the date, or enter 6 digits like 022890, or 8 digits like 02281990."
+    ]
+   ]
+  },
+  {
+   "t": "step",
+   "id": "STEP 2C",
+   "title": "Second authentication retry (attempt 3)",
+   "say": "Your information isn't coming up. Let's try one more time. You can speak or enter your date of birth on the keypad.",
+   "body": "This attempt re-collects date of birth only. The captured name from the prior attempt is held. No readback. Both speech and DTMF remain accepted. If the attempt matches a single record, go to STEP 3. If it fails, go to DECISION L. No fourth attempt under any condition."
+  },
+  {
+   "t": "step",
+   "id": "STEP 3",
+   "title": "Pull Upcoming Appointments",
+   "body": "Retrieve from Dash. Window: 90 days, capped at 10. Hold date, time, provider, location and appointment ID chronologically. Sierra should know whether more than 10 appointments exist beyond the cap."
+  },
+  {
+   "t": "decision",
+   "id": "DECISION A",
+   "title": "How many upcoming appointments?",
+   "branches": [
+    "Zero, go to STEP 3B.",
+    "One, go to STEP 4A.",
+    "Two or three, go to STEP 4B.",
+    "Four to ten with no truncation, go to STEP 4C.",
+    "Ten with more available, go to STEP 4D."
+   ]
+  },
+  {
+   "t": "step",
+   "id": "STEP 3B",
+   "title": "No Upcoming Appointments",
+   "say": "Nothing upcoming is on file. Want to book a new appointment?",
+   "branches": [
+    "If yes, route to Schedule flow.",
+    "If no, go to STEP 13."
+   ]
+  },
+  {
+   "t": "div"
+  },
+  {
+   "t": "step",
+   "id": "STEP 4A",
+   "title": "Single Appointment Read-Back",
+   "say": "There's one appointment on file: [Day, Date] at [Time] with Dr. [name] at [Facility]. Is that the one to cancel?"
+  },
+  {
+   "t": "decision",
+   "id": "DECISION B1",
+   "title": "Caller confirms?",
+   "branches": [
+    "If yes, go to STEP 5.",
+    "If no, go to STEP 13B. The caller likely meant a different intent."
+   ]
+  },
+  {
+   "t": "step",
+   "id": "STEP 4B",
+   "title": "Two Or Three Appointments Read-Back",
+   "say": "There are [N] upcoming. The first is [Day, Date] at [Time] with Dr. [name] at [Facility]. The second is [Day, Date] at [Time] with Dr. [name] at [Facility]. [If three: The third is [Day, Date] at [Time] with Dr. [name] at [Facility].] Which one needs to be canceled?",
+   "body": "Go to DECISION B2."
+  },
+  {
+   "t": "step",
+   "id": "STEP 4C",
+   "title": "Four To Ten Appointments Read-Back",
+   "say": "There are [N] upcoming appointments. The first three are: [Day, Date] at [Time] with Dr. [name] at [Facility]. [Day, Date] at [Time] with Dr. [name] at [Facility]. [Day, Date] at [Time] with Dr. [name] at [Facility]. Which one needs to be canceled, or should the rest be read out?",
+   "body": "Go to DECISION B2."
+  },
+  {
+   "t": "step",
+   "id": "STEP 4D",
+   "title": "More Than Ten Appointments Read-Back",
+   "say": "There are more than ten upcoming appointments. The first three are: [Day, Date] at [Time] with Dr. [name] at [Facility]. [Day, Date] at [Time] with Dr. [name] at [Facility]. [Day, Date] at [Time] with Dr. [name] at [Facility]. Which one needs to be canceled? A doctor's name or date can help find it faster if it's not in this list.",
+   "body": "Go to DECISION B2."
+  },
+  {
+   "t": "decision",
+   "id": "DECISION B2",
+   "title": "Caller identifies the appointment?",
+   "branches": [
+    "If yes, clear match to one already read, go to STEP 5.",
+    "If caller asks for more, read the next three. Repeat the question.",
+    "If caller gives narrowing info, filter the list and re-read the matching subset.",
+    "In the more-than-ten case, narrowing may trigger a re-pull from Dash.",
+    "If still unclear after the full list is read, go to DECISION L."
+   ]
+  },
+  {
+   "t": "div"
+  },
+  {
+   "t": "step",
+   "id": "STEP 5",
+   "title": "Confirm Selection",
+   "say": "Just to confirm, the appointment on [Day, Date] at [Time] with Dr. [name] at [Facility]. Is that right?"
+  },
+  {
+   "t": "decision",
+   "id": "DECISION C",
+   "title": "Caller confirms?",
+   "branches": [
+    "If yes, go to STEP 6.",
+    "If no, loop back to STEP 4B, 4C or 4D based on count."
+   ]
+  },
+  {
+   "t": "step",
+   "id": "STEP 6",
+   "title": "Offer Reschedule First"
+  },
+  {
+   "t": "decision",
+   "id": "DECISION D0",
+   "title": "Selected appointment specialty is in Phase 1 scheduling scope?",
+   "branches": [
+    "If yes, continue to DECISION D.",
+    "If no, skip the reschedule offer and go to STEP 7."
+   ]
+  },
+  {
+   "t": "decision",
+   "id": "DECISION D",
+   "title": "Caller wants to reschedule?",
+   "say": "Before canceling, would rescheduling work instead?",
+   "branches": [
+    "If yes, route to Reschedule flow with selected appointment context loaded.",
+    "If no, go to STEP 7."
+   ]
+  },
+  {
+   "t": "div"
+  },
+  {
+   "t": "step",
+   "id": "STEP 7",
+   "title": "Capture Cancellation Reason",
+   "say": "What's your reason for canceling? This helps improve Ascension's services."
+  },
+  {
+   "t": "decision",
+   "id": "DECISION E",
+   "title": "Did the caller share a reason?",
+   "branches": [
+    "If yes, capture the reason as free text. Map to a known reason code if wording matches.",
+    "If no — caller declines, deflects or would rather not share — move on: \"Not a problem. Let’s move on.\"",
+    "Go to STEP 8."
+   ]
+  },
+  {
+   "t": "step",
+   "id": "STEP 8",
+   "title": "Submit Cancellation",
+   "say": "One moment while that's canceled.",
+   "body": "Submit via Dash."
+  },
+  {
+   "t": "decision",
+   "id": "DECISION F",
+   "title": "Cancellation result?",
+   "branches": [
+    "Confirmed, go to STEP 9.",
+    "Appointment cannot be canceled here, already canceled or already checked in, go to STEP 8B.",
+    "Any other error or timeout, go to DECISION L with full session context."
+   ]
+  },
+  {
+   "t": "step",
+   "id": "STEP 8B",
+   "title": "Un-Cancellable Appointment",
+   "say": "This appointment needs a Care Navigator to sort out. Please hold.",
+   "body": "Go to DECISION L."
+  },
+  {
+   "t": "step",
+   "id": "STEP 9",
+   "title": "Confirm Cancellation",
+   "say": "The appointment on [Day, Date] at [Time] with Dr. [name] is canceled. Related appointments like imaging, labs or specialist visits should be canceled or rescheduled separately.",
+   "body": "Go to STEP 10."
+  },
+  {
+   "t": "div"
+  },
+  {
+   "t": "step",
+   "id": "STEP 10",
+   "title": "Offer SMS Confirmation",
+   "say": "A text confirmation can be sent. Send it now?"
+  },
+  {
+   "t": "decision",
+   "id": "DECISION G",
+   "title": "Caller accepts SMS?",
+   "branches": [
+    "If yes, go to STEP 11.",
+    "If no, go to STEP 13."
+   ]
+  },
+  {
+   "t": "step",
+   "id": "STEP 11",
+   "title": "Phone Number Confirmation",
+   "say": "Send it to the number ending in [last 4]?"
+  },
+  {
+   "t": "decision",
+   "id": "DECISION H",
+   "title": "Number on file is correct?",
+   "branches": [
+    "If yes, go to STEP 12.",
+    "If no, go to STEP 11B."
+   ]
+  },
+  {
+   "t": "step",
+   "id": "STEP 11B",
+   "title": "Capture New Number",
+   "say": "What's the best number for the text?",
+   "body": "Capture, then go to STEP 12."
+  },
+  {
+   "t": "step",
+   "id": "STEP 12",
+   "title": "Send SMS",
+   "body": "Trigger SMS using the Cancel SMS template."
+  },
+  {
+   "t": "decision",
+   "id": "DECISION SMS-1",
+   "title": "Send successful?",
+   "branches": [
+    "If yes, go to STEP 13.",
+    "If no, go to STEP 12B."
+   ]
+  },
+  {
+   "t": "step",
+   "id": "STEP 12B",
+   "title": "Retry SMS",
+   "body": "Retry once."
+  },
+  {
+   "t": "decision",
+   "id": "DECISION SMS-2",
+   "title": "Send successful on retry?",
+   "branches": [
+    "If yes, go to STEP 13.",
+    "If no, go to STEP 12C."
+   ]
+  },
+  {
+   "t": "step",
+   "id": "STEP 12C",
+   "title": "Verbal Fallback",
+   "say": "The text isn't going through right now. The cancellation is confirmed: the appointment on [date] at [time] with [provider_full] is canceled.",
+   "body": "Go to STEP 13."
+  },
+  {
+   "t": "div"
+  },
+  {
+   "t": "step",
+   "id": "STEP 13",
+   "title": "Closing Check",
+   "say": "Is there anything else needed today?"
+  },
+  {
+   "t": "decision",
+   "id": "DECISION J",
+   "title": "Anything else?",
+   "branches": [
+    "If yes, go to STEP 13B.",
+    "If no, go to DECISION K."
+   ]
+  },
+  {
+   "t": "step",
+   "id": "STEP 13B",
+   "title": "Capture Next Intent",
+   "body": "Identify the next task and route to the matching flow. After the next task completes, loop back to STEP 13."
+  },
+  {
+   "t": "decision",
+   "id": "DECISION K",
+   "title": "Survey Eligibility Check",
+   "body": "Survey only fires when the call ends cleanly: cancellation completed, no abandoned tasks and no out-of-scope routing.",
+   "branches": [
+    "If yes, go to CLOSE-SURVEY END.",
+    "If no, go to CLOSE-NO-SURVEY END."
+   ]
+  },
+  {
+   "t": "decision",
+   "id": "DECISION L",
+   "title": "Transfer to Care Navigator",
+   "body": "Check if within open hours.",
+   "branches": [
+    "If yes, go to ESCALATE-LIVE END.",
+    "If no, go to ESCALATE-AFTERHOURS END."
+   ]
+  },
+  {
+   "t": "end",
+   "id": "END",
+   "title": "End states",
+   "branches": [
+    "CLOSE-SURVEY END: Deliver survey-eligible closing, then transfer to Genesys for survey.",
+    "CLOSE-NO-SURVEY END: Deliver non-survey closing, then end call. No survey.",
+    "ESCALATE-LIVE END: Say \"A Care Navigator can help with this. Connecting you now.\" Transfer with session context. No survey.",
+    "ESCALATE-AFTERHOURS END: Deliver after-hours message. End call. No transfer. No survey."
+   ]
+  }
+ ]
+};
+
+window.FlowSpecs.schedule = [
+ {
+  "t": "step",
+  "id": "STEP 1",
+  "title": "Start",
+  "body": "Call routed from Genesys to Grace. Captured intent, if any, is passed via SIP parameters."
+ },
+ {
+  "t": "decision",
+  "id": "DECISION 0",
+  "title": "Did Genesys capture sub-intent?",
+  "branches": [
+   "If yes, go to STEP 1A.",
+   "If no, go to STEP 1B."
+  ]
+ },
+ {
+  "t": "step",
+  "id": "STEP 1A",
+  "title": "Grace Open With Intent Confirmation",
+  "say": "This is Grace, an AI-powered assistant. Ready to help with that new appointment, or was the call about something else?"
+ },
+ {
+  "t": "decision",
+  "id": "DECISION 0A",
+  "title": "Caller confirms schedule intent?",
+  "branches": [
+   "If yes and scheduling for self, go to STEP 2.",
+   "If no and redirects to reschedule, cancel or verify, route to that flow.",
+   "If call is for another patient, go to DECISION L.",
+   "If out of scope, go to DECISION L."
+  ]
+ },
+ {
+  "t": "step",
+  "id": "STEP 1B",
+  "title": "Grace Cold Open",
+  "say": "This is Grace, an AI-powered assistant ready to help with scheduling, rescheduling, canceling and verifying appointments. What do you need to do today?"
+ },
+ {
+  "t": "step",
+  "id": "STEP 1C",
+  "title": "Capture Intent",
+  "body": "Parse for intent and subject."
+ },
+ {
+  "t": "decision",
+  "id": "DECISION 0B",
+  "title": "Is the intent schedule?",
+  "branches": [
+   "If yes, go to STEP 2.",
+   "If reschedule, cancel or verify, route to that flow.",
+   "If out of scope, go to DECISION L."
+  ]
+ },
+ {
+  "t": "div"
+ },
+ {
+  "t": "step",
+  "id": "STEP 2",
+  "title": "Authentication",
+  "say": "To pull up your record, what's your name and date of birth?"
+ },
+ {
+  "t": "decision",
+  "id": "DECISION 1",
+  "title": "Matches a single patient record?",
+  "branches": [
+   "If yes (single match), go to STEP 3.",
+   "If no match, go to STEP 2B (readback retry).",
+   "If wrong format (DTMF entry doesn't parse as a valid date in either format), go to STEP 2B (format retry).",
+   "If multi-patient phone, go to DECISION L. Per V1 scope, multi-patient phones transfer."
+  ]
+ },
+ {
+  "t": "step",
+  "id": "STEP 2B",
+  "title": "First authentication retry (attempt 2)",
+  "body": "Grace reads back what was captured (no-match case) or re-explains the input options (wrong-format case) before re-asking. If the retry matches a single record, go to STEP 3. If it fails again (no match or invalid format), go to STEP 2C.",
+  "says": [
+   [
+    "No match",
+    "That didn't match a record. The name was [captured name] and the date was [captured date]. Want to try again?"
+   ],
+   [
+    "Wrong format",
+    "That date didn't come through. Try again. Say the date, or enter 6 digits like 022890, or 8 digits like 02281990."
+   ]
+  ]
+ },
+ {
+  "t": "step",
+  "id": "STEP 2C",
+  "title": "Second authentication retry (attempt 3)",
+  "say": "Your information isn't coming up. Let's try one more time. You can speak or enter your date of birth on the keypad.",
+  "body": "This attempt re-collects date of birth only. The captured name from the prior attempt is held. No readback. Both speech and DTMF remain accepted. If the attempt matches a single record, go to STEP 3. If it fails, go to DECISION L. No fourth attempt under any condition."
+ },
+ {
+  "t": "step",
+  "id": "STEP 3",
+  "title": "Pull Appointment History",
+  "body": "Retrieve the last 10 appointments via Dash. Identify recurring providers, specialties and visit patterns. Hold for prioritization in slot search."
+ },
+ {
+  "t": "step",
+  "id": "STEP 4",
+  "title": "Open-Ended Intent Question",
+  "say": "What's the reason for your visit, the name of the doctor or the type of specialist?",
+  "body": "Reason for the visit is captured first, before any service-type discussion. If the caller volunteers context, Grace gives a brief content-acknowledgment beat without claiming a feeling — symptom: \"Oh, you have a headache. Let’s find an opening for you.\" / constraint: \"A family trip. Let’s find a time that works around it.\" / urgency: \"Seems urgent, so let’s look at the earliest openings.\" Forbidden: \"I’m sorry,\" \"I hope,\" \"I understand,\" \"That sounds awful,\" \"Feel better,\" \"Have fun\" or any phrase that claims a feeling."
+ },
+ {
+  "t": "decision",
+  "id": "DECISION A",
+  "title": "What did the caller provide?",
+  "branches": [
+   "Reason, go to STEP 5A.",
+   "Provider, go to STEP 5B.",
+   "Specialty, go to STEP 5C.",
+   "Two or more, go to STEP 5D."
+  ]
+ },
+ {
+  "t": "div"
+ },
+ {
+  "t": "step",
+  "id": "STEP 5A",
+  "title": "Reason Captured",
+  "body": "Map reason to specialty via Dash. Go to DECISION SC."
+ },
+ {
+  "t": "step",
+  "id": "STEP 5B",
+  "title": "Provider Captured",
+  "say": "Okay. To find the right opening with Dr. [name], what's the reason for the visit?",
+  "body": "Capture reason. Go to DECISION SC."
+ },
+ {
+  "t": "step",
+  "id": "STEP 5C",
+  "title": "Specialty Captured",
+  "say": "Okay. What's the reason for needing a [specialty]?",
+  "body": "Capture reason. Go to DECISION SC."
+ },
+ {
+  "t": "step",
+  "id": "STEP 5D",
+  "title": "Multi-Slot Captured",
+  "body": "Confirm what the caller already said and ask only for what is missing. Go to DECISION SC."
+ },
+ {
+  "t": "decision",
+  "id": "DECISION SC",
+  "title": "Service line in scope?",
+  "branches": [
+   "Phase 1: Primary Care only. Anything else routes to DECISION L.",
+   "Phase 2: Cardiovascular added once Phase 1 metrics support expansion."
+  ]
+ },
+ {
+  "t": "step",
+  "id": "STEP 5T",
+  "title": "Triage Check",
+  "body": "Look up has_triage on the resolved reason. If true, retrieve the Dash decision tree and go to DECISION T. If false, skip to STEP 6."
+ },
+ {
+  "t": "decision",
+  "id": "DECISION T",
+  "title": "Triage outcome?",
+  "branches": [
+   "Emergency response, deliver emergency message and go to EMERGENCY END.",
+   "Self-eligible, go to STEP 6.",
+   "Not self-eligible, go to DECISION L."
+  ]
+ },
+ {
+  "t": "div"
+ },
+ {
+  "t": "step",
+  "id": "STEP 6",
+  "title": "Apply Facility Scope Filter",
+  "body": "Narrow candidate facilities using the phone-number-serviced facility list and facilities from the patient's existing appointments."
+ },
+ {
+  "t": "step",
+  "id": "STEP 7",
+  "title": "Match Against Appointment History",
+  "body": "Prioritize seen-before providers. Pre-load patterns when available."
+ },
+ {
+  "t": "step",
+  "id": "STEP 7P",
+  "title": "Provider Selection Ladder",
+  "branches": [
+   "Start with the patient's preferred provider when the reason matches.",
+   "If no slots, fall back to the practice the patient called.",
+   "If no slots there, fall back to ministry-wide.",
+   "If a MyCare Team-linked alternate exists, prefer that before ministry-wide."
+  ]
+ },
+ {
+  "t": "decision",
+  "id": "DECISION B",
+  "title": "Slots found?",
+  "branches": [
+   "If yes, go to STEP 8.",
+   "If no, go to STEP 7B."
+  ]
+ },
+ {
+  "t": "step",
+  "id": "STEP 7B",
+  "title": "Broaden Search",
+  "body": "Drop the provider filter. Search by reason or specialty across candidate facilities.",
+  "branches": [
+   "If slots are found, go to STEP 8.",
+   "If no slots after broadening, go to NO-INVENTORY END."
+  ]
+ },
+ {
+  "t": "div"
+ },
+ {
+  "t": "step",
+  "id": "STEP 8",
+  "title": "Provide Next Available",
+  "say": "The next opening is [Day, Date] at [Time] with Dr. [name] at [Facility]. Want that one?",
+  "body": "Apply the telehealth-eligible flag silently. Only mention telehealth if the reason is flagged eligible-for-telehealth and the patient brings it up, or the provider only offers telehealth. Otherwise default to office visit."
+ },
+ {
+  "t": "decision",
+  "id": "DECISION C",
+  "title": "Caller accepts next available?",
+  "branches": [
+   "If yes, go to STEP 12.",
+   "If no, go to STEP 9."
+  ]
+ },
+ {
+  "t": "step",
+  "id": "STEP 9",
+  "title": "Collect Preferences",
+  "say": "No problem. What day or time would work better?",
+  "body": "Capture day-of-week and time-of-day in one turn if both are offered."
+ },
+ {
+  "t": "step",
+  "id": "STEP 10",
+  "title": "Search By Preferences",
+  "body": "Filter by stated day-of-week and time-of-day within a 7-day window. Acute reasons may require booking within 48 hours per Dash rules. Internal guardrail: never speak Dash elimination-reason text to the caller. Log elimination reasons for analysis, then use neutral dialogue."
+ },
+ {
+  "t": "decision",
+  "id": "DECISION D",
+  "title": "Slots match preferences?",
+  "branches": [
+   "If yes, go to STEP 11.",
+   "If no, go to STEP 10B."
+  ]
+ },
+ {
+  "t": "step",
+  "id": "STEP 10B",
+  "title": "No Match For Preferences",
+  "say": "Nothing's open on [stated day]. Is there another day or time that would work?",
+  "body": "Capture and loop back to STEP 10. Hard rule: do not loop more than twice. After two failed rounds, go to STEP 13."
+ },
+ {
+  "t": "div"
+ },
+ {
+  "t": "step",
+  "id": "STEP 11",
+  "title": "Offer Applicable Slots",
+  "say": "There's [Day] at [Time1], [Time2] or [Time3]. Which works?",
+  "body": "Present three slots at a time."
+ },
+ {
+  "t": "decision",
+  "id": "DECISION E",
+  "title": "Caller selects a slot?",
+  "branches": [
+   "If yes, go to STEP 12.",
+   "If no, same day and different time within preference, go to STEP 11B.",
+   "If no and escalation signal beyond global triggers, go to DECISION L.",
+   "If no and new preference, loop back to STEP 9."
+  ]
+ },
+ {
+  "t": "step",
+  "id": "STEP 11B",
+  "title": "Re-Look Same Preference",
+  "say": "Got it. The next [stated day] after that is [Date] at [Time]. Want that one?",
+  "body": "Loop back to DECISION E."
+ },
+ {
+  "t": "div"
+ },
+ {
+  "t": "step",
+  "id": "STEP 12",
+  "title": "Lock And Book",
+  "say": "One moment while the appointment is finalized.",
+  "body": "Lock the slot via Dash. Lock holds for 15 minutes. On success: \"The appointment with Dr. [name] is set for [Day, Date] at [Time] at [Facility].\" If the caller backs out before booking, release the lock."
+ },
+ {
+  "t": "decision",
+  "id": "DECISION G",
+  "title": "Lock succeeded?",
+  "branches": [
+   "If yes, go to STEP 14.",
+   "If no, slot taken before lock, go to STEP 12B."
+  ]
+ },
+ {
+  "t": "step",
+  "id": "STEP 12B",
+  "title": "Lock Failure",
+  "says": [
+   [
+    "First failure",
+    "That opening was just taken. There's another at [Day, Date] at [Time]. Want that one?"
+   ],
+   [
+    "Second consecutive failure",
+    "That one was just taken too. A Care Navigator can find something that works."
+   ]
+  ],
+  "body": "On first lock failure, offer one alternative slot. If accepted, loop back to STEP 12. If rejected, go to DECISION L — do not retry the same slot. On second consecutive lock failure, go to DECISION L. Do not offer a third alternative. Hard rule: maximum two total lock attempts per session."
+ },
+ {
+  "t": "div"
+ },
+ {
+  "t": "step",
+  "id": "STEP 13",
+  "title": "Pivot Offer",
+  "say": "Dr. [name] is fully booked the next 90 days. Dr. [alt-name] is also a [specialty] at [facility]. Want to look at openings with Dr. [alt-name]?",
+  "body": "Used after two failed preference rounds. Suggest a different provider or facility based on history and proximity."
+ },
+ {
+  "t": "decision",
+  "id": "DECISION F",
+  "title": "Caller accepts pivot?",
+  "branches": [
+   "If yes, loop back to STEP 10 with the new provider or facility.",
+   "If no, go to DECISION L."
+  ]
+ },
+ {
+  "t": "div"
+ },
+ {
+  "t": "step",
+  "id": "STEP 14",
+  "title": "Offer SMS Confirmation",
+  "say": "A confirmation can be sent by text with a map to the facility and a link to [provider_full]'s profile. Send it now?",
+  "body": "Corrected from the old 14A–14D branching. Every caller gets both the facility map link and the provider profile link."
+ },
+ {
+  "t": "decision",
+  "id": "DECISION I",
+  "title": "Caller accepts SMS?",
+  "branches": [
+   "If yes, go to STEP 14P.",
+   "If no, go to STEP 16."
+  ]
+ },
+ {
+  "t": "step",
+  "id": "STEP 14P",
+  "title": "Confirm Phone Number",
+  "say": "Sending to the number ending in [last 4]. Sound right?",
+  "branches": [
+   "If yes, go to STEP 15.",
+   "If no, capture the new number, then go to STEP 15."
+  ]
+ },
+ {
+  "t": "step",
+  "id": "STEP 15",
+  "title": "Send SMS",
+  "body": "Trigger SMS using the Schedule two-message template."
+ },
+ {
+  "t": "decision",
+  "id": "DECISION SMS-1",
+  "title": "Send successful?",
+  "branches": [
+   "If yes — \"Okay, you’re all set.\" — go to STEP 16.",
+   "If no, go to STEP 15B."
+  ]
+ },
+ {
+  "t": "step",
+  "id": "STEP 15B",
+  "title": "Retry SMS",
+  "body": "Retry once. Retry only the failed message or messages."
+ },
+ {
+  "t": "decision",
+  "id": "DECISION SMS-2",
+  "title": "Send successful on retry?",
+  "branches": [
+   "If yes, go to STEP 16.",
+   "If no, go to STEP 15C."
+  ]
+ },
+ {
+  "t": "step",
+  "id": "STEP 15C",
+  "title": "Verbal Fallback",
+  "say": "The text isn't going through right now. The appointment is set: [date] at [time] with [provider_full] at [facility_name].",
+  "body": "Go to STEP 16."
+ },
+ {
+  "t": "div"
+ },
+ {
+  "t": "step",
+  "id": "STEP 16",
+  "title": "Closing Check",
+  "say": "Is there anything else needed today?"
+ },
+ {
+  "t": "decision",
+  "id": "DECISION J",
+  "title": "Anything else?",
+  "branches": [
+   "If yes, go to STEP 16B.",
+   "If no, go to DECISION K."
+  ]
+ },
+ {
+  "t": "step",
+  "id": "STEP 16B",
+  "title": "Capture Next Intent",
+  "body": "Identify the next task and route to the matching flow. After that task completes, loop back to STEP 16."
+ },
+ {
+  "t": "decision",
+  "id": "DECISION K",
+  "title": "Survey Eligibility Check",
+  "body": "Survey only fires when every task in the session completed cleanly with no human handoff and no out-of-scope intent.",
+  "branches": [
+   "If all requests are complete, go to CLOSE-SURVEY END.",
+   "Otherwise, go to CLOSE-NO-SURVEY END."
+  ]
+ },
+ {
+  "t": "decision",
+  "id": "DECISION L",
+  "title": "Transfer to Care Navigator",
+  "body": "Check if within open hours.",
+  "branches": [
+   "If yes, go to ESCALATE-LIVE END.",
+   "If no, go to ESCALATE-AFTERHOURS END."
+  ]
+ },
+ {
+  "t": "end",
+  "id": "END",
+  "title": "End states",
+  "branches": [
+   "CLOSE-SURVEY END: Deliver survey-eligible closing, then transfer to Genesys for survey.",
+   "CLOSE-NO-SURVEY END: Deliver non-survey closing, then end call. No survey.",
+   "ESCALATE-LIVE END: Say \"A Care Navigator can help with this. Connecting you now.\" Transfer with session context. No survey.",
+   "ESCALATE-AFTERHOURS END: Deliver after-hours message. End call. No transfer. No survey.",
+   "NO-INVENTORY END: No openings in 90 days or no care team alternate available. Offer Care Navigator connection. If caller declines, go to STEP 16.",
+   "EMERGENCY END: Emergency response from Dash triage. Wording pending compliance review."
+  ]
+ }
+];
+window.FlowSpecs.reschedule = [
+ {
+  "t": "step",
+  "id": "STEP 1",
+  "title": "Start",
+  "body": "Call routed from Genesys to Grace. Captured intent, if any, is passed via SIP parameters. If the call enters with appointment context from Cancel, go to STEP 4R. Otherwise, go to DECISION 0."
+ },
+ {
+  "t": "decision",
+  "id": "DECISION 0",
+  "title": "Did Genesys capture sub-intent?",
+  "branches": [
+   "If yes, go to STEP 1A.",
+   "If no, go to STEP 1B."
+  ]
+ },
+ {
+  "t": "step",
+  "id": "STEP 1A",
+  "title": "Grace Open With Intent Confirmation",
+  "say": "This is Grace, an AI-powered assistant. Ready to help reschedule that appointment, or was the call about something else?"
+ },
+ {
+  "t": "decision",
+  "id": "DECISION 0A",
+  "title": "Caller confirms reschedule intent?",
+  "branches": [
+   "If yes and rescheduling for self, go to STEP 2.",
+   "If no and redirects to schedule, cancel or verify, route to that flow.",
+   "If call is for another patient, go to DECISION L.",
+   "If out of scope, go to DECISION L."
+  ]
+ },
+ {
+  "t": "step",
+  "id": "STEP 1B",
+  "title": "Grace Cold Open",
+  "say": "This is Grace, an AI-powered assistant ready to help with scheduling, rescheduling, canceling and verifying appointments. What do you need to do today?"
+ },
+ {
+  "t": "step",
+  "id": "STEP 1C",
+  "title": "Capture Intent",
+  "body": "Parse for intent and subject."
+ },
+ {
+  "t": "decision",
+  "id": "DECISION 0B",
+  "title": "Is the intent reschedule?",
+  "branches": [
+   "If yes, go to STEP 2.",
+   "If schedule, cancel or verify, route to that flow.",
+   "If out of scope, go to DECISION L."
+  ]
+ },
+ {
+  "t": "decision",
+  "id": "DECISION 0C",
+  "title": "Proxy caller declared at session start?",
+  "say": "Calls for another patient need a Care Navigator. Connecting you now.",
+  "body": "Per V1 scope, transfer. Go to DECISION L."
+ },
+ {
+  "t": "div"
+ },
+ {
+  "t": "step",
+  "id": "STEP 2",
+  "title": "Authentication",
+  "say": "To pull up your record, what's your name and date of birth?"
+ },
+ {
+  "t": "decision",
+  "id": "DECISION 1",
+  "title": "Matches a single patient record?",
+  "branches": [
+   "If yes (single match), go to STEP 3.",
+   "If no match, go to STEP 2B (readback retry).",
+   "If wrong format (DTMF entry doesn't parse as a valid date in either format), go to STEP 2B (format retry).",
+   "If multi-patient phone, go to DECISION L. Per V1 scope, multi-patient phones transfer."
+  ]
+ },
+ {
+  "t": "step",
+  "id": "STEP 2B",
+  "title": "First authentication retry (attempt 2)",
+  "body": "Grace reads back what was captured (no-match case) or re-explains the input options (wrong-format case) before re-asking. If the retry matches a single record, go to STEP 3. If it fails again (no match or invalid format), go to STEP 2C.",
+  "says": [
+   [
+    "No match",
+    "That didn't match a record. The name was [captured name] and the date was [captured date]. Want to try again?"
+   ],
+   [
+    "Wrong format",
+    "That date didn't come through. Try again. Say the date, or enter 6 digits like 022890, or 8 digits like 02281990."
+   ]
+  ]
+ },
+ {
+  "t": "step",
+  "id": "STEP 2C",
+  "title": "Second authentication retry (attempt 3)",
+  "say": "Your information isn't coming up. Let's try one more time. You can speak or enter your date of birth on the keypad.",
+  "body": "This attempt re-collects date of birth only. The captured name from the prior attempt is held. No readback. Both speech and DTMF remain accepted. If the attempt matches a single record, go to STEP 3. If it fails, go to DECISION L. No fourth attempt under any condition."
+ },
+ {
+  "t": "step",
+  "id": "STEP 3",
+  "title": "Pull Upcoming Appointments",
+  "body": "Retrieve upcoming appointments via Dash. Window: 90 days, capped at 10."
+ },
+ {
+  "t": "decision",
+  "id": "DECISION A",
+  "title": "How many upcoming appointments?",
+  "branches": [
+   "Zero, go to STEP 4Z.",
+   "One, go to STEP 4O.",
+   "Two or three, go to STEP 4S.",
+   "Four to ten, go to STEP 4M.",
+   "More than ten, go to STEP 4L."
+  ]
+ },
+ {
+  "t": "div"
+ },
+ {
+  "t": "step",
+  "id": "STEP 4Z",
+  "title": "Zero Appointments",
+  "say": "Nothing's showing up for you in the next 90 days. Want to set up a new appointment instead, or talk to a Care Navigator about an older one?",
+  "branches": [
+   "If set up new, route to Schedule flow.",
+   "If Care Navigator or unclear, go to DECISION L.",
+   "If no, go to STEP 13."
+  ]
+ },
+ {
+  "t": "step",
+  "id": "STEP 4O",
+  "title": "One Appointment",
+  "say": "There's one appointment coming up: [Day, Date] at [Time] with Dr. [name] at [Facility]. Reschedule that one?",
+  "branches": [
+   "If yes, go to STEP 5.",
+   "If no, go to DECISION L."
+  ]
+ },
+ {
+  "t": "step",
+  "id": "STEP 4S",
+  "title": "Two Or Three Appointments",
+  "say": "There are [two/three] appointments coming up: [Day, Date] at [Time] with Dr. [name] at [Facility]. [Day, Date] at [Time] with Dr. [name] at [Facility]. Which one needs to be rescheduled?",
+  "body": "Read each appointment back chronologically. Go to DECISION B."
+ },
+ {
+  "t": "step",
+  "id": "STEP 4M",
+  "title": "Four To Ten Appointments",
+  "say": "There are [count] appointments coming up. The first three are: [Day, Date] at [Time] with Dr. [name] at [Facility]. [Day, Date] at [Time] with Dr. [name] at [Facility]. [Day, Date] at [Time] with Dr. [name] at [Facility]. Which one needs to be rescheduled? A doctor's name or date can help find it faster if it's not in this list.",
+  "body": "Read the first three chronologically. Go to DECISION B."
+ },
+ {
+  "t": "step",
+  "id": "STEP 4L",
+  "title": "More Than Ten Appointments",
+  "say": "There are more than ten appointments coming up. The first three are: [Day, Date] at [Time] with Dr. [name] at [Facility]. [Day, Date] at [Time] with Dr. [name] at [Facility]. [Day, Date] at [Time] with Dr. [name] at [Facility]. Which one needs to be rescheduled? A doctor's name or date can help find it faster if it's not in this list.",
+  "body": "Go to DECISION B."
+ },
+ {
+  "t": "decision",
+  "id": "DECISION B",
+  "title": "Caller identifies the appointment?",
+  "branches": [
+   "If yes, clear match to one already read, go to STEP 5.",
+   "If caller asks for more, read the next three. Repeat the question.",
+   "If caller gives narrowing info, filter the list and re-read the matching subset.",
+   "In the more-than-ten case, narrowing may trigger a re-pull from Dash.",
+   "If still unclear after the full list is read, go to DECISION L."
+  ]
+ },
+ {
+  "t": "step",
+  "id": "STEP 4R",
+  "title": "Reconfirm From Cancel",
+  "say": "Okay. The appointment with Dr. [name] on [Day, Date] at [Time]. Reschedule that one?",
+  "body": "Used only when appointment context is already loaded from Cancel.",
+  "branches": [
+   "If yes, go to STEP 6.",
+   "If no, go to STEP 4 and branch on count from the cached list."
+  ]
+ },
+ {
+  "t": "div"
+ },
+ {
+  "t": "step",
+  "id": "STEP 5",
+  "title": "Confirm Selection",
+  "say": "Just to confirm, the appointment on [Day, Date] at [Time] with Dr. [name] at [Facility]. Rescheduling that one?"
+ },
+ {
+  "t": "decision",
+  "id": "DECISION C",
+  "title": "Caller confirms?",
+  "branches": [
+   "If yes, go to STEP 6.",
+   "If no, loop back to STEP 4S, 4M or 4L based on count."
+  ]
+ },
+ {
+  "t": "step",
+  "id": "STEP 6",
+  "title": "Reschedule Eligibility And Triage Check",
+  "body": "One Dash call determines whether the appointment is reschedulable and whether triage answers from the original booking carry forward."
+ },
+ {
+  "t": "decision",
+  "id": "DECISION D",
+  "title": "Can this appointment be rescheduled here?",
+  "branches": [
+   "If no, go to STEP 6Z.",
+   "If yes, go to DECISION D1."
+  ]
+ },
+ {
+  "t": "step",
+  "id": "STEP 6Z",
+  "title": "Cannot Reschedule Here",
+  "say": "This one needs a Care Navigator to reschedule.",
+  "body": "Go to DECISION L with reason context."
+ },
+ {
+  "t": "decision",
+  "id": "DECISION D1",
+  "title": "Triage required?",
+  "branches": [
+   "If no, go to STEP 7.",
+   "If yes, go to STEP 6A."
+  ]
+ },
+ {
+  "t": "step",
+  "id": "STEP 6A",
+  "title": "Drop Into Triage",
+  "say": "Additional information is needed before that gets rescheduled.",
+  "body": "Walk through the Dash triage tree. Mirror Schedule triage handling."
+ },
+ {
+  "t": "decision",
+  "id": "DECISION D2",
+  "title": "Triage outcome?",
+  "branches": [
+   "Standard scheduling result, go to STEP 7.",
+   "Emergency severity, go to EMERGENCY END.",
+   "Acute result, carry the acute flag into STEP 7 and honor the 48-hour rule."
+  ]
+ },
+ {
+  "t": "div"
+ },
+ {
+  "t": "step",
+  "id": "STEP 7",
+  "title": "Collect Preferences",
+  "say": "What day or time would work better?",
+  "body": "Date and time are the primary levers. Default to same provider, same reason, same location and same telehealth flag as the original booking. Capture day-of-week and time-of-day in one turn if both are offered. If neither is offered, search broadly within the 7-day window."
+ },
+ {
+  "t": "step",
+  "id": "STEP 8",
+  "title": "Search Same-Provider Slots",
+  "body": "Filter by stated day-of-week and time-of-day within a 7-day window from now, or a 48-hour window if the acute flag is set. Same provider, same reason, same location and same telehealth flag as the original booking. Internal guardrail: never speak Dash elimination-reason text to the caller."
+ },
+ {
+  "t": "decision",
+  "id": "DECISION E",
+  "title": "Slots match preferences?",
+  "branches": [
+   "If yes, go to STEP 9.",
+   "If no, go to STEP 8B."
+  ]
+ },
+ {
+  "t": "step",
+  "id": "STEP 8B",
+  "title": "No Match For Preferences",
+  "say": "Nothing's open with Dr. [name] on [stated day]. Is there another day or time that would work?",
+  "body": "Capture and loop back to STEP 8. Hard rule: do not loop more than twice. After two failed rounds, go to STEP 10."
+ },
+ {
+  "t": "step",
+  "id": "STEP 9",
+  "title": "Offer Applicable Slots",
+  "say": "There's [Day] at [Time1], [Time2] or [Time3] with Dr. [name]. Which works?",
+  "body": "Present three slots at a time."
+ },
+ {
+  "t": "decision",
+  "id": "DECISION F",
+  "title": "Caller selects a slot?",
+  "branches": [
+   "If yes, go to STEP 11.",
+   "If no, same day and different time within preference, go to STEP 9B.",
+   "If no and escalation signal beyond global triggers, go to DECISION L.",
+   "If no and new preference, loop back to STEP 7.",
+   "If caller asks for a different doctor, go to STEP 10."
+  ]
+ },
+ {
+  "t": "step",
+  "id": "STEP 9B",
+  "title": "Re-Look Same Preference",
+  "say": "Got it. The next [stated day] after that is [Date] at [Time] with Dr. [name]. Want that one?",
+  "body": "Loop back to DECISION F."
+ },
+ {
+  "t": "div"
+ },
+ {
+  "t": "step",
+  "id": "STEP 10",
+  "title": "Care Team Pivot",
+  "say": "Dr. [name] is fully booked the next 90 days. Dr. [alt-name] is on the same care team at [Facility]. Want to look at openings with Dr. [alt-name]?",
+  "body": "Used after two failed preference rounds or caller request. Suggest a care team alternate based on Dash care team links for the original provider. Same facility, same reason. If Dash returns no care team alternate, go to NO-INVENTORY END."
+ },
+ {
+  "t": "decision",
+  "id": "DECISION G",
+  "title": "Caller accepts care team pivot?",
+  "branches": [
+   "If yes, loop back to STEP 6 with the new provider context.",
+   "If no, go to NO-INVENTORY END."
+  ]
+ },
+ {
+  "t": "step",
+  "id": "STEP 11",
+  "title": "Lock And Reschedule",
+  "say": "One moment while that's updated.",
+  "body": "Lock the new slot via Dash. Lock holds for 15 minutes. Submit the reschedule through the Dash reschedule API. On success: \"The appointment with Dr. [name] is rescheduled for [Day, Date] at [Time].\" If the caller backs out before submission, release the lock. If the caller wants a different slot, go to STEP 9. If the caller no longer wants to reschedule, go to STEP 13."
+ },
+ {
+  "t": "decision",
+  "id": "DECISION H",
+  "title": "Reschedule result?",
+  "branches": [
+   "Confirmed, go to STEP 12.",
+   "Slot taken between lock and submission, go to STEP 11B.",
+   "Any other error, go to STEP 11C."
+  ]
+ },
+ {
+  "t": "step",
+  "id": "STEP 11B",
+  "title": "Lock Failure",
+  "says": [
+   [
+    "First failure",
+    "That opening was just taken. There's another at [Day, Date] at [Time] with Dr. [name]. Want that one?"
+   ],
+   [
+    "Second consecutive failure",
+    "That one was just taken too. A Care Navigator can find something that works."
+   ]
+  ],
+  "body": "On first lock failure, offer one alternative slot. If accepted, loop back to STEP 11. If rejected, go to DECISION L. On second consecutive lock failure, go to DECISION L. The original appointment stays in place throughout."
+ },
+ {
+  "t": "step",
+  "id": "STEP 11C",
+  "title": "Reschedule API Failure",
+  "say": "This one needs a Care Navigator to finish up. The original appointment is still in place.",
+  "body": "Go to DECISION L with full session context."
+ },
+ {
+  "t": "div"
+ },
+ {
+  "t": "step",
+  "id": "STEP 12",
+  "title": "Offer SMS Confirmation",
+  "say": "A confirmation can be sent by text with a map to the facility and a link to [provider_full]'s profile. Send it now?"
+ },
+ {
+  "t": "decision",
+  "id": "DECISION I",
+  "title": "Caller accepts SMS?",
+  "branches": [
+   "If yes, go to STEP 12A.",
+   "If no, go to STEP 13."
+  ]
+ },
+ {
+  "t": "step",
+  "id": "STEP 12A",
+  "title": "Confirm Phone Number",
+  "say": "Sending to the number ending in [last 4]. Sound right?",
+  "branches": [
+   "If yes, go to STEP 12B.",
+   "If no, capture the new number, then go to STEP 12B."
+  ]
+ },
+ {
+  "t": "step",
+  "id": "STEP 12B",
+  "title": "Send SMS",
+  "body": "Trigger SMS using the Reschedule two-message template. Treat both messages as a set: success means both delivered."
+ },
+ {
+  "t": "decision",
+  "id": "DECISION SMS-1",
+  "title": "Send successful?",
+  "branches": [
+   "If yes — \"Okay, you’re all set.\" — go to STEP 13.",
+   "If no, go to STEP 12C."
+  ]
+ },
+ {
+  "t": "step",
+  "id": "STEP 12C",
+  "title": "Retry SMS",
+  "body": "Retry once. Retry only the failed message or messages."
+ },
+ {
+  "t": "decision",
+  "id": "DECISION SMS-2",
+  "title": "Send successful on retry?",
+  "branches": [
+   "If yes, go to STEP 13.",
+   "If no, go to STEP 12D."
+  ]
+ },
+ {
+  "t": "step",
+  "id": "STEP 12D",
+  "title": "Verbal Fallback",
+  "say": "The text isn't going through right now. The appointment is rescheduled for [date] at [time] with [provider_full] at [facility_name].",
+  "body": "Go to STEP 13."
+ },
+ {
+  "t": "div"
+ },
+ {
+  "t": "step",
+  "id": "STEP 13",
+  "title": "Closing Check",
+  "say": "Is there anything else needed today?"
+ },
+ {
+  "t": "decision",
+  "id": "DECISION J",
+  "title": "Anything else?",
+  "branches": [
+   "If yes, go to STEP 13B.",
+   "If no, go to DECISION K."
+  ]
+ },
+ {
+  "t": "step",
+  "id": "STEP 13B",
+  "title": "Capture Next Intent",
+  "body": "Identify the next task and route to the matching flow. After that task is complete, loop back to STEP 13."
+ },
+ {
+  "t": "decision",
+  "id": "DECISION K",
+  "title": "Survey Eligibility Check",
+  "body": "Survey only fires when every task in the session completed cleanly with no human handoff and no out-of-scope intent.",
+  "branches": [
+   "If all requests are complete, go to CLOSE-SURVEY END.",
+   "Otherwise, go to CLOSE-NO-SURVEY END."
+  ]
+ },
+ {
+  "t": "decision",
+  "id": "DECISION L",
+  "title": "Transfer to Care Navigator",
+  "body": "Check if within open hours.",
+  "branches": [
+   "If yes, go to ESCALATE-LIVE END.",
+   "If no, go to ESCALATE-AFTERHOURS END."
+  ]
+ },
+ {
+  "t": "end",
+  "id": "END",
+  "title": "End states",
+  "branches": [
+   "CLOSE-SURVEY END: Deliver survey-eligible closing, then transfer to Genesys for survey.",
+   "CLOSE-NO-SURVEY END: Deliver non-survey closing, then end call. No survey.",
+   "ESCALATE-LIVE END: Say \"A Care Navigator can help with this. Connecting you now.\" Transfer with session context. No survey.",
+   "ESCALATE-AFTERHOURS END: Deliver after-hours message. End call. No transfer. No survey.",
+   "NO-INVENTORY END: No openings in 90 days or no care team alternate available. Offer Care Navigator connection. If caller declines, go to STEP 13.",
+   "EMERGENCY END: Emergency response from Dash triage. Wording pending compliance review."
+  ]
+ }
 ];
 </script>
 <script type="text/babel">// Icons — inline SVG React components
@@ -1750,8 +4358,8 @@ function FlowDiagram({ pattern }) {
         <Legend swatch={{ background: 'var(--bg-elev)', border: '1.5px solid var(--border-strong)' }} label="Collect / Output" />
         <Legend swatch={{ background: 'var(--bg-muted)', border: '1.5px solid var(--border-strong)' }} label="Decision" />
         <Legend swatch={{ background: 'var(--bg-elev)', border: '1.5px dashed var(--border-strong)' }} label="Action" />
-        <Legend swatch={{ background: '#DEF2F2', border: '1.5px solid var(--brand-green)' }} label="Exit (success)" />
-        <Legend swatch={{ background: '#F8E3F1', border: '1.5px solid var(--brand-violet)' }} label="Exit (handoff)" />
+        <Legend swatch={{ background: 'var(--success-bg)', border: '1.5px solid var(--success)' }} label="Exit (success)" />
+        <Legend swatch={{ background: 'var(--error-bg)', border: '1.5px solid var(--error)' }} label="Exit (handoff)" />
       </div>
     </div>
   );
@@ -1767,6 +4375,54 @@ const Legend = ({ swatch, label }) => (
 window.FlowDiagram = FlowDiagram;
 </script>
 <script type="text/babel">// Pattern detail page
+const SpecQuote = ({ label, text }) => (
+  <div style={{ borderLeft: '3px solid var(--accent)', background: 'var(--accent-soft)', padding: '8px 14px', borderRadius: '0 10px 10px 0', margin: '6px 0', fontSize: 14, lineHeight: 1.55, color: 'var(--text)' }}>
+    {label && <span style={{ fontSize: 10.5, textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600, color: 'var(--text-subtle)', display: 'block', marginBottom: 2 }}>{label}</span>}
+    “{text}”
+  </div>
+);
+
+function FlowSpec({ items }) {
+  const badgeStyles = {
+    step: { bg: 'var(--accent-soft)', fg: 'var(--accent-ink)' },
+    decision: { bg: '#FDE6EE', fg: '#660468' },
+    end: { bg: 'var(--bg-inset)', fg: 'var(--text)' },
+  };
+  return (
+    <div className="simulator" style={{ padding: '10px 0' }}>
+      {items.map((it, i) => {
+        if (it.t === 'div') {
+          return <div key={i} style={{ borderTop: '1px solid var(--border)', margin: '14px 24px' }}></div>;
+        }
+        const c = badgeStyles[it.t] || badgeStyles.step;
+        return (
+          <div key={i} style={{ display: 'flex', flexWrap: 'wrap', gap: '6px 16px', padding: '11px 24px', alignItems: 'flex-start' }}>
+            <div style={{ flex: '0 0 140px', maxWidth: '100%' }}>
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: 11.5, fontWeight: 500, letterSpacing: '0.03em', padding: '3px 10px', borderRadius: 100, background: c.bg, color: c.fg, whiteSpace: 'nowrap', display: 'inline-block', marginTop: 1 }}>{it.id}</span>
+            </div>
+            <div style={{ flex: '1 1 260px', minWidth: 0 }}>
+              <div style={{ fontWeight: 600, fontSize: 15, lineHeight: 1.4 }}>{it.title}</div>
+              {it.body && <div style={{ fontSize: 14, color: 'var(--text-muted)', lineHeight: 1.55, marginTop: 3 }}>{it.body}</div>}
+              {it.say && <SpecQuote text={it.say} />}
+              {it.says && it.says.map(([label, q], qi) => <SpecQuote key={qi} label={label} text={q} />)}
+              {it.branches && (
+                <ul style={{ margin: '6px 0 0', padding: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 5 }}>
+                  {it.branches.map((b, bi) => (
+                    <li key={bi} style={{ display: 'flex', gap: 9, fontSize: 14, color: 'var(--text-muted)', lineHeight: 1.5 }}>
+                      <span style={{ color: 'var(--accent)', flexShrink: 0, fontWeight: 600 }}>→</span>
+                      <span>{b}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
 function Detail({ pattern, onBack, onOpen }) {
   const MetricDelta = ({ d }) => {
     if (d === 'new') return <span className="metric-delta flat"><Icon name="minus" size={10}/>new</span>;
@@ -1795,7 +4451,6 @@ function Detail({ pattern, onBack, onOpen }) {
           <h1 className="detail-title">{pattern.title}</h1>
           <p className="detail-summary">{pattern.summary}</p>
           <div className="detail-meta-row">
-            <span className="item"><span className="status-dot production" style={{ background: pattern.status === 'Production' ? 'var(--brand-green)' : pattern.status === 'Beta' ? 'var(--brand-orange)' : 'var(--brand-gold)' }}></span><strong>{pattern.status}</strong></span>
             <span className="item"><Icon name="tag" size={12} />{pattern.category}</span>
             <span className="item"><Icon name="clock" size={12} />{pattern.avgDuration}</span>
             <span className="item"><Icon name="user" size={12} />{pattern.owner}</span>
@@ -1835,24 +4490,27 @@ function Detail({ pattern, onBack, onOpen }) {
         </div>
 
         <div className="section">
-          <h2 className="section-title"><span className="section-num">04</span>Metrics</h2>
-          <p className="section-lead">30-day rolling averages. Deltas compare to the prior 30 days.</p>
+          <h2 className="section-title"><span className="section-num">04</span>Full flow</h2>
+          <p className="section-lead">The complete written flow — every step, decision and end state, exactly as documented in the Grace 2.0 Flow Library.</p>
+          <FlowSpec items={window.FlowSpecs[pattern.id] || []} />
+        </div>
+
+        <div className="section">
+          <h2 className="section-title"><span className="section-num">05</span>Operating parameters</h2>
+          <p className="section-lead">Hard limits and windows defined in the Grace 2.0 flow library.</p>
           <div className="metrics-grid">
             {pattern.metrics.map(m => (
               <div key={m.label} className="metric">
                 <div className="metric-label">{m.label}</div>
                 <div className="metric-val">{m.value}</div>
-                <div className={`metric-delta ${m.trend}`}>
-                  <Icon name={m.trend === 'up' ? 'arrowUp' : m.trend === 'down' ? 'arrowDown' : 'minus'} size={11} />
-                  {m.delta}
-                </div>
+                {m.note && <div className="metric-delta flat">{m.note}</div>}
               </div>
             ))}
           </div>
         </div>
 
         <div className="section">
-          <h2 className="section-title"><span className="section-num">05</span>Edge cases &amp; failure modes</h2>
+          <h2 className="section-title"><span className="section-num">06</span>Edge cases &amp; failure modes</h2>
           <div className="edge-list">
             {pattern.edgeCases.map((e, i) => (
               <div key={i} className="edge-item">
@@ -1864,14 +4522,14 @@ function Detail({ pattern, onBack, onOpen }) {
         </div>
 
         <div className="section">
-          <h2 className="section-title"><span className="section-num">06</span>Compliance notes</h2>
+          <h2 className="section-title"><span className="section-num">07</span>Compliance notes</h2>
           <ul className="compliance-list">
             {pattern.compliance.map((c, i) => <li key={i}>{c}</li>)}
           </ul>
         </div>
 
         <div className="section">
-          <h2 className="section-title"><span className="section-num">07</span>Changelog</h2>
+          <h2 className="section-title"><span className="section-num">08</span>Changelog</h2>
           <div className="changelog">
             {pattern.changelog.map((c, i) => (
               <div key={i} className="log-entry">
@@ -1890,7 +4548,6 @@ function Detail({ pattern, onBack, onOpen }) {
           <div className="side-list">
             <div className="side-row"><span className="k">Owner</span><span className="v">{pattern.owner.split('·')[0].trim()}</span></div>
             <div className="side-row"><span className="k">Team</span><span className="v">{pattern.owner.split('·')[1]?.trim() || '—'}</span></div>
-            <div className="side-row"><span className="k">Status</span><span className="v">{pattern.status}</span></div>
             <div className="side-row"><span className="k">Version</span><span className="v" style={{ fontFamily: 'var(--font-mono)' }}>{pattern.version}</span></div>
             <div className="side-row"><span className="k">Updated</span><span className="v" style={{ fontFamily: 'var(--font-mono)' }}>{pattern.updated}</span></div>
             <div className="side-row"><span className="k">Flow type</span><span className="v">{pattern.flowType}</span></div>
@@ -1930,13 +4587,11 @@ window.Detail = Detail;
 function Library({ patterns, filters, setFilters, onOpen }) {
   const { q, category, status, channel, tag } = filters;
   const allCats = [...new Set(window.Patterns.map(p => p.category))];
-  const allStatuses = [...new Set(window.Patterns.map(p => p.status))];
   const allChannels = ['Voice', 'SMS'];
 
   const filtered = patterns.filter(p => {
     if (q && !(p.title + p.summary + p.tags.join(' ') + p.category).toLowerCase().includes(q.toLowerCase())) return false;
     if (category && p.category !== category) return false;
-    if (status && p.status !== status) return false;
     if (channel && !p.channel.includes(channel)) return false;
     if (tag && !p.tags.includes(tag)) return false;
     return true;
@@ -1950,24 +4605,21 @@ function Library({ patterns, filters, setFilters, onOpen }) {
     </div>
   );
 
-  const production = window.Patterns.filter(p => p.status === 'Production').length;
-  const beta = window.Patterns.filter(p => p.status === 'Beta').length;
-
   return (
     <div>
       <div className="page-head">
-        <div className="eyebrow">Grace · AI Appointment Management</div>
+        <div className="eyebrow">Grace 2.0 · AI Appointment Management</div>
         <h1 className="page-title">Conversation Pattern Library</h1>
         <p className="page-desc">
-          Documented, versioned conversational flows for Grace — the AI voice agent handling appointment verification, scheduling, and clinical safety at Ascension.
+          One working library for Grace 2.0 voice flows — verify, cancel, schedule and reschedule — plus the shared rules and SMS spec they depend on. Corrected draft for review, June 2026.
         </p>
       </div>
 
       <div className="stats-row">
-        {stat('Patterns', window.Patterns.length, 'across 5 categories')}
-        {stat('Production', production, 'live in all regions')}
-        {stat('Beta', beta, 'limited rollout')}
-        {stat('Coverage', '91.3%', 'of inbound call intents')}
+        {stat('Active flows', window.Patterns.length, 'verify · cancel · schedule · reschedule')}
+        {stat('Last updated', 'June 2026', 'corrections applied to the library')}
+        {stat('Phase 1 scope', 'Primary Care', 'Cardiovascular in Phase 2')}
+        {stat('Escalation path', 'Care Navigator', 'DECISION L · shared by all flows')}
       </div>
 
       <div className="filter-bar">
@@ -1975,7 +4627,6 @@ function Library({ patterns, filters, setFilters, onOpen }) {
           <Icon name="filter" size={11} style={{ marginRight: 4 }} /> Filter
         </strong>
         <Dropdown label={category || 'Category'} active={!!category} options={['', ...allCats]} onChange={v => setFilters({ ...filters, category: v })} />
-        <Dropdown label={status || 'Status'} active={!!status} options={['', ...allStatuses]} onChange={v => setFilters({ ...filters, status: v })} />
         <Dropdown label={channel || 'Channel'} active={!!channel} options={['', ...allChannels]} onChange={v => setFilters({ ...filters, channel: v })} />
         {tag && (
           <button className="chip on" onClick={() => setFilters({ ...filters, tag: '' })}>
@@ -2004,8 +4655,7 @@ function Library({ patterns, filters, setFilters, onOpen }) {
               <div className="card-head">
                 <span className="card-badge">{p.flowType}</span>
                 <span className="card-status">
-                  <span className={`status-dot ${p.status.toLowerCase()}`}></span>
-                  {p.status} · v{p.version}
+                  v{p.version}
                 </span>
               </div>
               <div>
@@ -2117,8 +4767,6 @@ function Compare({ patterns }) {
         <div className="c-head">{a.title}</div>
         <div className="c-head">{b.title}</div>
         <Row label="Category" a={a.category} b={b.category} />
-        <Row label="Status" a={<><span className={`status-dot ${a.status.toLowerCase()}`} style={{ display: 'inline-block', marginRight: 6 }}></span>{a.status}</>}
-                            b={<><span className={`status-dot ${b.status.toLowerCase()}`} style={{ display: 'inline-block', marginRight: 6 }}></span>{b.status}</>} />
         <Row label="Version" a={<code style={{ fontFamily: 'var(--font-mono)', fontSize: 12.5 }}>{a.version}</code>} b={<code style={{ fontFamily: 'var(--font-mono)', fontSize: 12.5 }}>{b.version}</code>} />
         <Row label="Owner" a={a.owner} b={b.owner} />
         <Row label="Avg duration" a={a.avgDuration} b={b.avgDuration} />
@@ -2130,7 +4778,7 @@ function Compare({ patterns }) {
         <Row label="Tags" a={<div className="card-tags">{a.tags.map(t => <span className="tag" key={t}>{t}</span>)}</div>} b={<div className="card-tags">{b.tags.map(t => <span className="tag" key={t}>{t}</span>)}</div>} />
         <Row label="When to use" a={a.whenToUse} b={b.whenToUse} />
         <Row label="Summary" a={a.summary} b={b.summary} />
-        <Row label="Primary KPI"
+        <Row label="Key parameter"
              a={<div><div style={{ fontFamily: 'var(--font-display)', fontSize: 22 }}>{a.metrics[0].value}</div><div style={{ fontSize: 12, color: 'var(--text-subtle)' }}>{a.metrics[0].label}</div></div>}
              b={<div><div style={{ fontFamily: 'var(--font-display)', fontSize: 22 }}>{b.metrics[0].value}</div><div style={{ fontSize: 12, color: 'var(--text-subtle)' }}>{b.metrics[0].label}</div></div>} />
       </div>
@@ -2141,92 +4789,165 @@ function Compare({ patterns }) {
 window.Library = Library;
 window.Compare = Compare;
 </script>
-<script type="text/babel">// Tokens + design system view (shows the design system itself)
-function Tokens() {
-  const brandGroups = [
-    { name: 'Primary', colors: [
-      { label: 'Ascension Blue', hex: '#1B4297', key: 'ascensionBlue' },
-      { label: 'Medium Blue', hex: '#1E69D2', key: 'mediumBlue' },
-      { label: 'Violet', hex: '#B40F87', key: 'violet' },
-      { label: 'Green', hex: '#009498', key: 'green' },
-    ]},
-    { name: 'Secondary', colors: [
-      { label: 'Soft Tan', hex: '#E8D9B8', key: 'softTan' },
-      { label: 'Orange', hex: '#E87722', key: 'orange' },
-      { label: 'Gold', hex: '#D4A017', key: 'gold' },
-    ]},
+
+<script type="text/babel">// Shared components — Shared Rules + SMS Spec views (Grace 2.0 Flow Library)
+function SharedRules() {
+  const openings = [
+    ['No sub-intent (cold open)', 'This is Grace, an AI-powered assistant ready to help with scheduling, rescheduling, canceling and verifying appointments. What do you need to do today?'],
+    ['Verify intent captured', 'This is Grace, an AI-powered assistant. Ready to check on that appointment, or were you calling about something else?'],
+    ['Cancel intent captured', 'This is Grace, an AI-powered assistant. Ready to help cancel an appointment, or was the call about something else?'],
+    ['Schedule intent captured', 'This is Grace, an AI-powered assistant. Ready to help with that new appointment, or was the call about something else?'],
+    ['Reschedule intent captured', 'This is Grace, an AI-powered assistant. Ready to help reschedule that appointment, or was the call about something else?'],
+  ];
+  const attempts = [
+    ['Attempt 1 — name + DOB in one turn', '“To pull up your record, what\u2019s your name and date of birth?” DOB accepted via speech or keypad — 6-digit (MMDDYY) or 8-digit (MMDDYYYY). No readback on the first attempt.'],
+    ['Attempt 2 — readback or format retry', 'No match: “That didn\u2019t match a record. The name was [captured name] and the date was [captured date]. Want to try again?” · Wrong format: “That date didn\u2019t come through. Try again. Say the date, or enter 6 digits like 022890, or 8 digits like 02281990.”'],
+    ['Attempt 3 — DOB only, name held', '“Your information isn\u2019t coming up. Let\u2019s try one more time. You can speak or enter your date of birth on the keypad.” No readback. Both input modes stay open.'],
+    ['After three failures', 'Transfer to a Care Navigator. No fourth attempt under any condition. Multi-patient phones are out of V1 self-service scope and transfer immediately.'],
+  ];
+  const triggers = ['Agent', 'Operator', 'Help'];
+  const signals = ['Distress', 'Repeated frustration', 'Unclear intent after allowed retry', 'Unsupported request', 'System error', 'Workflow dead end'];
+  const flags = [
+    ['completed_task', 'true after a successful verify, cancellation, booking or reschedule'],
+    ['incomplete_task', 'true after an abandoned task or unsupported continuation'],
+    ['out_of_scope', 'true after an unsupported or redirected intent'],
+  ];
+  const contextItems = ['Intent', 'Authentication state', 'Selected appointment', 'Appointments returned', 'Slot history', 'Preferences captured', 'Last action taken', 'Triage state (when present)'];
+  const openItems = [
+    'Emergency wording still needs compliance approval. Current direction: offer emergency care as an option, not a directive, then confirm the caller is safe to continue.',
+    '“On Behalf Of” flow is still pending. Until it ships, proxy caller and patient-switch cases transfer to a Care Navigator.',
+    'Confirm engineering can support the date-of-birth-only third attempt while holding the captured name from the prior attempt.',
+    'Date format rule: if the appointment is more than a year away, say the year or “next year.” Otherwise use the Wed Dec 31 format.',
+    'Schedule and Reschedule now include the elimination-reason guardrail: do not speak Dash elimination reasons to callers. Log internally.',
+    'Cancel now includes the Phase 1 scope check before offering reschedule.',
   ];
 
   return (
     <div>
       <div className="page-head">
-        <div className="eyebrow">Foundations</div>
-        <h1 className="page-title">Design tokens</h1>
-        <p className="page-desc">The underlying color, type, and spacing system used throughout the library. Secondary colors include derived tints 50–900 used across charts, statuses, and illustration.</p>
+        <div className="eyebrow">Shared Components</div>
+        <h1 className="page-title">Shared rules</h1>
+        <p className="page-desc">These rules apply across all Grace voice flows unless a flow states a tighter rule — openings, authentication, proxy callers, global escalation, survey logic, transfer logic and end states.</p>
       </div>
 
       <div className="section">
-        <h2 className="section-title"><span className="section-num">01</span>Type</h2>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
-          <div className="side-card">
-            <h5>Display · Source Serif 4</h5>
-            <div style={{ fontFamily: 'var(--font-display)', fontSize: 42, fontWeight: 500, letterSpacing: '-0.02em', lineHeight: 1.05 }}>
-              The quick brown fox
-            </div>
-            <div style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--text-subtle)', marginTop: 12 }}>weights: 400, 500 · tracking: -0.02em</div>
+        <h2 className="section-title"><span className="section-num">01</span>Voice and tone</h2>
+        <div className="two-col">
+          <div className="note-card good">
+            <h4><Icon name="check" size={12} /> Always</h4>
+            <p>Lead with what Grace can do. Use “you” and “your” when speaking to the caller. Keep language around a seventh-grade reading level. The opening line is the one allowed exception to the pronoun rule, because Grace identifies itself by name.</p>
           </div>
-          <div className="side-card">
-            <h5>Body · Source Sans 3 <span style={{ opacity: 0.6 }}>(Whitney stand-in)</span></h5>
-            <div style={{ fontSize: 17, lineHeight: 1.5 }}>
-              The quick brown fox jumps over the lazy dog. 0123456789
-            </div>
-            <div style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--text-subtle)', marginTop: 12 }}>weights: 400, 500, 600, 700</div>
+          <div className="note-card bad">
+            <h4><Icon name="x" size={12} /> Never</h4>
+            <p>No first-person pronouns in conversation: no “I,” “me” or “my.” Avoid “I understand,” “I’m sorry,” “I hope,” feeling claims and medical advice.</p>
           </div>
         </div>
       </div>
 
-      {brandGroups.map(g => (
-        <div key={g.name} className="section">
-          <h2 className="section-title"><span className="section-num">{g.name === 'Primary' ? '02' : '03'}</span>{g.name} color</h2>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-            {g.colors.map(c => {
-              const s = window.Tokens.scales[c.key];
-              return (
-                <div key={c.key}>
-                  <div style={{ display: 'flex', alignItems: 'baseline', gap: 12, marginBottom: 8 }}>
-                    <strong style={{ fontFamily: 'var(--font-display)', fontSize: 17, fontWeight: 500 }}>{c.label}</strong>
-                    <code style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--text-subtle)' }}>{c.hex}</code>
-                  </div>
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(10, 1fr)', gap: 4, borderRadius: 6, overflow: 'hidden' }}>
-                    {Object.entries(s).map(([step, hex]) => (
-                      <div key={step} style={{ background: hex, padding: '18px 10px', display: 'flex', flexDirection: 'column', gap: 4, color: Number(step) > 400 ? 'white' : 'rgba(0,0,0,0.75)' }}>
-                        <div style={{ fontSize: 11, fontWeight: 600 }}>{step}</div>
-                        <div style={{ fontFamily: 'var(--font-mono)', fontSize: 10, opacity: 0.8 }}>{hex.toUpperCase()}</div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+      <div className="section">
+        <h2 className="section-title"><span className="section-num">02</span>Standard openings</h2>
+        <p className="section-lead">Genesys may or may not pass a captured sub-intent. The open branches on that signal.</p>
+        <div className="edge-list">
+          {openings.map(([label, text]) => (
+            <div key={label} className="edge-item">
+              <div className="edge-title">{label}</div>
+              <div className="edge-behavior">“{text}”</div>
+            </div>
+          ))}
         </div>
-      ))}
+      </div>
 
       <div className="section">
-        <h2 className="section-title"><span className="section-num">04</span>Status semantics</h2>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12 }}>
-          {[
-            ['Production', 'production', 'Live in all regions'],
-            ['Beta', 'beta', 'Limited rollout · telemetry collection'],
-            ['Draft', 'draft', 'In design review'],
-            ['Deprecated', 'deprecated', 'Scheduled for removal'],
-          ].map(([label, cls, desc]) => (
-            <div key={cls} className="metric">
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <span className={`status-dot ${cls}`} style={{ width: 10, height: 10 }}></span>
-                <strong>{label}</strong>
-              </div>
-              <div style={{ fontSize: 13, color: 'var(--text-muted)', marginTop: 6 }}>{desc}</div>
+        <h2 className="section-title"><span className="section-num">03</span>Authentication</h2>
+        <p className="section-lead">Name and DOB collected in one turn. Three failed attempts total escalates to a Care Navigator.</p>
+        <div className="edge-list">
+          {attempts.map(([label, text]) => (
+            <div key={label} className="edge-item">
+              <div className="edge-title">{label}</div>
+              <div className="edge-behavior">{text}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="section">
+        <h2 className="section-title"><span className="section-num">04</span>Proxy callers and global escalation</h2>
+        <div className="two-col">
+          <div className="note-card">
+            <h4>Proxy caller or patient switch — V1</h4>
+            <p>If the call is for another patient at session start, transfer: “Calls for another patient need a Care Navigator. Connecting you now.” A patient switch after authentication exits the current step; until the On Behalf Of flow ships, transfer. Carry forward only call metadata for the new patient subject — never the original patient context.</p>
+          </div>
+          <div className="note-card">
+            <h4>Approved trigger set — route immediately</h4>
+            <p style={{ marginBottom: 10 }}>At any point, these words route straight to DECISION L:</p>
+            <div className="card-tags" style={{ marginBottom: 10 }}>
+              {triggers.map(t => <span key={t} className="tag" style={{ background: 'var(--accent-soft)', color: 'var(--accent-ink)', fontWeight: 600 }}>“{t}”</span>)}
+            </div>
+            <div className="card-tags">
+              {signals.map(s => <span key={s} className="tag">{s}</span>)}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="section">
+        <h2 className="section-title"><span className="section-num">05</span>Closing check and survey eligibility</h2>
+        <p className="section-lead">“Is there anything else needed today?” — if yes, capture the next intent, route to the matching flow, then return to the same closing check. If no, run survey eligibility.</p>
+        <div className="edge-list">
+          <div className="edge-item">
+            <div className="edge-title">Survey-eligible closing</div>
+            <div className="edge-behavior">“Thank you for choosing Ascension, [first name]. To help improve this experience, please share your thoughts in a brief survey. Connecting you now.” Fires only when every task in the session completed cleanly — no human handoff, no out-of-scope intent.</div>
+          </div>
+          <div className="edge-item">
+            <div className="edge-title">Non-survey closing</div>
+            <div className="edge-behavior">“Thank you for choosing Ascension, [first name].”</div>
+          </div>
+          {flags.map(([k, v]) => (
+            <div key={k} className="edge-item">
+              <div className="edge-title" style={{ fontFamily: 'var(--font-mono)', fontSize: 13 }}>{k}</div>
+              <div className="edge-behavior">{v}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="section">
+        <h2 className="section-title"><span className="section-num">06</span>Transfer and after-hours end states</h2>
+        <p className="section-lead">DECISION L — transfer to Care Navigator. Check if within open hours.</p>
+        <div className="two-col">
+          <div className="note-card good">
+            <h4>ESCALATE-LIVE END · within hours</h4>
+            <p>“A Care Navigator can help with this. Connecting you now.” Pass session context so the Care Navigator does not start over. No survey.</p>
+          </div>
+          <div className="note-card bad">
+            <h4>ESCALATE-AFTERHOURS END</h4>
+            <p>“To finish this, please call back during normal business hours when a Care Navigator can help. Thank you for choosing Ascension.” End call. No transfer, no survey.</p>
+          </div>
+        </div>
+        <div style={{ marginTop: 14 }}>
+          <div style={{ fontSize: 11, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--text-subtle)', fontWeight: 600, marginBottom: 8 }}>Session context passed on live transfer</div>
+          <div className="card-tags">
+            {contextItems.map(c => <span key={c} className="tag">{c}</span>)}
+          </div>
+        </div>
+      </div>
+
+      <div className="section">
+        <h2 className="section-title"><span className="section-num">07</span>Emergency handling</h2>
+        <div className="note-card bad">
+          <h4><Icon name="alert" size={12} /> Schedule and Reschedule use Dash triage</h4>
+          <p>If Dash returns an emergency response, go to EMERGENCY END. Offer emergency care as an option, not a directive, and confirm the caller is safe to continue before any further scheduling action. <strong>Final wording is pending compliance review.</strong></p>
+        </div>
+      </div>
+
+      <div className="section">
+        <h2 className="section-title"><span className="section-num">08</span>Open items</h2>
+        <p className="section-lead">Items that stay visible until compliance, product or engineering confirms them.</p>
+        <div className="edge-list">
+          {openItems.map((item, i) => (
+            <div key={i} className="edge-item" style={{ gridTemplateColumns: '60px 1fr' }}>
+              <div className="edge-title" style={{ fontFamily: 'var(--font-mono)', fontSize: 12.5, color: 'var(--brand-gold)' }}>OI-{i + 1}</div>
+              <div className="edge-behavior">{item}</div>
             </div>
           ))}
         </div>
@@ -2235,16 +4956,145 @@ function Tokens() {
   );
 }
 
-window.Tokens_View = Tokens;
+function SMSSpec() {
+  const conventions = [
+    ['Date', 'Wed Dec 31 — abbreviated day + month, numeric date, no comma, no year unless 1+ year away'],
+    ['Time', '10:20am — 12-hour, lowercase am/pm, no space'],
+    ['Provider', '[first] [last], [credential] — no “Dr.” prefix'],
+    ['Facility', 'Full name as returned from Dash'],
+    ['Address', 'Full street address, no zip'],
+    ['City', 'Sentence case, no state'],
+    ['Map link', '[vanity_map]'],
+    ['Provider profile', '[vanity_provider]'],
+  ];
+  const flows = [
+    {
+      name: 'Verify SMS', accent: 'mediumBlue', count: 'Two messages per appointment',
+      msgs: [
+        ['Message 1 of 2', 'Thank you for calling Ascension to request a one-time message regarding your appointment: [provider_full], [date] at [time]. (1/2)'],
+        ['Message 2 of 2', 'Location: [facility_name], [street_address], [city]. For a map, visit [vanity_map]. For info on your provider, [vanity_provider]. (2/2)'],
+        ['Message 2 · long-content fallback', 'Location: [facility_name]. For a map, visit [vanity_map]. For info on your provider, [vanity_provider]. (2/2)', true],
+      ],
+      note: 'Multi-appointment: one independent two-message set per appointment, chronological order matching voice readback. Do not number across all messages as (1/4) through (4/4).',
+    },
+    {
+      name: 'Cancel SMS', accent: 'violet', count: 'One message',
+      msgs: [
+        ['Single message', 'Here is a one-time confirmation of your cancellation with [provider_full]. To book a new appointment, visit ascension.org or use the Ascension One app.'],
+        ['Example', 'Here is a one-time confirmation of your cancellation with Steve Paulsen, MD. To book a new appointment, visit ascension.org or use the Ascension One app.', true],
+      ],
+      note: 'Cancel identifies Ascension through ascension.org and the Ascension One app in the same message. Verbal fallback: “The text isn\u2019t going through right now. The cancellation is confirmed: the appointment on [date] at [time] with [provider_full] is canceled.”',
+    },
+    {
+      name: 'Schedule SMS', accent: 'green', count: 'Two messages',
+      msgs: [
+        ['Message 1 of 2', 'Thank you for calling Ascension to request a one-time message regarding your appointment: [provider_full], [date] at [time]. (1/2)'],
+        ['Message 2 of 2', 'Location: [facility_name], [street_address], [city]. For a map, visit [vanity_map]. For info on your provider, [vanity_provider]. (2/2)'],
+      ],
+      note: 'Voice offer: “A confirmation can be sent by text with a map to the facility and a link to [provider_full]\u2019s profile. Send it now?” First-visit branching removed — every caller gets both links.',
+    },
+    {
+      name: 'Reschedule SMS', accent: 'ascensionBlue', count: 'Two messages',
+      msgs: [
+        ['Message 1 of 2', 'Thank you for calling Ascension to request a one-time message regarding your rescheduled appointment: [provider_full], [date] at [time]. (1/2)'],
+        ['Message 1 · fallback (provider name > 28 chars)', 'Thank you for calling Ascension to request a one-time message regarding your appointment: [provider_full], [date] at [time]. (1/2)', true],
+        ['Message 2 of 2', 'Location: [facility_name], [street_address], [city]. For a map, visit [vanity_map]. For info on your provider, [vanity_provider]. (2/2)'],
+      ],
+      note: 'Message 1 names the rescheduled appointment when provider name length allows it. Use the fallback when [provider_full] exceeds 28 characters.',
+    },
+  ];
+
+  return (
+    <div>
+      <div className="page-head">
+        <div className="eyebrow">Shared Components</div>
+        <h1 className="page-title">SMS spec</h1>
+        <p className="page-desc">Message templates, character rules, fallback rules and send-failure handling for Verify, Cancel, Schedule and Reschedule.</p>
+      </div>
+
+      <div className="section">
+        <h2 className="section-title"><span className="section-num">01</span>Shared rules</h2>
+        <div className="two-col">
+          <div className="note-card">
+            <h4>Message structure</h4>
+            <p>160 characters per individual message. Verify, Schedule and Reschedule use two purposeful messages by default; Cancel uses one. Two-message sends end with (1/2) and (2/2). Verify, Schedule and Reschedule name Ascension in Message 1.</p>
+          </div>
+          <div className="note-card">
+            <h4>Copy rules</h4>
+            <p>SMS copy is declarative, neutral and confirmational. No emoji. Consent and opt-out are handled by Ascension’s SMS program. For Message 2, when filled length exceeds 160, drop street address and city — the map URL encodes both.</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="section">
+        <h2 className="section-title"><span className="section-num">02</span>Format conventions</h2>
+        <div className="edge-list">
+          {conventions.map(([k, v]) => (
+            <div key={k} className="edge-item">
+              <div className="edge-title">{k}</div>
+              <div className="edge-behavior">{v}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="section">
+        <h2 className="section-title"><span className="section-num">03</span>Templates</h2>
+        <p className="section-lead">Character counts shown are for the unfilled template; filled messages must stay within 160 characters.</p>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(420px, 1fr))', gap: 18 }}>
+          {flows.map(f => (
+            <div key={f.name} className="simulator" data-accent={f.accent}>
+              <div className="sim-head">
+                <div className="sim-head-left">
+                  <Icon name="sms" size={14} />
+                  <strong style={{ color: 'var(--text)' }}>{f.name}</strong>
+                </div>
+                <span style={{ fontSize: 11.5, color: 'var(--text-subtle)', fontFamily: 'var(--font-mono)' }}>{f.count}</span>
+              </div>
+              <div className="sim-body" style={{ minHeight: 0, gap: 16 }}>
+                {f.msgs.map(([tag, text, fallback]) => (
+                  <div key={tag} style={{ display: 'flex', flexDirection: 'column', gap: 5, alignItems: 'flex-start' }}>
+                    <span style={{ fontSize: 10.5, textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600, color: fallback ? 'var(--brand-orange)' : 'var(--text-subtle)' }}>
+                      {tag} · {text.length} chars
+                    </span>
+                    <div className="bubble grace" style={fallback ? { background: 'var(--bg-elev)', color: 'var(--text)', border: '1px dashed var(--border-strong)', animation: 'none' } : { animation: 'none' }}>{text}</div>
+                  </div>
+                ))}
+                <div style={{ fontSize: 12.5, color: 'var(--text-subtle)', lineHeight: 1.5, borderTop: '1px solid var(--border)', paddingTop: 12 }}>{f.note}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="section">
+        <h2 className="section-title"><span className="section-num">04</span>Send failure handling</h2>
+        <div className="edge-list">
+          <div className="edge-item">
+            <div className="edge-title">1 · Initial send fails</div>
+            <div className="edge-behavior">Retry once. For two-message sends, retry only the failed message or messages.</div>
+          </div>
+          <div className="edge-item">
+            <div className="edge-title">2 · Retry also fails</div>
+            <div className="edge-behavior">Grace gives a verbal fallback before the closing check, recapping only the appointment details whose SMS failed.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+window.SharedRules = SharedRules;
+window.SMSSpec = SMSSpec;
 </script>
 <script type="text/babel">// Main app shell
 const { useMemo } = React;
 
 const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
   "theme": "light",
-  "accent": "violet",
+  "accent": "ascensionBlue",
   "density": "comfortable",
-  "card": "bordered",
+  "card": "shadowed",
   "layout": "sidebar"
 }/*EDITMODE-END*/;
 
@@ -2292,10 +5142,10 @@ function TweaksPanel({ tweaks, setTweaks }) {
           <span className="tweak-label">Accent</span>
           <div className="swatches">
             {[
-              ['ascensionBlue', '#1B4297'],
+              ['ascensionBlue', '#0F3C97'],
               ['mediumBlue', '#1E69D2'],
-              ['violet', '#B40F87'],
-              ['green', '#009498'],
+              ['violet', '#9A0A81'],
+              ['green', '#00806D'],
             ].map(([k, hex]) => (
               <button key={k} className={`swatch ${tweaks.accent === k ? 'on' : ''}`}
                 style={{ background: hex }} onClick={() => setK('accent', k)} title={k} />
@@ -2322,8 +5172,14 @@ function TweaksPanel({ tweaks, setTweaks }) {
 function App() {
   const [tweaks, setTweaks] = useTweaks();
   const [editMode, setEditMode] = useState(false);
-  const [view, setView] = useState(() => localStorage.getItem('cpl_view') || 'library');
-  const [openId, setOpenId] = useState(() => localStorage.getItem('cpl_open') || null);
+  const [view, setView] = useState(() => {
+    const v = localStorage.getItem('cpl_view') || 'library';
+    return ['library', 'compare', 'shared', 'sms', 'detail'].includes(v) ? v : 'library';
+  });
+  const [openId, setOpenId] = useState(() => {
+    const v = localStorage.getItem('cpl_open');
+    return v && window.Patterns.some(p => p.id === v) ? v : null;
+  });
   const [filters, setFilters] = useState({ q: '', category: '', status: '', channel: '', tag: '' });
 
   useEffect(() => { localStorage.setItem('cpl_view', view); }, [view]);
@@ -2358,10 +5214,17 @@ function App() {
   const patterns = window.Patterns;
   const currentPattern = patterns.find(p => p.id === openId);
 
+  useEffect(() => {
+    if (view === 'detail' && !currentPattern) { setView('library'); setOpenId(null); }
+  }, [view, currentPattern]);
+
   const navItems = [
     { id: 'library', label: 'Pattern library', icon: 'grid', count: patterns.length },
     { id: 'compare', label: 'Compare', icon: 'compare' },
-    { id: 'tokens', label: 'Design tokens', icon: 'layers' },
+  ];
+  const sharedItems = [
+    { id: 'shared', label: 'Shared rules', icon: 'shield' },
+    { id: 'sms', label: 'SMS spec', icon: 'sms' },
   ];
 
   const renderNav = (topnav) => (
@@ -2387,18 +5250,36 @@ function App() {
           ))}
         </div>
         <div className="nav-section">
-          <div className="nav-label">Governance</div>
-          <button className="nav-item"><Icon name="shield" size={15} />Compliance</button>
-          <button className="nav-item"><Icon name="book" size={15} />Changelog</button>
+          <div className="nav-label">Shared components</div>
+          {sharedItems.map(n => (
+            <button key={n.id} className={`nav-item ${view === n.id ? 'active' : ''}`} onClick={() => { setView(n.id); setOpenId(null); }}>
+              <Icon name={n.icon} size={15} />
+              <span>{n.label}</span>
+            </button>
+          ))}
+        </div>
+        <div className="nav-section">
+          <div className="nav-label">Resources</div>
+          <a className="nav-item" href="https://helix.ascension.org/6e5694746/p/116b76-conversation-design" target="_blank" rel="noopener" style={{ textDecoration: 'none', alignItems: 'flex-start' }}>
+            <Icon name="book" size={15} />
+            <span style={{ flex: 1, lineHeight: 1.35 }}>
+              Conversation Design Standards
+              <span style={{ display: 'block', fontSize: 11.5, color: 'var(--text-subtle)', fontFamily: 'var(--font-mono)', marginTop: 2 }}>helix.ascension.org</span>
+            </span>
+            <span style={{ marginTop: 2 }}><Icon name="outbound" size={12} /></span>
+          </a>
         </div>
       </>}
       {topnav && (
         <div className="topbar-nav">
-          {navItems.map(n => (
+          {[...navItems, ...sharedItems].map(n => (
             <button key={n.id} className={`topbar-nav-item ${view === n.id && !openId ? 'active' : ''}`} onClick={() => { setView(n.id); setOpenId(null); }}>
               {n.label}
             </button>
           ))}
+          <a className="topbar-nav-item" href="https://helix.ascension.org/6e5694746/p/116b76-conversation-design" target="_blank" rel="noopener" style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 5 }}>
+            Helix standards <Icon name="outbound" size={11} />
+          </a>
         </div>
       )}
     </>
@@ -2452,7 +5333,8 @@ function App() {
       <main>
         {view === 'library' && !openId && <Library patterns={patterns} filters={filters} setFilters={setFilters} onOpen={open} />}
         {view === 'compare' && <Compare patterns={patterns} />}
-        {view === 'tokens' && <Tokens_View />}
+        {view === 'shared' && <SharedRules />}
+        {view === 'sms' && <SMSSpec />}
         {view === 'detail' && currentPattern && <Detail pattern={currentPattern} onBack={back} onOpen={open} />}
       </main>
 
