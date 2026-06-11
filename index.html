@@ -927,6 +927,38 @@ h1.page-title {
 .edge-item .edge-title { font-weight: 600; color: var(--text); }
 .edge-item .edge-behavior { color: var(--text-muted); font-size: 14.5px; line-height: 1.5; }
 
+/* Search citations */
+.cite-list { display: flex; flex-direction: column; gap: 10px; }
+.cite-item {
+  display: grid;
+  grid-template-columns: 250px 1fr;
+  gap: 16px;
+  align-items: start;
+  padding: 12px 16px;
+  background: var(--card-bg);
+  border: var(--card-border);
+  border-radius: 14px;
+  box-shadow: var(--card-shadow);
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+  color: inherit;
+  width: 100%;
+  transition: border-color 0.15s ease;
+}
+.cite-item:hover { border-color: var(--accent); }
+.cite-source { display: flex; align-items: center; font-weight: 600; font-size: 13.5px; color: var(--text); }
+.cite-where { font-family: var(--font-mono); font-size: 11.5px; color: var(--text-subtle); margin-top: 4px; line-height: 1.45; overflow-wrap: anywhere; }
+.cite-text { color: var(--text-muted); font-size: 14px; line-height: 1.55; overflow-wrap: anywhere; }
+.cite-text mark { background: var(--accent-soft); color: var(--accent-ink); font-weight: 600; padding: 0 3px; border-radius: 3px; }
+
+/* Flash highlight when a citation deep-links to an entry */
+@keyframes citeFlash {
+  0%, 35% { background-color: var(--accent-soft); box-shadow: 0 0 0 3px var(--accent-soft); }
+  100% { background-color: transparent; box-shadow: 0 0 0 3px transparent; }
+}
+.cite-flash { animation: citeFlash 2.4s ease-out both; border-radius: 10px; }
+
 /* Compliance */
 .compliance-list { padding-left: 20px; margin: 0; color: var(--text-muted); }
 .compliance-list li { margin-bottom: 6px; line-height: 1.5; }
@@ -1078,6 +1110,7 @@ h1.page-title {
   .detail-side { position: static; }
   .compare { grid-template-columns: 1fr; }
   .edge-item { grid-template-columns: 1fr; gap: 6px; }
+  .cite-item { grid-template-columns: 1fr; gap: 8px; }
   .two-col { grid-template-columns: 1fr; }
 }
 
@@ -1109,7 +1142,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 
-<script>// Pattern library data — Grace 2.0 Flow Library (corrected draft, June 2026).
+<script>// Pattern library data — Grace 2.0 Flow Library.
 window.Patterns = [
   {
     "id": "verify",
@@ -3479,7 +3512,7 @@ window.FlowSpecs.schedule = [
   "id": "STEP 14",
   "title": "Offer SMS Confirmation",
   "say": "A confirmation can be sent by text with a map to the facility and a link to [provider_full]'s profile. Send it now?",
-  "body": "Corrected from the old 14A–14D branching. Every caller gets both the facility map link and the provider profile link."
+  "body": "Every caller gets both the facility map link and the provider profile link."
  },
  {
   "t": "decision",
@@ -4130,6 +4163,7 @@ const Icon = ({ name, size = 16, className = 'icon' }) => {
     filter: <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>,
     download: <><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></>,
     check: <polyline points="20 6 9 17 4 12"/>,
+    info: <><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></>,
   };
   return (
     <svg className={className} viewBox="0 0 24 24" width={size} height={size} style={{ width: size, height: size }}>
@@ -4396,7 +4430,7 @@ function FlowSpec({ items }) {
         }
         const c = badgeStyles[it.t] || badgeStyles.step;
         return (
-          <div key={i} style={{ display: 'flex', flexWrap: 'wrap', gap: '6px 16px', padding: '11px 24px', alignItems: 'flex-start' }}>
+          <div key={i} data-cite-anchor={'spec-' + i} style={{ display: 'flex', flexWrap: 'wrap', gap: '6px 16px', padding: '11px 24px', alignItems: 'flex-start' }}>
             <div style={{ flex: '0 0 140px', maxWidth: '100%' }}>
               <span style={{ fontFamily: 'var(--font-mono)', fontSize: 11.5, fontWeight: 500, letterSpacing: '0.03em', padding: '3px 10px', borderRadius: 100, background: c.bg, color: c.fg, whiteSpace: 'nowrap', display: 'inline-block', marginTop: 1 }}>{it.id}</span>
             </div>
@@ -4423,7 +4457,88 @@ function FlowSpec({ items }) {
   );
 }
 
-function Detail({ pattern, onBack, onOpen }) {
+// Scroll to an anchored entry and flash it (smooth, with instant fallback where smooth is ignored)
+function scrollToCiteAnchor(a) {
+  const el = document.querySelector('[data-cite-anchor="' + a + '"]');
+  if (!el) return;
+  const y = Math.max(0, el.getBoundingClientRect().top + window.pageYOffset - 96);
+  const startY = window.pageYOffset;
+  window.scrollTo({ top: y, behavior: 'smooth' });
+  setTimeout(() => {
+    if (Math.abs(window.pageYOffset - startY) < 4 && Math.abs(startY - y) > 4) {
+      window.scrollTo(0, Math.max(0, el.getBoundingClientRect().top + window.pageYOffset - 96));
+    }
+  }, 350);
+  el.classList.add('cite-flash');
+  setTimeout(() => el.classList.remove('cite-flash'), 2600);
+}
+
+// Build and download a Markdown spec for one pattern
+function exportPatternSpec(pattern) {
+  const spec = (window.FlowSpecs || {})[pattern.id] || [];
+  const L = [];
+  L.push('# ' + pattern.title);
+  L.push('');
+  L.push('Grace 2.0 Conversation Pattern Library — pattern spec');
+  L.push('Version ' + pattern.version + ' · updated ' + pattern.updated + ' · owner: ' + pattern.owner);
+  L.push('Category: ' + pattern.category + ' · Channels: ' + pattern.channel.join(' + ') + ' · Tags: ' + pattern.tags.join(', '));
+  L.push('');
+  L.push('## Summary');
+  L.push(pattern.summary);
+  L.push('');
+  L.push('## When to use');
+  L.push(pattern.whenToUse);
+  L.push('');
+  L.push('## When not to use');
+  L.push(pattern.whenNotToUse);
+  L.push('');
+  L.push('## Operating parameters');
+  (pattern.metrics || []).forEach(m => L.push('- ' + m.label + ': ' + m.value + (m.note ? ' (' + m.note + ')' : '')));
+  L.push('');
+  L.push('## Full flow');
+  L.push('');
+  spec.forEach(s => {
+    if (s.t === 'div') { L.push('---'); L.push(''); return; }
+    L.push('### ' + [s.id, s.title].filter(Boolean).join(' — '));
+    if (s.say) L.push('> “' + s.say + '”');
+    if (s.says) s.says.forEach(pair => L.push('> ' + pair[0] + ': “' + pair[1] + '”'));
+    if (s.body) L.push(s.body);
+    if (s.branches) s.branches.flat(Infinity).forEach(b => L.push('- → ' + b));
+    L.push('');
+  });
+  L.push('## Sample transcript');
+  (pattern.transcript || []).forEach(t => {
+    L.push('- ' + (t.speaker === 'grace' ? 'Grace' : 'Caller') + ': “' + t.text + '”' + (t.note ? ' _(' + t.note + ')_' : ''));
+  });
+  L.push('');
+  L.push('## Edge cases & failure modes');
+  (pattern.edgeCases || []).forEach(e => L.push('- **' + e.title + '** — ' + e.behavior));
+  L.push('');
+  L.push('## Compliance notes');
+  (pattern.compliance || []).forEach(c => L.push('- ' + c));
+  L.push('');
+  L.push('## Changelog');
+  (pattern.changelog || []).forEach(c => L.push('- v' + c.version + ' (' + c.date + '): ' + c.note));
+  L.push('');
+  const blob = new Blob([L.join('\n')], { type: 'text/markdown' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = pattern.id + '-pattern-spec-v' + pattern.version + '.md';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+function Detail({ pattern, onBack, onOpen, onCompare, anchorReq }) {
+  // Deep-link from a search citation: scroll to the cited entry and flash it.
+  useEffect(() => {
+    if (!anchorReq || !anchorReq.a) return;
+    const t = setTimeout(() => scrollToCiteAnchor(anchorReq.a), 150);
+    return () => clearTimeout(t);
+  }, [anchorReq]);
+
   const MetricDelta = ({ d }) => {
     if (d === 'new') return <span className="metric-delta flat"><Icon name="minus" size={10}/>new</span>;
     const up = d.startsWith('+') || d.startsWith('-') && (d.includes('turns') || d.includes('sec'));
@@ -4465,7 +4580,7 @@ function Detail({ pattern, onBack, onOpen }) {
 
         <div className="section">
           <h2 className="section-title"><span className="section-num">01</span>Overview</h2>
-          <div className="two-col">
+          <div className="two-col" data-cite-anchor="overview">
             <div className="note-card good">
               <h4><Icon name="check" size={12} /> When to use</h4>
               <p>{pattern.whenToUse}</p>
@@ -4477,7 +4592,7 @@ function Detail({ pattern, onBack, onOpen }) {
           </div>
         </div>
 
-        <div className="section">
+        <div className="section" data-cite-anchor="sim">
           <h2 className="section-title"><span className="section-num">02</span>Live simulator</h2>
           <p className="section-lead">Step through the canonical conversation turn-by-turn. Switch between voice and SMS variants where supported.</p>
           <Simulator pattern={pattern} />
@@ -4499,8 +4614,8 @@ function Detail({ pattern, onBack, onOpen }) {
           <h2 className="section-title"><span className="section-num">05</span>Operating parameters</h2>
           <p className="section-lead">Hard limits and windows defined in the Grace 2.0 flow library.</p>
           <div className="metrics-grid">
-            {pattern.metrics.map(m => (
-              <div key={m.label} className="metric">
+            {pattern.metrics.map((m, i) => (
+              <div key={m.label} className="metric" data-cite-anchor={'metric-' + i}>
                 <div className="metric-label">{m.label}</div>
                 <div className="metric-val">{m.value}</div>
                 {m.note && <div className="metric-delta flat">{m.note}</div>}
@@ -4513,7 +4628,7 @@ function Detail({ pattern, onBack, onOpen }) {
           <h2 className="section-title"><span className="section-num">06</span>Edge cases &amp; failure modes</h2>
           <div className="edge-list">
             {pattern.edgeCases.map((e, i) => (
-              <div key={i} className="edge-item">
+              <div key={i} className="edge-item" data-cite-anchor={'edge-' + i}>
                 <div className="edge-title">{e.title}</div>
                 <div className="edge-behavior">{e.behavior}</div>
               </div>
@@ -4524,13 +4639,13 @@ function Detail({ pattern, onBack, onOpen }) {
         <div className="section">
           <h2 className="section-title"><span className="section-num">07</span>Compliance notes</h2>
           <ul className="compliance-list">
-            {pattern.compliance.map((c, i) => <li key={i}>{c}</li>)}
+            {pattern.compliance.map((c, i) => <li key={i} data-cite-anchor={'comp-' + i}>{c}</li>)}
           </ul>
         </div>
 
         <div className="section">
           <h2 className="section-title"><span className="section-num">08</span>Changelog</h2>
-          <div className="changelog">
+          <div className="changelog" data-cite-anchor="changelog">
             {pattern.changelog.map((c, i) => (
               <div key={i} className="log-entry">
                 <span className="log-version">v{c.version}</span>
@@ -4571,9 +4686,9 @@ function Detail({ pattern, onBack, onOpen }) {
         <div className="side-card">
           <h5>Quick actions</h5>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-            <button className="btn" style={{ justifyContent: 'flex-start' }}><Icon name="download" size={12} /> Export pattern spec</button>
-            <button className="btn" style={{ justifyContent: 'flex-start' }}><Icon name="compare" size={12} /> Compare against…</button>
-            <button className="btn" style={{ justifyContent: 'flex-start' }}><Icon name="book" size={12} /> View in changelog</button>
+            <button className="btn" style={{ justifyContent: 'flex-start' }} onClick={() => exportPatternSpec(pattern)}><Icon name="download" size={12} /> Export pattern spec</button>
+            <button className="btn" style={{ justifyContent: 'flex-start' }} onClick={() => onCompare(pattern.id)}><Icon name="compare" size={12} /> Compare against…</button>
+            <button className="btn" style={{ justifyContent: 'flex-start' }} onClick={() => scrollToCiteAnchor('changelog')}><Icon name="book" size={12} /> View in changelog</button>
           </div>
         </div>
       </aside>
@@ -4584,13 +4699,122 @@ function Detail({ pattern, onBack, onOpen }) {
 window.Detail = Detail;
 </script>
 <script type="text/babel">// Library index + Compare views
-function Library({ patterns, filters, setFilters, onOpen }) {
+
+// Full-text search index — flattens every string in the pattern AND its flow spec
+// (transcripts, steps, decisions, edge cases, compliance, metrics, tags…), built once per pattern.
+// Normalize text for matching: lowercase, treat hyphens/dashes/slashes/dots as spaces,
+// collapse runs of whitespace — so "after hours" matches "after-hours".
+// Returns the normalized string plus a map from normalized index → original index.
+function normalizeForSearch(text) {
+  const norm = [];
+  const map = [];
+  let prevSpace = true;
+  for (let i = 0; i < text.length; i++) {
+    let ch = text[i].toLowerCase();
+    if (/[-–—/·\s]/.test(ch)) ch = ' ';
+    if (ch === ' ') {
+      if (prevSpace) continue;
+      prevSpace = true;
+    } else {
+      prevSpace = false;
+    }
+    norm.push(ch);
+    map.push(i);
+  }
+  return { norm: norm.join(''), map: map };
+}
+
+const __searchIndex = {};
+function collectText(v, out) {
+  if (v == null) return;
+  if (typeof v === 'string') out.push(v);
+  else if (Array.isArray(v)) v.forEach(x => collectText(x, out));
+  else if (typeof v === 'object') Object.values(v).forEach(x => collectText(x, out));
+}
+function patternSearchText(p) {
+  if (__searchIndex[p.id]) return __searchIndex[p.id];
+  const out = [];
+  collectText(p, out);
+  collectText((window.FlowSpecs || {})[p.id], out);
+  return (__searchIndex[p.id] = normalizeForSearch(out.join(' ')).norm);
+}
+
+// Citation index — one entry per addressable piece of content, so search can show
+// exactly where a word or phrase appears and link to it.
+let __citations = null;
+function allCitations() {
+  if (__citations) return __citations;
+  const out = [];
+  const speakerName = s => (s === 'grace' ? 'Grace' : 'Caller');
+  window.Patterns.forEach(p => {
+    const push = (where, text, anchor) => { if (text) out.push({ source: p.title, accent: p.accent, nav: ['pattern', p.id], where: where, text: text, anchor: anchor }); };
+    push('Summary', p.summary, null);
+    push('When to use', p.whenToUse, 'overview');
+    push('When not to use', p.whenNotToUse, 'overview');
+    (p.metrics || []).forEach((m, i) => push('Metric · ' + m.label, [m.value, m.note].filter(Boolean).join(' — '), 'metric-' + i));
+    (p.transcript || []).forEach((t, i) => push('Transcript · turn ' + (i + 1) + ' · ' + speakerName(t.speaker), [t.text, t.note].filter(Boolean).join(' — '), 'sim'));
+    (p.edgeCases || []).forEach((e, i) => push('Edge case · ' + e.title, e.behavior, 'edge-' + i));
+    (p.compliance || []).forEach((c, i) => push('Compliance', c, 'comp-' + i));
+    ((window.FlowSpecs || {})[p.id] || []).forEach((s, i) => {
+      const label = [s.id, s.title].filter(Boolean).join(' · ') || 'Flow step';
+      push('Full flow · ' + label, [s.say, s.body].concat((s.says || []).flat(Infinity)).concat((s.branches || []).flat(Infinity)).filter(Boolean).join(' '), 'spec-' + i);
+    });
+  });
+  (window.SharedSearch || []).forEach(e => out.push({ source: 'Shared rules', accent: 'gold', nav: ['view', 'shared'], where: e.where, text: e.text }));
+  (window.SMSSearch || []).forEach(e => out.push({ source: 'SMS spec', accent: 'gold', nav: ['view', 'sms'], where: e.where, text: e.text }));
+  out.forEach(c => { const n = normalizeForSearch(c.text); c.norm = n.norm; c.map = n.map; });
+  return (__citations = out);
+}
+
+const ACCENT_DOT = {
+  ascensionBlue: 'var(--brand-ascension)',
+  mediumBlue: 'var(--brand-medium)',
+  violet: 'var(--brand-violet)',
+  green: 'var(--brand-green)',
+  gold: 'var(--brand-gold)',
+};
+
+function Snippet({ cite, q }) {
+  const text = cite.text;
+  const norm = cite.norm;
+  const map = cite.map;
+  const qLen = q.length;
+  const first = norm.indexOf(q);
+  if (first < 0) return <>{text.length > 220 ? text.slice(0, 220) + '…' : text}</>;
+  // Match ranges in normalized space, mapped back to original-string offsets
+  const ranges = [];
+  let j = first;
+  while (j >= 0) {
+    ranges.push([map[j], map[j + qLen - 1] + 1]);
+    j = norm.indexOf(q, j + qLen);
+  }
+  const start = Math.max(0, ranges[0][0] - 60);
+  const end = Math.min(text.length, ranges[0][1] + 140);
+  const parts = [];
+  let pos = start;
+  ranges.forEach(([a, b], k) => {
+    if (b <= start || a >= end) return;
+    const ca = Math.max(a, pos);
+    const cb = Math.min(b, end);
+    if (ca > pos) parts.push(text.slice(pos, ca));
+    parts.push(<mark key={k}>{text.slice(ca, cb)}</mark>);
+    pos = cb;
+  });
+  if (pos < end) parts.push(text.slice(pos, end));
+  return <>{start > 0 && '…'}{parts}{end < text.length && '…'}</>;
+}
+
+function Library({ patterns, filters, setFilters, onOpen, onNav }) {
   const { q, category, status, channel, tag } = filters;
   const allCats = [...new Set(window.Patterns.map(p => p.category))];
   const allChannels = ['Voice', 'SMS'];
 
+  const qNorm = normalizeForSearch(q).norm.trim();
+  const cites = qNorm ? allCitations().filter(c => c.norm.includes(qNorm)) : [];
+  const citesShown = cites.slice(0, 60);
+
   const filtered = patterns.filter(p => {
-    if (q && !(p.title + p.summary + p.tags.join(' ') + p.category).toLowerCase().includes(q.toLowerCase())) return false;
+    if (qNorm && !patternSearchText(p).includes(qNorm)) return false;
     if (category && p.category !== category) return false;
     if (channel && !p.channel.includes(channel)) return false;
     if (tag && !p.tags.includes(tag)) return false;
@@ -4611,13 +4835,13 @@ function Library({ patterns, filters, setFilters, onOpen }) {
         <div className="eyebrow">Grace 2.0 · AI Appointment Management</div>
         <h1 className="page-title">Conversation Pattern Library</h1>
         <p className="page-desc">
-          One working library for Grace 2.0 voice flows — verify, cancel, schedule and reschedule — plus the shared rules and SMS spec they depend on. Corrected draft for review, June 2026.
+          One working library for Grace 2.0 voice flows — verify, cancel, schedule and reschedule — plus the shared rules and SMS spec they depend on.
         </p>
       </div>
 
       <div className="stats-row">
         {stat('Active flows', window.Patterns.length, 'verify · cancel · schedule · reschedule')}
-        {stat('Last updated', 'June 2026', 'corrections applied to the library')}
+        {stat('Last updated', 'June 2026', 'flows, shared rules and SMS spec')}
         {stat('Phase 1 scope', 'Primary Care', 'Cardiovascular in Phase 2')}
         {stat('Escalation path', 'Care Navigator', 'DECISION L · shared by all flows')}
       </div>
@@ -4643,13 +4867,51 @@ function Library({ patterns, filters, setFilters, onOpen }) {
         </span>
       </div>
 
-      {filtered.length === 0 ? (
-        <div className="empty">
-          <div className="empty-title">No patterns match</div>
-          <div>Try clearing some filters.</div>
+      {qNorm && (
+        <div style={{ margin: '28px 0 40px' }}>
+          <h2 className="section-title" style={{ fontSize: 19, display: 'block' }}>
+            {(cites.length > 0 ? `${cites.length} citation${cites.length === 1 ? '' : 's'}` : 'No citations') + ' for “' + q.trim() + '”'}
+          </h2>
+          {cites.length === 0 && (
+            <p style={{ color: 'var(--text-muted)', fontSize: 14 }}>Try a shorter word or different phrasing.</p>
+          )}
+          {cites.length > 0 && (
+            <div className="cite-list">
+              {citesShown.map((c, i) => (
+                <button key={i} className="cite-item" onClick={() => (c.nav[0] === 'pattern' ? onOpen(c.nav[1], c.anchor) : onNav(c.nav[1]))}>
+                  <div>
+                    <div className="cite-source">
+                      <span style={{ display: 'inline-block', width: 8, height: 8, borderRadius: 2, background: ACCENT_DOT[c.accent] || 'var(--text-subtle)', marginRight: 8, flexShrink: 0 }}></span>
+                      {c.source}
+                    </div>
+                    <div className="cite-where">{c.where}</div>
+                  </div>
+                  <div className="cite-text"><Snippet cite={c} q={qNorm} /></div>
+                </button>
+              ))}
+              {cites.length > citesShown.length && (
+                <div style={{ fontSize: 12.5, color: 'var(--text-subtle)', padding: '4px 2px' }}>
+                  Showing {citesShown.length} of {cites.length} citations — refine the search to narrow results.
+                </div>
+              )}
+            </div>
+          )}
         </div>
+      )}
+
+      {filtered.length === 0 ? (
+        !qNorm && (
+          <div className="empty">
+            <div className="empty-title">No patterns match</div>
+            <div>Try clearing some filters.</div>
+          </div>
+        )
       ) : (
-        <div className="pattern-grid">
+        <div>
+          {qNorm && cites.length > 0 && (
+            <div style={{ fontSize: 12, letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--text-subtle)', fontWeight: 600, marginBottom: 12 }}>Flows with matches</div>
+          )}
+          <div className="pattern-grid">
           {filtered.map(p => (
             <button key={p.id} className="pattern-card" data-pa={p.accent} onClick={() => onOpen(p.id)}>
               <div className="card-head">
@@ -4658,12 +4920,7 @@ function Library({ patterns, filters, setFilters, onOpen }) {
                   v{p.version}
                 </span>
               </div>
-              <div>
-                <h3 className="card-title">{p.title}</h3>
-                <div style={{ fontSize: 12, color: 'var(--text-subtle)', marginTop: 4, fontFamily: 'var(--font-mono)' }}>
-                  {p.id}
-                </div>
-              </div>
+              <h3 className="card-title">{p.title}</h3>
               <p className="card-summary">{p.summary}</p>
               <div className="card-tags">
                 {p.tags.slice(0, 3).map(t => (
@@ -4678,6 +4935,7 @@ function Library({ patterns, filters, setFilters, onOpen }) {
               </div>
             </button>
           ))}
+          </div>
         </div>
       )}
     </div>
@@ -4721,9 +4979,10 @@ function Dropdown({ label, options, onChange, active }) {
   );
 }
 
-function Compare({ patterns }) {
-  const [aId, setA] = useState(patterns[0].id);
-  const [bId, setB] = useState(patterns[2].id);
+function Compare({ patterns, seedA }) {
+  const initA = seedA && patterns.some(p => p.id === seedA) ? seedA : patterns[0].id;
+  const [aId, setA] = useState(initA);
+  const [bId, setB] = useState(patterns[2].id !== initA ? patterns[2].id : patterns[0].id);
   const a = patterns.find(p => p.id === aId);
   const b = patterns.find(p => p.id === bId);
 
@@ -4791,8 +5050,8 @@ window.Compare = Compare;
 </script>
 
 <script type="text/babel">// Shared components — Shared Rules + SMS Spec views (Grace 2.0 Flow Library)
-function SharedRules() {
-  const openings = [
+// Content data — module scope so the library-wide citation search can index it.
+const openings = [
     ['No sub-intent (cold open)', 'This is Grace, an AI-powered assistant ready to help with scheduling, rescheduling, canceling and verifying appointments. What do you need to do today?'],
     ['Verify intent captured', 'This is Grace, an AI-powered assistant. Ready to check on that appointment, or were you calling about something else?'],
     ['Cancel intent captured', 'This is Grace, an AI-powered assistant. Ready to help cancel an appointment, or was the call about something else?'],
@@ -4822,6 +5081,37 @@ function SharedRules() {
     'Cancel now includes the Phase 1 scope check before offering reschedule.',
   ];
 
+const sharedProse = {
+  always: 'Lead with what Grace can do. Use “you” and “your” when speaking to the caller. Keep language around a seventh-grade reading level. The opening line is the one allowed exception to the pronoun rule, because Grace identifies itself by name.',
+  never: 'No first-person pronouns in conversation: no “I,” “me” or “my.” Avoid “I understand,” “I’m sorry,” “I hope,” feeling claims and medical advice.',
+  proxy: 'If the call is for another patient at session start, transfer: “Calls for another patient need a Care Navigator. Connecting you now.” A patient switch after authentication exits the current step; until the On Behalf Of flow ships, transfer. Carry forward only call metadata for the new patient subject — never the original patient context.',
+  closingLead: '“Is there anything else needed today?” — if yes, capture the next intent, route to the matching flow, then return to the same closing check. If no, run survey eligibility.',
+  surveyClosing: '“Thank you for choosing Ascension, [first name]. To help improve this experience, please share your thoughts in a brief survey. Connecting you now.” Fires only when every task in the session completed cleanly — no human handoff, no out-of-scope intent.',
+  nonSurveyClosing: '“Thank you for choosing Ascension, [first name].”',
+  escalateLive: '“A Care Navigator can help with this. Connecting you now.” Pass session context so the Care Navigator does not start over. No survey.',
+  escalateAfterHours: '“To finish this, please call back during normal business hours when a Care Navigator can help. Thank you for choosing Ascension.” End call. No transfer, no survey.',
+  emergency: 'If Dash returns an emergency response, go to EMERGENCY END. Offer emergency care as an option, not a directive, and confirm the caller is safe to continue before any further scheduling action.',
+};
+
+window.SharedSearch = [
+  { where: 'Voice and tone · Always', text: sharedProse.always },
+  { where: 'Voice and tone · Never', text: sharedProse.never },
+  ...openings.map(([label, text]) => ({ where: 'Standard openings · ' + label, text: text })),
+  ...attempts.map(([label, text]) => ({ where: 'Authentication · ' + label, text: text })),
+  { where: 'Proxy callers — V1', text: sharedProse.proxy },
+  { where: 'Global escalation triggers', text: 'Approved trigger words: ' + triggers.join(', ') + '. Signals: ' + signals.join(', ') + '.' },
+  { where: 'Closing check', text: sharedProse.closingLead },
+  { where: 'Survey-eligible closing', text: sharedProse.surveyClosing },
+  { where: 'Non-survey closing', text: sharedProse.nonSurveyClosing },
+  ...flags.map(([k, v]) => ({ where: 'Survey flags · ' + k, text: v })),
+  { where: 'ESCALATE-LIVE END', text: sharedProse.escalateLive },
+  { where: 'ESCALATE-AFTERHOURS END', text: sharedProse.escalateAfterHours },
+  { where: 'Session context on live transfer', text: contextItems.join(', ') },
+  { where: 'Emergency handling', text: sharedProse.emergency + ' Final wording is pending compliance review.' },
+  ...openItems.map((t, i) => ({ where: 'Open items · OI-' + (i + 1), text: t })),
+];
+
+function SharedRules() {
   return (
     <div>
       <div className="page-head">
@@ -4835,11 +5125,11 @@ function SharedRules() {
         <div className="two-col">
           <div className="note-card good">
             <h4><Icon name="check" size={12} /> Always</h4>
-            <p>Lead with what Grace can do. Use “you” and “your” when speaking to the caller. Keep language around a seventh-grade reading level. The opening line is the one allowed exception to the pronoun rule, because Grace identifies itself by name.</p>
+            <p>{sharedProse.always}</p>
           </div>
           <div className="note-card bad">
             <h4><Icon name="x" size={12} /> Never</h4>
-            <p>No first-person pronouns in conversation: no “I,” “me” or “my.” Avoid “I understand,” “I’m sorry,” “I hope,” feeling claims and medical advice.</p>
+            <p>{sharedProse.never}</p>
           </div>
         </div>
       </div>
@@ -4875,7 +5165,7 @@ function SharedRules() {
         <div className="two-col">
           <div className="note-card">
             <h4>Proxy caller or patient switch — V1</h4>
-            <p>If the call is for another patient at session start, transfer: “Calls for another patient need a Care Navigator. Connecting you now.” A patient switch after authentication exits the current step; until the On Behalf Of flow ships, transfer. Carry forward only call metadata for the new patient subject — never the original patient context.</p>
+            <p>{sharedProse.proxy}</p>
           </div>
           <div className="note-card">
             <h4>Approved trigger set — route immediately</h4>
@@ -4892,15 +5182,15 @@ function SharedRules() {
 
       <div className="section">
         <h2 className="section-title"><span className="section-num">05</span>Closing check and survey eligibility</h2>
-        <p className="section-lead">“Is there anything else needed today?” — if yes, capture the next intent, route to the matching flow, then return to the same closing check. If no, run survey eligibility.</p>
+        <p className="section-lead">{sharedProse.closingLead}</p>
         <div className="edge-list">
           <div className="edge-item">
             <div className="edge-title">Survey-eligible closing</div>
-            <div className="edge-behavior">“Thank you for choosing Ascension, [first name]. To help improve this experience, please share your thoughts in a brief survey. Connecting you now.” Fires only when every task in the session completed cleanly — no human handoff, no out-of-scope intent.</div>
+            <div className="edge-behavior">{sharedProse.surveyClosing}</div>
           </div>
           <div className="edge-item">
             <div className="edge-title">Non-survey closing</div>
-            <div className="edge-behavior">“Thank you for choosing Ascension, [first name].”</div>
+            <div className="edge-behavior">{sharedProse.nonSurveyClosing}</div>
           </div>
           {flags.map(([k, v]) => (
             <div key={k} className="edge-item">
@@ -4917,11 +5207,11 @@ function SharedRules() {
         <div className="two-col">
           <div className="note-card good">
             <h4>ESCALATE-LIVE END · within hours</h4>
-            <p>“A Care Navigator can help with this. Connecting you now.” Pass session context so the Care Navigator does not start over. No survey.</p>
+            <p>{sharedProse.escalateLive}</p>
           </div>
           <div className="note-card bad">
             <h4>ESCALATE-AFTERHOURS END</h4>
-            <p>“To finish this, please call back during normal business hours when a Care Navigator can help. Thank you for choosing Ascension.” End call. No transfer, no survey.</p>
+            <p>{sharedProse.escalateAfterHours}</p>
           </div>
         </div>
         <div style={{ marginTop: 14 }}>
@@ -4936,7 +5226,7 @@ function SharedRules() {
         <h2 className="section-title"><span className="section-num">07</span>Emergency handling</h2>
         <div className="note-card bad">
           <h4><Icon name="alert" size={12} /> Schedule and Reschedule use Dash triage</h4>
-          <p>If Dash returns an emergency response, go to EMERGENCY END. Offer emergency care as an option, not a directive, and confirm the caller is safe to continue before any further scheduling action. <strong>Final wording is pending compliance review.</strong></p>
+          <p>{sharedProse.emergency} <strong>Final wording is pending compliance review.</strong></p>
         </div>
       </div>
 
@@ -4956,8 +5246,7 @@ function SharedRules() {
   );
 }
 
-function SMSSpec() {
-  const conventions = [
+const conventions = [
     ['Date', 'Wed Dec 31 — abbreviated day + month, numeric date, no comma, no year unless 1+ year away'],
     ['Time', '10:20am — 12-hour, lowercase am/pm, no space'],
     ['Provider', '[first] [last], [credential] — no “Dr.” prefix'],
@@ -5004,6 +5293,26 @@ function SMSSpec() {
     },
   ];
 
+const smsProse = {
+  structure: '160 characters per individual message. Verify, Schedule and Reschedule use two purposeful messages by default; Cancel uses one. Two-message sends end with (1/2) and (2/2). Verify, Schedule and Reschedule name Ascension in Message 1.',
+  copyRules: 'SMS copy is declarative, neutral and confirmational. No emoji. Consent and opt-out are handled by Ascension’s SMS program. For Message 2, when filled length exceeds 160, drop street address and city — the map URL encodes both.',
+  fail1: 'Retry once. For two-message sends, retry only the failed message or messages.',
+  fail2: 'Grace gives a verbal fallback before the closing check, recapping only the appointment details whose SMS failed.',
+};
+
+window.SMSSearch = [
+  { where: 'Shared rules · Message structure', text: smsProse.structure },
+  { where: 'Shared rules · Copy rules', text: smsProse.copyRules },
+  ...conventions.map(([k, v]) => ({ where: 'Format conventions · ' + k, text: v })),
+  ...flows.flatMap(f => [
+    ...f.msgs.map(([tag, text]) => ({ where: f.name + ' · ' + tag, text: text })),
+    { where: f.name + ' · usage note', text: f.note },
+  ]),
+  { where: 'Send failure · Initial send fails', text: smsProse.fail1 },
+  { where: 'Send failure · Retry also fails', text: smsProse.fail2 },
+];
+
+function SMSSpec() {
   return (
     <div>
       <div className="page-head">
@@ -5017,11 +5326,11 @@ function SMSSpec() {
         <div className="two-col">
           <div className="note-card">
             <h4>Message structure</h4>
-            <p>160 characters per individual message. Verify, Schedule and Reschedule use two purposeful messages by default; Cancel uses one. Two-message sends end with (1/2) and (2/2). Verify, Schedule and Reschedule name Ascension in Message 1.</p>
+            <p>{smsProse.structure}</p>
           </div>
           <div className="note-card">
             <h4>Copy rules</h4>
-            <p>SMS copy is declarative, neutral and confirmational. No emoji. Consent and opt-out are handled by Ascension’s SMS program. For Message 2, when filled length exceeds 160, drop street address and city — the map URL encodes both.</p>
+            <p>{smsProse.copyRules}</p>
           </div>
         </div>
       </div>
@@ -5072,11 +5381,60 @@ function SMSSpec() {
         <div className="edge-list">
           <div className="edge-item">
             <div className="edge-title">1 · Initial send fails</div>
-            <div className="edge-behavior">Retry once. For two-message sends, retry only the failed message or messages.</div>
+            <div className="edge-behavior">{smsProse.fail1}</div>
           </div>
           <div className="edge-item">
             <div className="edge-title">2 · Retry also fails</div>
-            <div className="edge-behavior">Grace gives a verbal fallback before the closing check, recapping only the appointment details whose SMS failed.</div>
+            <div className="edge-behavior">{smsProse.fail2}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function About() {
+  const areas = [
+    ['Pattern library', 'The four voice flows — Verify, Cancel, Schedule and Reschedule — as browsable cards. Each opens into full step-by-step logic, caller-facing wording, sample transcripts, edge cases and metrics.'],
+    ['Compare', 'Any two flows side by side — useful for spotting where behavior intentionally differs and where it must stay aligned.'],
+    ['Shared rules', 'The cross-flow contract: openings, authentication, proxy callers, global escalation, transfer logic and end states. Flows only depart from these when they state a tighter rule explicitly.'],
+    ['SMS spec', 'Formatting conventions, per-flow message templates and send-failure handling for every text Grace sends.'],
+  ];
+  return (
+    <div>
+      <div className="page-head">
+        <div className="eyebrow">Reference</div>
+        <h1 className="page-title">About this library</h1>
+        <p className="page-desc">
+          Grace is Ascension's AI-powered voice assistant for appointment management. This site is the working source of truth for how Grace converses — the Grace 2.0 voice flows, the shared rules they all inherit, and the SMS spec behind every text Grace sends.
+        </p>
+      </div>
+
+      <div className="section">
+        <h2 className="section-title"><span className="section-num">01</span>What this is</h2>
+        <p className="section-lead">
+          A conversation pattern library. Each flow is documented as a pattern: its decision logic, exact caller-facing wording, edge cases, escalation paths and a sample transcript, all versioned and dated. The goal is one citable reference for design reviews and implementation work — instead of wording living in scattered documents.
+        </p>
+        <div className="edge-list">
+          {areas.map(([label, text]) => (
+            <div key={label} className="edge-item">
+              <div className="edge-title">{label}</div>
+              <div className="edge-behavior">{text}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="section">
+        <h2 className="section-title"><span className="section-num">02</span>How to use this resource</h2>
+        <div className="two-col">
+          <div className="note-card">
+            <h4>Vendors &amp; implementation partners</h4>
+            <p>Build to what's written here. Wording, retry counts, input modes and escalation triggers are deliberate — implement them as documented, and read Shared rules first, since they apply to every flow unless a flow states a tighter rule. When something is ambiguous or technically infeasible, raise it against a specific STEP or DECISION ID rather than a general description, and note the pattern's version and updated date in any feedback.</p>
+          </div>
+          <div className="note-card">
+            <h4>Internal collaborators</h4>
+            <p>Use the library to review caller-facing wording in context, compare flows side by side, and check Shared rules before proposing a change to any single flow. Each pattern lists an owner — route feedback and open questions there. Items still awaiting a decision are tracked in the Open items section at the bottom of Shared rules.</p>
           </div>
         </div>
       </div>
@@ -5086,6 +5444,7 @@ function SMSSpec() {
 
 window.SharedRules = SharedRules;
 window.SMSSpec = SMSSpec;
+window.About = About;
 </script>
 <script type="text/babel">// Main app shell
 const { useMemo } = React;
@@ -5181,6 +5540,8 @@ function App() {
     return v && window.Patterns.some(p => p.id === v) ? v : null;
   });
   const [filters, setFilters] = useState({ q: '', category: '', status: '', channel: '', tag: '' });
+  const [anchorReq, setAnchorReq] = useState(null);
+  const [compareSeed, setCompareSeed] = useState(null);
 
   useEffect(() => { localStorage.setItem('cpl_view', view); }, [view]);
   useEffect(() => { openId ? localStorage.setItem('cpl_open', openId) : localStorage.removeItem('cpl_open'); }, [openId]);
@@ -5208,8 +5569,14 @@ function App() {
     return () => window.removeEventListener('keydown', h);
   }, []);
 
-  const open = (id) => { setOpenId(id); setView('detail'); window.scrollTo(0, 0); };
+  const open = (id, anchor) => {
+    setOpenId(id);
+    setView('detail');
+    window.scrollTo(0, 0);
+    setAnchorReq(anchor ? { a: anchor, n: Date.now() } : null);
+  };
   const back = () => { setOpenId(null); setView('library'); };
+  const goHome = () => { setView('library'); setOpenId(null); window.scrollTo(0, 0); };
 
   const patterns = window.Patterns;
   const currentPattern = patterns.find(p => p.id === openId);
@@ -5221,6 +5588,7 @@ function App() {
   const navItems = [
     { id: 'library', label: 'Pattern library', icon: 'grid', count: patterns.length },
     { id: 'compare', label: 'Compare', icon: 'compare' },
+    { id: 'about', label: 'About', icon: 'info' },
   ];
   const sharedItems = [
     { id: 'shared', label: 'Shared rules', icon: 'shield' },
@@ -5288,7 +5656,7 @@ function App() {
   return (
     <div className="app" data-layout={tweaks.layout}>
       <aside className="sidebar">
-        <div className="wordmark">
+        <div className="wordmark" onClick={goHome} title="Back to library home" role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter') goHome(); }} style={{ cursor: 'pointer' }}>
           <div className="wordmark-dot"></div>
           <div>
             <div className="wordmark-main">Grace</div>
@@ -5299,7 +5667,7 @@ function App() {
       </aside>
 
       <header className="topbar">
-        <div className="topbar-wordmark">
+        <div className="topbar-wordmark" onClick={goHome} title="Back to library home" role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter') goHome(); }} style={{ cursor: 'pointer' }}>
           <div className="wordmark-dot"></div>
           <div>
             <div className="wordmark-main">Grace</div>
@@ -5326,16 +5694,16 @@ function App() {
           }} title="Toggle theme">
             <Icon name={tweaks.theme === 'light' ? 'moon' : 'sun'} size={14} />
           </button>
-          <button className="btn primary"><Icon name="download" size={13} />Export</button>
         </div>
       </header>
 
       <main>
-        {view === 'library' && !openId && <Library patterns={patterns} filters={filters} setFilters={setFilters} onOpen={open} />}
-        {view === 'compare' && <Compare patterns={patterns} />}
+        {view === 'library' && !openId && <Library patterns={patterns} filters={filters} setFilters={setFilters} onOpen={open} onNav={(v) => { setView(v); setOpenId(null); }} />}
+        {view === 'compare' && <Compare patterns={patterns} seedA={compareSeed} />}
         {view === 'shared' && <SharedRules />}
         {view === 'sms' && <SMSSpec />}
-        {view === 'detail' && currentPattern && <Detail pattern={currentPattern} onBack={back} onOpen={open} />}
+        {view === 'about' && <About />}
+        {view === 'detail' && currentPattern && <Detail pattern={currentPattern} onBack={back} onOpen={open} onCompare={(id) => { setCompareSeed(id); setView('compare'); setOpenId(null); window.scrollTo(0, 0); }} anchorReq={anchorReq} />}
       </main>
 
       {editMode && <TweaksPanel tweaks={tweaks} setTweaks={setTweaks} />}
